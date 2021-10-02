@@ -1,6 +1,8 @@
 package calculator;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -11,6 +13,7 @@ public class Window_Design {
 	
 	private static WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
 	
+	public static JPanel headPanel = new JPanel();
 	public static JPanel numbBtnPanel = new JPanel();
 	public static JButton[][] numbBtns = new JButton[4][3];
 	
@@ -19,12 +22,15 @@ public class Window_Design {
 	public static JButton divideBtn = new JButton();
 	public static JButton multBtn = new JButton();
 	
-	public void Init() {
-		
-		
+	public static JTextField textField = new JTextField();
+	
+	public void InitializeComponents() {
 		
 		window.setLayout(new GridBagLayout());
-
+		
+		GridBagConstraints headPanelC = new GridBagConstraints();
+		headPanel.setLayout(new GridBagLayout());
+		
 		//numbBtnPanel
 		numbBtnPanel.setLayout(new GridBagLayout());
 		GridBagConstraints numbBtnC = new GridBagConstraints();
@@ -33,9 +39,8 @@ public class Window_Design {
 		numbBtnC.insets = new Insets(2,2,2,2);
 		
 		//numbBtnPanel Numeric Buttons
-		int spacing = 5;
 		int total = 1;
-		int offset = 2;
+		
 		for (int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				int numb = 10 - total++;
@@ -111,12 +116,19 @@ public class Window_Design {
 		numbBtnPanel.add(addBtn, numbBtnC);
 
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
-		numbBtnC.gridx = 0;
-		numbBtnC.gridy = 2;
+		
+		//Field
+		textField.setText("Hello world!");
+		textField.setPreferredSize(new Dimension(50, 100));
+		
+
+
+		headPanelC.gridwidth = 2;
+		headPanelC.gridx = 3;
+		headPanelC.fill = GridBagConstraints.HORIZONTAL;
+		
+		window.add(textField, headPanelC);
 		window.add(numbBtnPanel, numbBtnC);
-	}
-	
-	protected void Show() {
 		window.Show();
 	}
 }
