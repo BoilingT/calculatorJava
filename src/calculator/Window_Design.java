@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Window_Design {
 
@@ -111,6 +112,7 @@ public class Window_Design {
 		numbBtnPanel.add(numbBtns[0][2], numbBtnC);
 		
 		//numbBtnPanel Operation Buttons
+		numbBtnC.gridx = 3;
 		
 		//Divide
 		divideBtn.setText("/");
@@ -121,59 +123,63 @@ public class Window_Design {
 		//Mult
 		multBtn.setText("*");
 		numbBtnC.gridy = 1;
-		numbBtnC.gridx = 3;
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
 		numbBtnPanel.add(multBtn, numbBtnC);
 		
 		//Subtract
 		subtractBtn.setText("-");
 		numbBtnC.gridy = 2;
-		numbBtnC.gridx = 3;
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
 		numbBtnPanel.add(subtractBtn, numbBtnC);
 		
 		//Add
 		addBtn.setText("+");
 		numbBtnC.gridy = 3;
-		numbBtnC.gridx = 3;
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
 		numbBtnPanel.add(addBtn, numbBtnC);
 
 		//CalcBtn
 		calcBtn.setText("=");
 		numbBtnC.gridy = 4;
-		numbBtnC.gridx = 3;
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
 		numbBtnPanel.add(calcBtn, numbBtnC);
 		
-		//ClearBtn
+		//clearBtn
 		clearBtn.setText("Cl");
 		numbBtnC.gridy = 0;
 		numbBtnC.gridx = 0;
 		numbBtnC.fill = GridBagConstraints.HORIZONTAL;
 		numbBtnPanel.add(clearBtn, numbBtnC);
 		
-		//Field
-		textField.setText("Hello world!");
-		textField.setPreferredSize(new Dimension(400, 50));
-		headPanelC.gridx = 0;
+		//textField
+		textField.setText("");
+		textField.setFont(new Font("Arial", Font.PLAIN, 20));
+		textField.setPreferredSize(new Dimension(200, 50));
+		//headPanelC.anchor = GridBagConstraints.FIRST_LINE_START;
+		textField.setBorder(BorderFactory.createLineBorder(Color.red));
+		headPanelC.gridx = 2;
+		headPanelC.gridy = 0;
 		headPanelC.gridwidth = 1;
-		headPanelC.fill = GridBagConstraints.HORIZONTAL;
+		headPanelC.gridheight = 1;
 		//headPanelC.weightx = 1;
 		headPanel.add(textField, headPanelC);
 		
 		//headPanel
+		headPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		windowC.gridx = 0;
 		windowC.gridy = 0;
-		windowC.gridwidth = 4;
-		windowC.fill = GridBagConstraints.HORIZONTAL;
+		windowC.gridwidth = 1;
+		windowC.gridheight = 1;
+		windowC.fill = GridBagConstraints.BOTH;
 		window.add(headPanel, windowC);
 		
 		//numbBtnPanel
+		numbBtnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		windowC.gridx = 0;
-		windowC.gridy = 1;
-		windowC.gridwidth = 4;
-		windowC.fill = GridBagConstraints.HORIZONTAL;
+		windowC.gridy = 3;
+		windowC.gridwidth = 1;
+		windowC.gridheight = 4;
+		windowC.fill = GridBagConstraints.BOTH;
 		window.add(numbBtnPanel, windowC);
 		window.Show();
 	}
