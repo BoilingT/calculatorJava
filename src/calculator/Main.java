@@ -1,4 +1,4 @@
-package calculator;
+package calculator.src.calculator;
 
 public class Main extends Window_Design{	
 	

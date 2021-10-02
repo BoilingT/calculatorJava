@@ -1,4 +1,4 @@
-package calculator;
+package calculator.src.calculator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
