@@ -6,8 +6,12 @@ public class Window extends Window_Design{
 	
 	private static ArrayList<Double> numbers = new ArrayList<Double>();
 	private static ArrayList<Character> operations = new ArrayList<Character>();
-	private static char latestOperation = ' ';
+	private static String latestOperation = "";
 	private static String latestResult = "";
+	
+	private static double a = 0;
+	private static double b = 0;
+	private static double result = 0;
 	
 	public void Init() {
 		InitializeComponents();
@@ -15,26 +19,27 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void divideBtnClicked() {
+		
 		textField.setText(textField.getText() + "/");
-		latestOperation = '/';
+		latestOperation = "\\/";
 	}
 	
 	@Override
 	public void multBtnClicked() {
 		textField.setText(textField.getText() + "*");
-		latestOperation = '*';
+		latestOperation = "\\*";
 	}
 	
 	@Override
 	public void subtractBtnClicked() {
 		textField.setText(textField.getText() + "-");
-		latestOperation = '-';
+		latestOperation = "\\-";
 	}
 	
 	@Override
 	public void addBtnClicked() {
 		textField.setText(textField.getText() + "+");
-		latestOperation = '+';
+		latestOperation = "\\+";
 	}
 	
 	@Override
@@ -44,16 +49,39 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void calcBtnClicked() {
+		
 		String inputText = textField.getText().trim();
-		String result = "";
-		System.out.println(inputText + " == " + latestResult + " : " + (inputText.equals(latestResult)));
-		if (inputText.equals(latestResult)) {
-			result = parseAddition(latestResult + String.valueOf(latestOperation) + latestResult);
+		String resultStr = "";
+		
+		if (checkBox.isSelected()) {
+			resultStr = parseAddition(textField.getText().trim()); // = 17 - 10 = 7 "12+5-5*2"
+			textField.setText(resultStr);
 		}else {
-			result = parseAddition(textField.getText().trim()); // = 17 - 10 = 7 "12+5-5*2"
+			String[] inputs = inputText.split(String.valueOf(latestOperation));
+			if (inputs.length >= 2) {
+				try{
+					
+					for (int i = 0; i < inputs.length; i++) {
+						System.out.println(inputs[i]);
+					}
+
+					a = Double.parseDouble(inputs[0]);
+					b = Double.parseDouble(inputs[1]);
+					
+				}catch (Exception e) {
+					System.out.println(e);
+					return;
+				}
+			}else {
+				a = result;
+			}
+	
+			if (latestOperation.contains("+")) result = a + b;
+			else if(latestOperation.contains("-")) result = a - b;
+			else if(latestOperation.contains("*")) result = a * b;
+			else if(latestOperation.contains("/")) result = a / b;
+			textField.setText(String.valueOf(result));
 		}
-		latestResult = result;
-		textField.setText(result);
 	}
 	
 	private static String[] split(String expression, char regex) {

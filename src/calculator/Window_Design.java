@@ -25,6 +25,8 @@ public class Window_Design {
 	public static JButton calcBtn = new JButton();
 	public static JButton clearBtn = new JButton();
 	
+	public static JCheckBox checkBox = new JCheckBox();
+	
 	public static JTextField textField = new JTextField();
 	
 	public void InitializeComponents() {
@@ -162,6 +164,14 @@ public class Window_Design {
 			}
 		});
 		
+		//checkBox
+		checkBox.setText("Advanced mode");
+		mainPanelC.gridx = 0;
+		mainPanelC.gridy = 7;
+		mainPanelC.gridheight = 1;
+		mainPanelC.gridwidth = 1;
+		mainPanelC.fill = GridBagConstraints.BOTH;
+		mainPanel.add(checkBox, mainPanelC);
 		
 		//textField
 		textField.setText("");
