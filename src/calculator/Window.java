@@ -2,6 +2,8 @@ package calculator;
 
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+
 public class Window extends Window_Design{
 	
 	private static ArrayList<Double> numbers = new ArrayList<Double>();
@@ -15,6 +17,12 @@ public class Window extends Window_Design{
 	
 	public void Init() {
 		InitializeComponents();
+	}
+	
+	@Override
+	public void numbBtnClicked(Object obj) {
+		JButton btn = (JButton) obj;
+		textField.setText(textField.getText() + btn.getText());
 	}
 	
 	@Override
@@ -51,10 +59,12 @@ public class Window extends Window_Design{
 	public void calcBtnClicked() {
 		
 		String inputText = textField.getText().trim();
+		inputText = inputText.replaceAll("\\--", "+").replaceAll("\\(-", "(0-").replaceAll("\\+-", "-").replace(',', '.');
+		System.out.println("text: " + inputText);
 		String resultStr = "";
 		
 		if (checkBox.isSelected()) {
-			resultStr = parseAddition(textField.getText().trim()); // = 17 - 10 = 7 "12+5-5*2"
+			resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
 			textField.setText(resultStr);
 		}else {
 			String[] inputs = inputText.split(String.valueOf(latestOperation));

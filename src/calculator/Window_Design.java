@@ -16,7 +16,7 @@ public class Window_Design {
 	public static JPanel mainPanel = new JPanel();
 	public static JPanel headPanel = new JPanel();
 	public static JPanel numbBtnPanel = new JPanel();
-	public static JButton[][] numbBtns = new JButton[4][3];
+	public static JButton[][] numbBtns = new JButton[5][3];
 	
 	public static JButton addBtn = new JButton();
 	public static JButton subtractBtn = new JButton();
@@ -57,28 +57,49 @@ public class Window_Design {
 		createNumBtns(0, 1, numbBtnC); //Create all buttons from 1 to 9
 		
 		//numBtn0
-		numbBtns[0][0] = new JButton();
-		numbBtns[0][0].setName("numBtn0");
-		numbBtns[0][0].setText("0");
+		numbBtns[3][0] = new JButton();
+		numbBtns[3][0].setName("numBtn0");
+		numbBtns[3][0].setText("0");
 		numbBtnC.gridx = 0;
 		numbBtnC.fill = GridBagConstraints.BOTH;
-		numbBtnPanel.add(numbBtns[0][0], numbBtnC);
+		numbBtnPanel.add(numbBtns[3][0], numbBtnC);
+		numbBtns[3][0].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numbBtnClicked(numbBtns[3][0]);
+			}
+		});
 		
 		//Positive/Negative
-		numbBtns[0][1] = new JButton();
-		numbBtns[0][1].setName("numBtn1");
-		numbBtns[0][1].setText("+/-");
-		numbBtnC.gridx = 1;
-		numbBtnC.fill = GridBagConstraints.BOTH;
-		numbBtnPanel.add(numbBtns[0][1], numbBtnC);
+//		numbBtns[3][1] = new JButton();
+//		numbBtns[3][1].setName("numBtn1");
+//		numbBtns[3][1].setText("+/-");
+//		numbBtnC.gridx = 1;
+//		numbBtnC.fill = GridBagConstraints.BOTH;
+//		numbBtnPanel.add(numbBtns[3][1], numbBtnC);
+//		numbBtns[3][1].addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				posNegBtnClicked();
+//			}
+//		});
 		
 		//,
-		numbBtns[0][2] = new JButton();
-		numbBtns[0][2].setName("numBtn2");
-		numbBtns[0][2].setText(",");
+		numbBtns[3][2] = new JButton();
+		numbBtns[3][2].setName("numBtn2");
+		numbBtns[3][2].setText(".");
 		numbBtnC.gridx = 2;
 		numbBtnC.fill = GridBagConstraints.BOTH;
-		numbBtnPanel.add(numbBtns[0][2], numbBtnC);
+		numbBtnPanel.add(numbBtns[3][2], numbBtnC);
+		numbBtns[3][2].addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numbBtnClicked(numbBtns[3][2]);
+			}
+		});
 		
 		//numbBtnPanel Operation Buttons
 		numbBtnC.gridx = 3;
@@ -222,7 +243,8 @@ public class Window_Design {
 	public void addBtnClicked() {}
 	public void clearBtnClicked() {}
 	public void calcBtnClicked() {}
-
+	public void numbBtnClicked(Object obj) {}
+	
 	private void createNumBtns(int col, int row, GridBagConstraints numbBtnC) {
 		int total = 1;
 		int yOffset = row;
@@ -232,7 +254,7 @@ public class Window_Design {
 		for (int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				int numb = 10 - total++;
-				int y = 2-i;
+				int y = i;
 				int x = 2-j;
 				System.out.print("x: " + x + " y: " + y + " = " + numb + "\n");
 				numbBtns[y][x] = new JButton();
@@ -243,6 +265,13 @@ public class Window_Design {
 				numbBtnC.fill = GridBagConstraints.BOTH;
 
 				numbBtnPanel.add(numbBtns[y][x], numbBtnC);
+				numbBtns[y][x].addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						numbBtnClicked(numbBtns[y][x]);
+					}
+				});
 			}
 			numbBtnC.gridy = yOffset + i+1;
 		}
@@ -251,14 +280,17 @@ public class Window_Design {
 		String result = "";
 		for (int i = 0; i < numbBtns.length; i++) {
 			for (int j = 0; j < numbBtns[i].length; j++) {
-				if(numbBtns[i][j] == null) {
+				int y = i;
+				int x = j;
+				if(numbBtns[y][x] == null) {
 					result += "-1, ";
 				}else {
-					result += " " + numbBtns[i][j].getText() + ", ";					
+					result += " " + numbBtns[y][x].getText() + ", ";					
 				}
 			}
 			result += "\n";
 		}
+		System.out.println(numbBtns[2][0].getText());
 		System.out.println(result);
 	}
 	
