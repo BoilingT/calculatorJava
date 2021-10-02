@@ -1,4 +1,4 @@
-package calculator.src.calculator;
+package calculator;
 
 import java.awt.Dimension;
 
