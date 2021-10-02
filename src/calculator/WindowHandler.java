@@ -15,6 +15,7 @@ public class WindowHandler extends JFrame{
 		//panel.setOpaque(false);
 		//panel.setPreferredSize(new Dimension(width, height));
 		setPreferredSize(new Dimension(width, height));
+		setMinimumSize(new Dimension(width, height));
 		//-----------------------------------------------------
 		//add(panel);
 		/*G�r s� att anv�ndaren inte kan �ndra storleken p� f�nstret, 
