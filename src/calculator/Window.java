@@ -7,10 +7,7 @@ import javax.swing.JButton;
 
 public class Window extends Window_Design{
 	
-	private static ArrayList<Double> numbers = new ArrayList<Double>();
-	private static ArrayList<Character> operations = new ArrayList<Character>();
 	private static String latestOperation = "";
-	private static String latestResult = "";
 	
 	private static double a = 0;
 	private static double b = 0;
@@ -22,9 +19,57 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void keyPress(KeyEvent e) {
-		if (e.getKeyCode() == e.VK_ENTER) {
+		//System.out.println(e.getKeyCode());
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			calcBtn.doClick();
 		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			latestOperation = "";
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_PLUS) latestOperation = "\\+";
+		else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) latestOperation = "\\-";
+		else if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) latestOperation = "\\*";
+		else if (e.getKeyCode() == KeyEvent.VK_DIVIDE) latestOperation = "\\/";
+		
+		
+		/*
+		if (e.getKeyCode() >= KeyEvent.VK_1 && e.getKeyCode() <= KeyEvent.VK_3) { //49 <= x <= 51
+			int difference = KeyEvent.VK_3 - e.getKeyCode();
+			int x = 2-difference;
+			int y = 2;
+			numbBtns[y][x].doClick();
+		}
+		
+		if (e.getKeyCode() >= KeyEvent.VK_4 && e.getKeyCode() <= KeyEvent.VK_6) { //52 <= x <= 54
+			int difference = KeyEvent.VK_6 - e.getKeyCode();
+			int x = 2-difference ;
+			int y = 1;
+			numbBtns[y][x].doClick();
+		}
+		
+		if (e.getKeyCode() >= KeyEvent.VK_7 && e.getKeyCode() <= KeyEvent.VK_9) { //55 <= x <= 57
+			int difference = KeyEvent.VK_9 - e.getKeyCode();
+			int x = 2-difference ;
+			int y = 0;
+			numbBtns[y][x].doClick();
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_0) { //x = 48
+			numbBtns[3][0].doClick();
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			String text = textArea.getText();
+			if(text.length() > 0) {
+				textArea.setText(text.substring(0, text.length()-1));				
+			}
+		}*/
+	}
+	
+	@Override
+	public void keyRelease(KeyEvent e) {
+		calcBtnClicked();
 	}
 	
 	@Override
@@ -59,6 +104,28 @@ public class Window extends Window_Design{
 	}
 	
 	@Override
+	public void sqrtBtnClicked() {
+		textArea.setText(textArea.getText() + "sqrt(");
+		latestOperation = "sqrt";
+	}
+	
+	@Override
+	public void squareBtnClicked() {
+		textArea.setText(textArea.getText() + "²");
+		latestOperation = "square";
+	}
+	
+	@Override
+	public void openPBtnClicked() {
+		textArea.setText(textArea.getText() + "(");
+	}
+	
+	@Override
+	public void closePBtnClicked() {
+		textArea.setText(textArea.getText() + ")");
+	}
+	
+	@Override
 	public void clearBtnClicked() {
 		textArea.setText(null);
 	}
@@ -67,39 +134,47 @@ public class Window extends Window_Design{
 	public void calcBtnClicked() {
 		
 		String inputText = textArea.getText().trim();
-		System.out.println("text: " + inputText);
-		inputText = inputText.replaceAll("\\--", "+").replaceAll("\\(-", "(0-").replaceAll("\\+-", "-").replace(',', '.');
-		System.out.println("new text: " + inputText);
-		String resultStr = "";
-		
-		if (checkBox.isSelected()) {
-			resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
-			textArea.setText(inputText + "\n" + "= " + resultStr);
-		}else {
-			String[] inputs = inputText.split(String.valueOf(latestOperation));
-			if (inputs.length >= 2) {
-				try{
-					
-					for (int i = 0; i < inputs.length; i++) {
-						System.out.println(inputs[i]);
-					}
-
-					a = Double.parseDouble(inputs[0]);
-					b = Double.parseDouble(inputs[1]);
+		if (inputText.length() > 0) {
+			
+			System.out.println("text: " + inputText);
+			inputText = inputText.replace("\\--", "+").replace("\\(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/');
+			System.out.println("new text: " + inputText);
+			String resultStr = "";
+			
+			if (checkBox.isSelected()) {
+				try {
+					resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
+					textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {
-					System.out.println(e);
-					return;
+					textResult.setText("= ???");
 				}
 			}else {
-				a = result;
+				String[] inputs = inputText.split(String.valueOf(latestOperation));
+				if (inputs.length >= 2) {
+					try{
+						
+						for (int i = 0; i < inputs.length; i++) {
+							System.out.println(inputs[i]);
+						}
+						
+						a = Double.parseDouble(inputs[0]);
+						b = Double.parseDouble(inputs[1]);
+						
+					}catch (Exception e) {
+						System.out.println(e);
+						return;
+					}
+				}else {
+					a = result;
+				}
+				
+				if (latestOperation.contains("+")) result = a + b;
+				else if(latestOperation.contains("-")) result = a - b;
+				else if(latestOperation.contains("*")) result = a * b;
+				else if(latestOperation.contains("/")) result = a / b;
+				textResult.setText("= " + String.valueOf(result));
 			}
-	
-			if (latestOperation.contains("+")) result = a + b;
-			else if(latestOperation.contains("-")) result = a - b;
-			else if(latestOperation.contains("*")) result = a * b;
-			else if(latestOperation.contains("/")) result = a / b;
-			textArea.setText(inputText + "\n" + "= " + String.valueOf(result));
 		}
 	}
 	
