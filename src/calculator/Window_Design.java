@@ -3,6 +3,8 @@ package calculator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
@@ -27,7 +29,7 @@ public class Window_Design {
 	
 	public static JCheckBox checkBox = new JCheckBox();
 	
-	public static JTextField textField = new JTextField();
+	public static JTextArea textArea = new JTextArea();
 	
 	public void InitializeComponents() {
 		
@@ -60,7 +62,9 @@ public class Window_Design {
 		numbBtns[3][0] = new JButton();
 		numbBtns[3][0].setName("numBtn0");
 		numbBtns[3][0].setText("0");
+		numbBtns[3][0].setBackground(new Color(191, 191, 191));
 		numbBtnC.gridx = 0;
+		numbBtnC.gridwidth = 2;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(numbBtns[3][0], numbBtnC);
 		numbBtns[3][0].addActionListener(new ActionListener() {
@@ -90,7 +94,9 @@ public class Window_Design {
 		numbBtns[3][2] = new JButton();
 		numbBtns[3][2].setName("numBtn2");
 		numbBtns[3][2].setText(".");
+		numbBtns[3][2].setBackground(new Color(191, 191, 191));
 		numbBtnC.gridx = 2;
+		numbBtnC.gridwidth = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(numbBtns[3][2], numbBtnC);
 		numbBtns[3][2].addActionListener(new ActionListener() {
@@ -106,8 +112,10 @@ public class Window_Design {
 		
 		//Divide
 		divideBtn.setText("/");
+		divideBtn.setBackground(Color.white);
 		numbBtnC.gridy = 0;
 		numbBtnC.gridx = 3;
+		numbBtnC.gridwidth = 1;
 		numbBtnPanel.add(divideBtn, numbBtnC);
 		divideBtn.addActionListener(new ActionListener() {
 			
@@ -119,6 +127,7 @@ public class Window_Design {
 		
 		//Mult
 		multBtn.setText("*");
+		multBtn.setBackground(Color.white);
 		numbBtnC.gridy = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(multBtn, numbBtnC);
@@ -132,7 +141,9 @@ public class Window_Design {
 		
 		//Subtract
 		subtractBtn.setText("-");
+		subtractBtn.setBackground(Color.white);
 		numbBtnC.gridy = 2;
+		numbBtnC.gridwidth = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(subtractBtn, numbBtnC);
 		subtractBtn.addActionListener(new ActionListener() {
@@ -146,7 +157,9 @@ public class Window_Design {
 		
 		//Add
 		addBtn.setText("+");
+		addBtn.setBackground(Color.white);
 		numbBtnC.gridy = 3;
+		numbBtnC.gridwidth = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(addBtn, numbBtnC);
 		addBtn.addActionListener(new ActionListener() {
@@ -160,7 +173,9 @@ public class Window_Design {
 
 		//CalcBtn
 		calcBtn.setText("=");
+		calcBtn.setBackground(new Color(96, 214, 0));
 		numbBtnC.gridy = 4;
+		numbBtnC.gridwidth = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(calcBtn, numbBtnC);
 		calcBtn.addActionListener(new ActionListener() {
@@ -172,9 +187,11 @@ public class Window_Design {
 		});
 		
 		//clearBtn
-		clearBtn.setText("Cl");
+		clearBtn.setText("AC");
+		clearBtn.setBackground(Color.white);
 		numbBtnC.gridy = 0;
 		numbBtnC.gridx = 0;
+		numbBtnC.gridwidth = 1;
 		numbBtnC.fill = GridBagConstraints.BOTH;
 		numbBtnPanel.add(clearBtn, numbBtnC);
 		clearBtn.addActionListener(new ActionListener() {
@@ -194,20 +211,21 @@ public class Window_Design {
 		mainPanelC.fill = GridBagConstraints.BOTH;
 		mainPanel.add(checkBox, mainPanelC);
 		
-		//textField
-		textField.setText("");
-		textField.setFont(new Font("Arial", Font.PLAIN, 20));
+		//textArea
+		textArea.setText("");
+		textArea.setFont(new Font("Arial", Font.PLAIN, 20));
 		//textField.setPreferredSize(new Dimension(100, 50));
 		headPanelC.anchor = GridBagConstraints.FIRST_LINE_START;
-		textField.setBorder(BorderFactory.createLineBorder(Color.red));
+		textArea.setBorder(BorderFactory.createLineBorder(Color.red));
 		headPanelC.gridx = 0;
 		headPanelC.gridy = 0;
-		headPanelC.gridwidth = 1;
+		headPanelC.gridwidth = 2;
 		headPanelC.gridheight = 2;
 		headPanelC.weightx = 1;
+		headPanelC.weighty = 1;
 		headPanelC.fill = GridBagConstraints.BOTH;
 		//headPanelC.weightx = 1;
-		headPanel.add(textField, headPanelC);
+		headPanel.add(textArea, headPanelC);
 		
 		//headPanel
 		headPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -233,6 +251,28 @@ public class Window_Design {
 		windowC.weightx = 1;
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		window.add(mainPanel, windowC);
+		textArea.setFocusTraversalKeysEnabled(false);
+		textArea.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				keyType(e);
+
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				keyRelease(e);
+
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				keyPress(e);
+			}
+		});
 		window.pack();
 		window.Show();
 	}
@@ -244,7 +284,10 @@ public class Window_Design {
 	public void clearBtnClicked() {}
 	public void calcBtnClicked() {}
 	public void numbBtnClicked(Object obj) {}
-	
+	public void keyType(KeyEvent e) {}
+	public void keyRelease(KeyEvent e) {}
+	public void keyPress(KeyEvent e) {}
+
 	private void createNumBtns(int col, int row, GridBagConstraints numbBtnC) {
 		int total = 1;
 		int yOffset = row;
@@ -256,14 +299,14 @@ public class Window_Design {
 				int numb = 10 - total++;
 				int y = i;
 				int x = 2-j;
-				System.out.print("x: " + x + " y: " + y + " = " + numb + "\n");
+				//System.out.print("x: " + x + " y: " + y + " = " + numb + "\n");
 				numbBtns[y][x] = new JButton();
 				numbBtns[y][x].setName("numBtn"+numb);
 				numbBtns[y][x].setText(String.valueOf(numb));
+				numbBtns[y][x].setBackground(new Color(191, 191, 191));
 				numbBtnC.gridx = x + xOffset;
 				numbBtnC.gridwidth = 1;
 				numbBtnC.fill = GridBagConstraints.BOTH;
-
 				numbBtnPanel.add(numbBtns[y][x], numbBtnC);
 				numbBtns[y][x].addActionListener(new ActionListener() {
 					
@@ -290,8 +333,8 @@ public class Window_Design {
 			}
 			result += "\n";
 		}
-		System.out.println(numbBtns[2][0].getText());
-		System.out.println(result);
+		//System.out.println(numbBtns[2][0].getText());
+		//System.out.println(result);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -20,52 +21,60 @@ public class Window extends Window_Design{
 	}
 	
 	@Override
+	public void keyPress(KeyEvent e) {
+		if (e.getKeyCode() == e.VK_ENTER) {
+			calcBtn.doClick();
+		}
+	}
+	
+	@Override
 	public void numbBtnClicked(Object obj) {
 		JButton btn = (JButton) obj;
-		textField.setText(textField.getText() + btn.getText());
+		textArea.setText(textArea.getText() + btn.getText());
 	}
 	
 	@Override
 	public void divideBtnClicked() {
 		
-		textField.setText(textField.getText() + "/");
+		textArea.setText(textArea.getText() + "/");
 		latestOperation = "\\/";
 	}
 	
 	@Override
 	public void multBtnClicked() {
-		textField.setText(textField.getText() + "*");
+		textArea.setText(textArea.getText() + "*");
 		latestOperation = "\\*";
 	}
 	
 	@Override
 	public void subtractBtnClicked() {
-		textField.setText(textField.getText() + "-");
+		textArea.setText(textArea.getText() + "-");
 		latestOperation = "\\-";
 	}
 	
 	@Override
 	public void addBtnClicked() {
-		textField.setText(textField.getText() + "+");
+		textArea.setText(textArea.getText() + "+");
 		latestOperation = "\\+";
 	}
 	
 	@Override
 	public void clearBtnClicked() {
-		textField.setText(null);
+		textArea.setText(null);
 	}
 	
 	@Override
 	public void calcBtnClicked() {
 		
-		String inputText = textField.getText().trim();
-		inputText = inputText.replaceAll("\\--", "+").replaceAll("\\(-", "(0-").replaceAll("\\+-", "-").replace(',', '.');
+		String inputText = textArea.getText().trim();
 		System.out.println("text: " + inputText);
+		inputText = inputText.replaceAll("\\--", "+").replaceAll("\\(-", "(0-").replaceAll("\\+-", "-").replace(',', '.');
+		System.out.println("new text: " + inputText);
 		String resultStr = "";
 		
 		if (checkBox.isSelected()) {
 			resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
-			textField.setText(resultStr);
+			textArea.setText(inputText + "\n" + "= " + resultStr);
 		}else {
 			String[] inputs = inputText.split(String.valueOf(latestOperation));
 			if (inputs.length >= 2) {
@@ -90,7 +99,7 @@ public class Window extends Window_Design{
 			else if(latestOperation.contains("-")) result = a - b;
 			else if(latestOperation.contains("*")) result = a * b;
 			else if(latestOperation.contains("/")) result = a / b;
-			textField.setText(String.valueOf(result));
+			textArea.setText(inputText + "\n" + "= " + String.valueOf(result));
 		}
 	}
 	
@@ -135,7 +144,7 @@ public class Window extends Window_Design{
 		String[] result = new String[chunks.size()];
 		
 		for (int i = 0; i < result.length; i++) {
-			result[i] = chunks.get(i);
+			result[i] = chunks.get(i).length() > 0 ? chunks.get(i) : "0";
 		}
 		
 		return result;
@@ -145,11 +154,21 @@ public class Window extends Window_Design{
 		
 		double result = 0;
 		String[] numbers = split(expression, '+'); // (12) (5-5*2)
+		
+		System.out.print("Addition split results: ");
+		for (int i = 0; i < numbers.length; i++) {
+			System.out.print("{ " + numbers[i] + (i < numbers.length-1 ? " }, " : " }\n"));
+		}
+
 		String[] exp = parseSubtraction(numbers);
+		
 		
 		for (int i = 0; i < exp.length; i++) {
 			result += Double.parseDouble(exp[i]);
 		}
+		
+
+		System.out.print("Addition results: { " + result + " }\n\n" );
 		
 		return String.valueOf(result);
 	}
@@ -161,51 +180,55 @@ public class Window extends Window_Design{
 		
 		for (int i = 0; i < expressions.length; i++) {
 			String[] substractionSplit = split(expressions[i], '-'); // (12) | (5) (5*2)
-			for(int j = 0; j < substractionSplit.length; j++) {
-				System.out.print("1: { " + substractionSplit[j] + " } ");
+			System.out.print("Subtraction split results: ");
+			for (int j = 0; j < substractionSplit.length; j++) {
+				System.out.print("{ " + substractionSplit[j] + (j < substractionSplit.length-1 ? " }, " : " }\n"));
 			}
-			System.out.println("");
 			
 			String[] parsedMultiplication = parseMultiplication(substractionSplit);
 			
 			double firstValue = Double.parseDouble(parsedMultiplication[0]);
 			for(int j = 1; j < parsedMultiplication.length; j++) {
-				System.out.print("2: { " + parsedMultiplication[j] + " } ");
 				firstValue -= Double.parseDouble(parsedMultiplication[j]);
 			}
 			numbs[i] = (String.valueOf(firstValue));
-			System.out.println("");
 			totalSize++;
 		}
-		
-		for (int i = 0; i < numbs.length; i++) {
-			System.out.println("NUMBS: " + numbs[i]);
+		System.out.print("Subtraction results: ");
+		for (int j = 0; j < numbs.length; j++) {
+			System.out.print("{ " + numbs[j] + (j < numbs.length-1 ? " }, " : " }\n\n"));
 		}
-		
-		//String[] exp = parseMultiplication((String[])numbs.toArray());
-		
 		return numbs;
 	}
 
 	private static String[] parseMultiplication(String[] expressions) { //(12) | (5) (5*2)
 				
 
-		
 		String[] numbs = new String[expressions.length];
 		for (int i = 0; i < expressions.length; i++) {
 			String[] multiplicationSplit = split(expressions[i], '*'); //3(2-1) // (3) (3 / 3)
+			System.out.print("Multiplication split results: ");
+			for (int j = 0; j < multiplicationSplit.length; j++) {
+				System.out.print("{ " + multiplicationSplit[j] + (j < multiplicationSplit.length-1 ? " }, " : " }\n"));
+			}
+			
 			//3*(2-1) => (3) ((2-1))
 			double firstVal = 1;
 			for (int j = 0; j < multiplicationSplit.length; j++) {
+				
 				if(multiplicationSplit[j].startsWith("(")) {
-					System.out.println("Here");
-					System.out.println(multiplicationSplit[j]);
-					String exp = multiplicationSplit[j].substring(1, multiplicationSplit[j].length()-1);
-					System.out.println(exp);
-					String splitValue = parseAddition(exp);
-					if(splitValue.contains("\\/")) {
-						splitValue = parseDivisonSplit(new String[] {multiplicationSplit[j]})[0];
+					String exp = multiplicationSplit[j];
+					if(exp.contains("/")) {
+						exp = parseDivisonSplit(new String[] {exp})[0];
+					}else {
+						System.out.println("Starts with (");
+						System.out.println("Original string: " + multiplicationSplit[j]);
+						exp = multiplicationSplit[j].substring(1, multiplicationSplit[j].lastIndexOf(')'));
+						System.out.println("New string: " + exp);
 					}
+					System.out.println("Recursion from multiplication");
+					String splitValue = parseAddition(exp);
+					System.out.println("Recursion from multiplication stopped");
 					firstVal *= Double.parseDouble(splitValue);
 				}else {
 					String splitValue = multiplicationSplit[j];
@@ -217,43 +240,59 @@ public class Window extends Window_Design{
 			}
 			numbs[i] = String.valueOf(firstVal);
 		}
-		
-		for (int i = 0; i < numbs.length; i++) {
-			System.out.println((i) + " m: " + numbs[i]);
+		System.out.print("Multiplication results: ");
+		for (int j = 0; j < numbs.length; j++) {
+			System.out.print("{ " + numbs[j] + (j < numbs.length-1 ? " }, " : " }\n\n"));
 		}
-				
 		
 		return numbs;
 	}
 	
-private static String[] parseDivisonSplit(String[] expressions) { //(12) | (5) (5*2)
-				
-
-		
+private static String[] parseDivisonSplit(String[] expressions) {
+	
 		String[] numbs = new String[expressions.length];
+		
+		
 		for (int i = 0; i < expressions.length; i++) {
-			String[] divisonSplit = split(expressions[i], '/'); // (3*3) (3)
-			//3*(2-1) => (3) ((2-1))
-			double firstVal = Double.parseDouble(divisonSplit[0]);
+			String[] divisonSplit = split(expressions[i], '/');
+			
+			System.out.print("Divison split results: ");
+			for (int j = 0; j < divisonSplit.length; j++) {
+				System.out.print("{ " + divisonSplit[j] + (j < divisonSplit.length-1 ? " }, " : " }\n"));
+			}
+			
+			double firstVal = 0;
+			if(divisonSplit[0].startsWith("(")) {
+				System.out.println("Starts with ( inside divisonfunc 0");
+				System.out.println(divisonSplit[0]);
+				String exp = divisonSplit[0].substring(1, divisonSplit[0].lastIndexOf(')'));
+				System.out.println(exp);
+				System.out.println("Recursion from divison 0");
+				firstVal = Double.parseDouble(parseAddition(exp));
+				System.out.println("Recursion from divison stopped 0");
+			}else {
+				firstVal = Double.parseDouble(divisonSplit[0]);
+			}
+			
 			for (int j = 1; j < divisonSplit.length; j++) {
 				if(divisonSplit[j].startsWith("(")) {
-					System.out.println("Here2");
+					System.out.println("Starts with ( inside divisonfunc");
 					System.out.println(divisonSplit[j]);
-					String exp = divisonSplit[j].substring(1, divisonSplit[j].length()-1);
+					String exp = divisonSplit[j].substring(1, divisonSplit[j].indexOf(')'));
 					System.out.println(exp);
+					System.out.println("Recursion from divison");
 					firstVal /= Double.parseDouble(parseAddition(exp));
+					System.out.println("Recursion from divison stopped");
 				}else {
 					firstVal /= Double.parseDouble(divisonSplit[j]);
 				}
 			}
 			numbs[i] = String.valueOf(firstVal);
 		}
-		
-		for (int i = 0; i < numbs.length; i++) {
-			System.out.println((i) + " n: " + numbs[i]);
+		System.out.print("Divison results: ");
+		for (int j = 0; j < numbs.length; j++) {
+			System.out.print("{ " + numbs[j] + (j < numbs.length-1 ? " }, " : " }\n\n"));
 		}
-				
-		
 		return numbs;
 	}
 }
