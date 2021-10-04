@@ -3,15 +3,11 @@ package calculator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-
 import javax.swing.*;
 
 public class Window_Design {
@@ -121,7 +117,6 @@ public class Window_Design {
 		
 		//window
 		window.setLayout(new BorderLayout());
-		GridBagConstraints windowC = new GridBagConstraints();
 		//window.setUndecorated(true);
 		//window.setOpacity(alpha);
 		window.setBackground(backgroundColor);
@@ -670,7 +665,6 @@ public class Window_Design {
 		window.getRootPane().addMouseListener(mouseListener);
 		
 		window.getRootPane().addMouseMotionListener(mouseMotionListener);
-		window.setSize(new Dimension(700, 700));
 		//window.pack();
 		window.Show();
 	}

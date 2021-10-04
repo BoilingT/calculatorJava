@@ -2,12 +2,12 @@ package calculator;
 
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -202,19 +202,19 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void openPBtnClicked() {
-		textArea.setText(textArea.getText() + "(");
+		textArea.insert("(", textArea.getCaretPosition());
 		calcBtnClicked();
 	}
 	
 	@Override
 	public void closePBtnClicked() {
-		textArea.setText(textArea.getText() + ")");
+		textArea.insert(")", textArea.getCaretPosition());
 		calcBtnClicked();
 	}
 	
 	@Override
 	public void clearBtnClicked() {
-		textArea.setText(null);
+		textArea.setText("");
 		textResult.setText(null);
 	}
 		
@@ -226,11 +226,22 @@ public class Window extends Window_Design{
 			
 			System.out.println("text: " + inputText);
 			inputText = inputText.replace("\\--", "+").replace("(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/');
+			
 			System.out.println("new text: " + inputText);
 			String resultStr = "";
 			
 			if (checkBox.isSelected()) {
 				try {
+					int amount = 0;
+					char[] inputTextArray = inputText.toCharArray();
+					for (int i = 0; i < inputText.length(); i++) {
+						if (inputTextArray[i] == '(' || inputTextArray[i] == ')') {
+							amount++;
+						}
+					}
+					if (amount % 2 == 1) {
+						throw new Exception();
+					}
 					resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
 					textResult.setText("= " + resultStr);
 					
