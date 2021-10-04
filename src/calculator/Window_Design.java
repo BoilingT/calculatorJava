@@ -67,16 +67,63 @@ public class Window_Design {
 	public static JTextArea textResult = new JTextArea();
 	public static JScrollPane textResultScrollPane = new JScrollPane();
 
-	private static int xx=0;
-	private static int yy=0;
+	
+	private MouseListener mouseListener = null;
+	private MouseMotionListener mouseMotionListener = null;
 	
 	public void InitializeComponents() {
+		
+		mouseListener = new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				MousePressed(e);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
+		mouseMotionListener = new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				MouseMoved(e);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				MouseDragged(e);
+			}
+		};
 		
 		//window
 		window.setLayout(new BorderLayout());
 		GridBagConstraints windowC = new GridBagConstraints();
-		window.setUndecorated(true);
-		window.setOpacity(alpha);
+		//window.setUndecorated(true);
+		//window.setOpacity(alpha);
 		window.setBackground(backgroundColor);
 		
 		//topBorderPanel
@@ -211,7 +258,6 @@ public class Window_Design {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				divideBtnClicked();
-				window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
 			}
 		});
 		
@@ -582,7 +628,7 @@ public class Window_Design {
 		mainPanelC.weighty = 0;
 		mainPanelC.fill = GridBagConstraints.HORIZONTAL;
 		mainPanelC.anchor = GridBagConstraints.CENTER;
-		mainPanel.add(topBorderPanel, mainPanelC);
+		//mainPanel.add(topBorderPanel, mainPanelC);
 
 		//topPanel
 		mainPanelC.gridx = 0;
@@ -609,71 +655,25 @@ public class Window_Design {
 		//windowC.fill = GridBagConstraints.BOTH;
 		//windowC.weightx = 1;
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+				
+		topBorderLabelPanel.addMouseListener(mouseListener);
 		
-		mainPanel.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MousePressed(e);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		mainPanel.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MouseDragged(e);
-			}
-		});
+		topBorderLabelPanel.addMouseMotionListener(mouseMotionListener);
 		
 		//mainPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
 		showAdvanced(false);
 		window.add(mainPanel, BorderLayout.CENTER);
-		window.pack();
+		window.getContentPane().addMouseListener(mouseListener);
+		window.getContentPane().addMouseMotionListener(mouseMotionListener);
+		//window.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
+		
+		window.getRootPane().addMouseListener(mouseListener);
+		
+		window.getRootPane().addMouseMotionListener(mouseMotionListener);
+		window.setSize(new Dimension(700, 700));
+		//window.pack();
 		window.Show();
 	}
-	
-    private void MousePressed(java.awt.event.MouseEvent e) {            
-	    	xx=e.getX();
-	    	yy=e.getY();  
-	    }                                    
-
-    private void MouseDragged(java.awt.event.MouseEvent e) {         
-	    	int x=e.getXOnScreen();
-	    	int y=e.getYOnScreen();
-	    	window.setLocation(x-xx, y-yy);
-	    }  
 	
 	private void showAdvanced(boolean isChecked) {
 		openPBtn.setVisible(isChecked);
@@ -702,6 +702,9 @@ public class Window_Design {
 	public void closeBtnClick() {}
 	public void minimizeBtnClick() {}
 	public void maximizeBtnClick() {}
+	public void MousePressed(MouseEvent e) {}                              
+	public void MouseDragged(MouseEvent e) {}
+	public void MouseMoved(MouseEvent e) {}  
 	
 	private void addNumButtons(int col, int row, GridBagConstraints numbBtnC) {
 		int total = 1;

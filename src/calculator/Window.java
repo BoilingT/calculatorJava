@@ -1,6 +1,11 @@
 package calculator;
 
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
@@ -14,9 +19,66 @@ public class Window extends Window_Design{
 	private static double a = 0;
 	private static double b = 0;
 	private static double result = 0;
+	private int mouseX;
+	private int mouseY;
 	
 	public void Init() {
 		InitializeComponents();
+	}
+	
+	@Override
+	public void MouseDragged(MouseEvent e) {
+		Component component = e.getComponent();
+		if (component == topBorderLabelPanel) {
+			int x=e.getXOnScreen();
+			int y=e.getYOnScreen();
+			window.setLocation(x-mouseX, y-mouseY);
+		}
+	}
+	
+	@Override
+	public void MouseMoved(MouseEvent e) {
+		Component component = e.getComponent();
+		if (component == topBorderLabelPanel) {
+			component.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+
+		}else if (component == window.getRootPane()) {
+			Point pos = window.getMousePosition();
+			if (pos != null) {
+				//System.out.println(pos);
+				if(pos.getX() < 4 && pos.getY() < 4) {
+					component.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));
+					
+				}else if(pos.getX() < 4 && pos.getY() > window.getHeight() - 4) {
+					component.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
+					
+				}else if(pos.getX() > window.getWidth() - 4 && pos.getY() > window.getHeight() - 4) {
+					component.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));	
+					
+				}else if(pos.getX() > window.getWidth() - 4 && pos.getY() < 4) {
+					component.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
+					
+				} else if(pos.getX() < 4 || pos.getX() > window.getWidth()-4) {
+					component.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));	
+					
+				}else if(pos.getY() < 4 || pos.getY() > window.getHeight()-4) {
+					component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));	
+					
+				}else {
+					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
+			}
+		}else {
+			component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
+	}
+	
+	@Override
+	public void MousePressed(MouseEvent e) {
+        
+		mouseX=e.getX();
+		mouseY=e.getY();  
+
 	}
 	
 	@Override
@@ -96,54 +158,58 @@ public class Window extends Window_Design{
 	@Override
 	public void numbBtnClicked(Object obj) {
 		JButton btn = (JButton) obj;
-		textArea.setText(textArea.getText() + btn.getText());
+		textArea.insert(btn.getText(), textArea.getCaretPosition());
+		calcBtnClicked();
 	}
 	
 	@Override
 	public void divideBtnClicked() {
 		
-		textArea.setText(textArea.getText() + "/");
+		textArea.insert("/", textArea.getCaretPosition());
 		latestOperation = "\\/";
 	}
 	
 	@Override
 	public void multBtnClicked() {
-		textArea.setText(textArea.getText() + "*");
+		textArea.insert("*", textArea.getCaretPosition());
 		latestOperation = "\\*";
 	}
 	
 	@Override
 	public void subtractBtnClicked() {
-		textArea.setText(textArea.getText() + "-");
+		textArea.insert("-", textArea.getCaretPosition());
 		latestOperation = "\\-";
 	}
 	
 	@Override
 	public void addBtnClicked() {
-		textArea.setText(textArea.getText() + "+");
+		textArea.insert("+", textArea.getCaretPosition());
 		latestOperation = "\\+";
 	}
 	
 	@Override
 	public void sqrtBtnClicked() {
-		textArea.setText(textArea.getText() + "sqrt(");
+		textArea.insert("sqrt(", textArea.getCaretPosition());
 		latestOperation = "sqrt";
 	}
 	
 	@Override
 	public void squareBtnClicked() {
-		textArea.setText(textArea.getText() + "²");
+		textArea.insert("²", textArea.getCaretPosition());
 		latestOperation = "square";
+		calcBtnClicked();
 	}
 	
 	@Override
 	public void openPBtnClicked() {
 		textArea.setText(textArea.getText() + "(");
+		calcBtnClicked();
 	}
 	
 	@Override
 	public void closePBtnClicked() {
 		textArea.setText(textArea.getText() + ")");
+		calcBtnClicked();
 	}
 	
 	@Override
@@ -159,7 +225,7 @@ public class Window extends Window_Design{
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("\\(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/');
+			inputText = inputText.replace("\\--", "+").replace("(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/');
 			System.out.println("new text: " + inputText);
 			String resultStr = "";
 			
@@ -362,7 +428,7 @@ private static String[] parseDivisonSplit(String[] expressions) {
 			if(divisonSplit[0].startsWith("(")) {
 				System.out.println("Starts with ( inside divisonfunc 0");
 				System.out.println(divisonSplit[0]);
-				String exp = divisonSplit[0].substring(1, divisonSplit[0].lastIndexOf(')'));
+				String exp = divisonSplit[0].substring(1, divisonSplit[0].length()-1);
 				System.out.println(exp);
 				System.out.println("Recursion from divison 0");
 				firstVal = Double.parseDouble(parseAddition(exp));
@@ -375,7 +441,7 @@ private static String[] parseDivisonSplit(String[] expressions) {
 				if(divisonSplit[j].startsWith("(")) {
 					System.out.println("Starts with ( inside divisonfunc");
 					System.out.println(divisonSplit[j]);
-					String exp = divisonSplit[j].substring(1, divisonSplit[j].indexOf(')'));
+					String exp = divisonSplit[j].substring(1, divisonSplit[j].length()-1);
 					System.out.println(exp);
 					System.out.println("Recursion from divison");
 					firstVal /= Double.parseDouble(parseAddition(exp));
