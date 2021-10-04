@@ -33,6 +33,8 @@ public class Window_Design {
 	public static WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
 	
 	public static JPanel topBorderPanel = new JPanel();
+	public static JPanel topBorderBtnPanel = new JPanel();
+	public static JPanel topBorderLabelPanel = new JPanel();
 	public static JPanel mainPanel = new JPanel();
 	public static JPanel topPanel = new JPanel();
 	public static JPanel bottomPanel = new JPanel();
@@ -59,6 +61,7 @@ public class Window_Design {
 	
 	public static JCheckBox checkBox = new JCheckBox();
 	
+	public static JLabel windowTitleLabel = new JLabel(window.getTitle());
 	public static JTextArea textArea = new JTextArea();
 	public static JScrollPane textAreaScrollPane = new JScrollPane();
 	public static JTextArea textResult = new JTextArea();
@@ -76,10 +79,20 @@ public class Window_Design {
 		window.setOpacity(alpha);
 		window.setBackground(backgroundColor);
 		
-		//mainPanel
+		//topBorderPanel
 		topBorderPanel.setLayout(new GridBagLayout());
 		GridBagConstraints topBorderPanelC = new GridBagConstraints();
 		topBorderPanel.setBackground(borderColor);
+		
+		//topBorderBtnPanel
+		topBorderBtnPanel.setLayout(new GridBagLayout());
+		GridBagConstraints topBorderBtnPanelC = new GridBagConstraints();
+		topBorderBtnPanel.setBackground(borderColor);
+		
+		//topBorderLabelPanel
+		topBorderLabelPanel.setLayout(new GridBagLayout());
+		GridBagConstraints topBorderLabelPanelC = new GridBagConstraints();
+		topBorderLabelPanel.setBackground(borderColor);
 		
 		//mainPanel
 		mainPanel.setLayout(new GridBagLayout());
@@ -370,6 +383,7 @@ public class Window_Design {
 		textArea.setText("");
 		textArea.setFont(new Font("Arial", Font.PLAIN, 25));
 		textArea.setForeground(foregroundColor);
+		textArea.setCaretColor(foregroundColor);
 		textArea.setLineWrap(true);
 		
 		textArea.setBackground(fieldColor);
@@ -382,6 +396,7 @@ public class Window_Design {
 
 		topPanelC.fill = GridBagConstraints.BOTH;
 		//headPanelC.weightx = 1;
+		textAreaScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		textAreaScrollPane.setBackground(fieldColor);
 		textAreaScrollPane.setViewportView(textArea);
 		textAreaScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -415,9 +430,8 @@ public class Window_Design {
 		textResult.setFont(new Font("Arial", Font.PLAIN, 25));
 		textResult.setLineWrap(true);
 		textResult.setForeground(foregroundColor);
-		
-		textResult.setBorder(BorderFactory.createEmptyBorder());
 		textResult.setBackground(fieldColor);
+		textResult.setEditable(false);
 		topPanelC.gridx = 0;
 		topPanelC.gridy = 1;
 		topPanelC.gridwidth = 1;
@@ -427,6 +441,7 @@ public class Window_Design {
 
 		topPanelC.fill = GridBagConstraints.BOTH;
 		//headPanelC.weightx = 1;
+		textResultScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		textResultScrollPane.setBackground(fieldColor);
 		textResultScrollPane.setViewportView(textResult);
 		textResultScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -434,26 +449,22 @@ public class Window_Design {
 		textResultScrollPane.setPreferredSize(new Dimension(WIDTH, 50));
 		textResultScrollPane.setMaximumSize(new Dimension(WIDTH, 50));
 		topPanel.add(textResultScrollPane, topPanelC);
-
-
-		//topBorderPanel
-		topBorderPanelC.fill = GridBagConstraints.NONE;
-
+		
+		//topBorderBtnPanel content:
+		
 		//closeBtn
 		closeBtn.setText("×");
 		closeBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		closeBtn.setBackground(backgroundColor);
+		closeBtn.setBackground(borderColor);
 		closeBtn.setForeground(foregroundColor);
+		closeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		closeBtn.setFocusable(false);
-		topBorderPanelC.anchor = GridBagConstraints.LINE_END;
-		topBorderPanelC.gridx = 2;
-		topBorderPanelC.gridy = 0;
-		topBorderPanelC.ipadx = 10;
-		topBorderPanelC.ipady = 10;
-		topBorderPanelC.gridwidth = 1;
-		topBorderPanelC.gridheight = 1;
+		topBorderBtnPanelC.gridx = 2;
+		topBorderBtnPanelC.gridy = 0;
+		topBorderBtnPanelC.ipadx = 15;
+		topBorderBtnPanelC.ipady = 15;
 
-		topBorderPanel.add(closeBtn, topBorderPanelC);
+		topBorderBtnPanel.add(closeBtn, topBorderBtnPanelC);
 		closeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -463,17 +474,15 @@ public class Window_Design {
 		});
 		
 		//maximizeBtn
-		maximizeBtn.setText("▢");
+		maximizeBtn.setText(String.copyValueOf(new char[] {150}));
 		maximizeBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		maximizeBtn.setBackground(backgroundColor);
+		maximizeBtn.setBackground(borderColor);
 		maximizeBtn.setForeground(foregroundColor);
+		maximizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		maximizeBtn.setFocusable(false);
-		topBorderPanelC.anchor = GridBagConstraints.LINE_END;
-		topBorderPanelC.gridx = 1;
-		topBorderPanelC.gridy = 0;
-		topBorderPanelC.ipadx = 20;
-		topBorderPanelC.ipady = 10;
-		topBorderPanel.add(maximizeBtn, topBorderPanelC);
+		topBorderBtnPanelC.gridx = 1;
+		topBorderBtnPanelC.gridy = 0;
+		topBorderBtnPanel.add(maximizeBtn, topBorderBtnPanelC);
 		maximizeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -485,15 +494,13 @@ public class Window_Design {
 		//minimizeBtn
 		minimizeBtn.setText("–");
 		minimizeBtn.setFont(new Font("Arial", Font.PLAIN, 20));
-		minimizeBtn.setBackground(backgroundColor);
+		minimizeBtn.setBackground(borderColor);
 		minimizeBtn.setForeground(foregroundColor);
+		minimizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		minimizeBtn.setFocusable(false);
-		topBorderPanelC.anchor = GridBagConstraints.LINE_END;
-		topBorderPanelC.gridx = 0;
-		topBorderPanelC.gridy = 0;
-		topBorderPanelC.ipadx = 20;
-		topBorderPanelC.ipady = 10;
-		topBorderPanel.add(minimizeBtn, topBorderPanelC);
+		topBorderBtnPanelC.gridx = 0;
+		topBorderBtnPanelC.gridy = 0;
+		topBorderBtnPanel.add(minimizeBtn, topBorderBtnPanelC);
 		minimizeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -501,6 +508,35 @@ public class Window_Design {
 				minimizeBtnClick();
 			}
 		});
+		
+		//topBorderPanel content
+		
+		//windowTitleLabel
+		windowTitleLabel.setForeground(foregroundColor);
+		windowTitleLabel.setBackground(borderColor);
+		windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.pink));
+
+		topBorderLabelPanelC.anchor = GridBagConstraints.LINE_START;
+		topBorderLabelPanelC.weightx = 0;
+		topBorderLabelPanelC.gridx = 0;
+		topBorderLabelPanel.add(windowTitleLabel, topBorderLabelPanelC);
+		
+		//topBorderLabelPanel
+		topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
+		topBorderPanelC.fill = GridBagConstraints.BOTH;
+		//topBorderPanelC.anchor = GridBagConstraints.LINE_START;
+		topBorderPanelC.weightx = 1;
+		topBorderPanel.add(topBorderLabelPanel, topBorderPanelC);
+		
+		//topBorderBtnPanel
+		topBorderBtnPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
+		topBorderBtnPanel.setBackground(borderColor);
+		
+		topBorderPanelC.fill = GridBagConstraints.NONE;
+		topBorderPanelC.anchor = GridBagConstraints.LINE_END;
+		topBorderPanelC.weightx = 1;
+		topBorderPanelC.gridx = 1;
+		topBorderPanel.add(topBorderBtnPanel, topBorderPanelC);
 		
 		//topFuncPanel
 		//topFuncPanel.setBorder(BorderFactory.createLineBorder(Color.red));
@@ -524,7 +560,7 @@ public class Window_Design {
 		btnPanel.add(bottomFuncPanel, btnPanelC);
 		
 		//numbBtnPanel
-		//btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		//btnPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
 		//numbBtnPanel.setPreferredSize(new Dimension(WIDTH, 400));
 		bottomPanelC.gridx = 0;
 		bottomPanelC.gridy = 3;
@@ -536,16 +572,17 @@ public class Window_Design {
 		bottomPanel.add(btnPanel, bottomPanelC);
 		
 		//topBorderPanel
+		
+		//topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
 		mainPanelC.gridx = 0;
 		mainPanelC.gridy = 0;
 		mainPanelC.gridwidth = 1;
 		mainPanelC.gridheight = 1;
 		mainPanelC.weightx = 0;
 		mainPanelC.weighty = 0;
-		mainPanelC.fill = GridBagConstraints.NONE;
-		mainPanelC.anchor = GridBagConstraints.LINE_END;
-		mainPanel.add(topBorderPanel, mainPanelC);
+		mainPanelC.fill = GridBagConstraints.HORIZONTAL;
 		mainPanelC.anchor = GridBagConstraints.CENTER;
+		mainPanel.add(topBorderPanel, mainPanelC);
 
 		//topPanel
 		mainPanelC.gridx = 0;
@@ -555,7 +592,7 @@ public class Window_Design {
 		mainPanelC.weightx = 1.0;
 		mainPanelC.weighty = 0;
 		mainPanelC.fill = GridBagConstraints.BOTH;
-		//topPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		//topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
 		mainPanel.add(topPanel, mainPanelC);
 		
 		//bottomPanel
@@ -621,29 +658,30 @@ public class Window_Design {
 		});
 		
 		//mainPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
+		showAdvanced(false);
 		window.add(mainPanel, BorderLayout.CENTER);
-
 		window.pack();
 		window.Show();
 	}
 	
-	
-	    private void MousePressed(java.awt.event.MouseEvent e) {            
+    private void MousePressed(java.awt.event.MouseEvent e) {            
 	    	xx=e.getX();
 	    	yy=e.getY();  
 	    }                                    
 
-	    private void MouseDragged(java.awt.event.MouseEvent e) {         
+    private void MouseDragged(java.awt.event.MouseEvent e) {         
 	    	int x=e.getXOnScreen();
 	    	int y=e.getYOnScreen();
 	    	window.setLocation(x-xx, y-yy);
 	    }  
 	
 	private void showAdvanced(boolean isChecked) {
+		openPBtn.setVisible(isChecked);
+		closePBtn.setVisible(isChecked);
 		if (isChecked) {
-			
+			textArea.setCaretColor(Color.orange);
 		}else {
-
+			textArea.setCaretColor(foregroundColor);
 		}
 	}
 	

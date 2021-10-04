@@ -149,8 +149,9 @@ public class Window extends Window_Design{
 	@Override
 	public void clearBtnClicked() {
 		textArea.setText(null);
+		textResult.setText(null);
 	}
-	
+		
 	@Override
 	public void calcBtnClicked() {
 		
