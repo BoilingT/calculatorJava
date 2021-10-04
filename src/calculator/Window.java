@@ -1,9 +1,11 @@
 package calculator;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class Window extends Window_Design{
 	
@@ -15,6 +17,25 @@ public class Window extends Window_Design{
 	
 	public void Init() {
 		InitializeComponents();
+	}
+	
+	@Override
+	public void closeBtnClick() {
+		window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	@Override
+	public void maximizeBtnClick() {
+		if (window.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
+			window.setExtendedState(JFrame.NORMAL);
+		}else {
+			window.setExtendedState(JFrame.MAXIMIZED_BOTH);			
+		}
+	}
+	
+	@Override
+	public void minimizeBtnClick() {
+			window.setState(JFrame.ICONIFIED);			
 	}
 	
 	@Override

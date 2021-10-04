@@ -29,6 +29,7 @@ public class WindowHandler extends JFrame{
 	}
 	
 	public void Show() {
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 }
