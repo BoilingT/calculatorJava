@@ -1,5 +1,6 @@
 package calculator;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -50,7 +51,7 @@ public class Window extends Window_Design{
 	public void MouseMoved(MouseEvent e) {
 		Component component = e.getComponent();
 		if (component == topBorderLabelPanel) {
-			component.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+			//component.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 
 		}else if (component == window.getRootPane()) {
 			Point pos = window.getMousePosition();
@@ -231,6 +232,8 @@ public class Window extends Window_Design{
 	public void clearBtnClicked() {
 		textArea.setText("");
 		textResult.setText(null);
+		System.out.println("Parsed: " + parseExpression("27+5"));
+	
 	}
 		
 	@Override
@@ -255,9 +258,9 @@ public class Window extends Window_Design{
 						}
 					}
 					if (amount % 2 == 1) {
-						throw new Exception();
+						throw new Exception("Term not properly closed");
 					}
-					resultStr = parseAddition(inputText.trim()); // = 17 - 10 = 7 "12+5-5*2"
+					resultStr = String.valueOf(calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
 					textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {
@@ -292,11 +295,76 @@ public class Window extends Window_Design{
 		}
 	}
 	
+	private static Double calculateExpression(String exp) {
+		Double result = (double) 0;
+		
+		String addition = parseAddition(exp);
+		//String[] subtraction = parseSubtraction(addition);
+		//String[] multiplication = parseMultiplication(subtraction);
+		
+		result = Double.parseDouble(addition);
+		
+		return result;
+	}
+	
+//	(abc12+27 * 23.0(12abc34
+//	Token: Symbol(()
+//	Token: Identifier(abc12)
+//	Token: Symbol(+)
+//	Token: Number(27.0000)
+//	Token: Symbol(*)
+//	Token: Number(23.0000)
+//	Token: Symbol(()
+//	Token: Number(12.0000)
+//	Token: Identifier(abc34)
+//	Token: Stop
+
+	
+	private static Double parseExpression(String token) {
+		double result = parseTerm(token);
+		
+//		for (int i = 0; i < token.length(); i++) {
+//			char t = token.charAt(i);
+//			double term2 = parseTerm(token.substring(i));
+//			if (t == '+') {
+//				result += term2;
+//			}else {
+//				result -= term2;
+//			}
+//		}
+//		return result;
+		
+		int index = 0;
+		char t = token.charAt(index);
+		while (t == '+' || t == '-') {
+			index++;
+			double term2 = parseTerm(token.substring(index));
+			if (t == '+') {
+				result += term2;
+			}else {
+				result -= term2;
+			}
+			t = token.charAt(index);
+		}
+		
+		return result;
+	}
+	
+	private static Double parseTerm(String token) {
+		String str = token.split("\\+")[0];
+		System.out.println("Split: " + str);
+		double term = Double.parseDouble(str);
+		
+		
+		
+		return term;
+	}
+	
 	private static String[] split(String expression, char regex) {
 		ArrayList<String> chunks = new ArrayList<>();
 		ArrayList<Character> currentChunk = new ArrayList<>();
 		
-		String exp = expression.trim();
+		String exp = expression;
 		int braces = 0;
 		
 		for (int i = 0; i < exp.length(); i++) {
@@ -341,31 +409,48 @@ public class Window extends Window_Design{
 	
 	private static String parseAddition(String expression) {
 		
+		String[] additionSplit = split(expression, '+'); //Old expressions
+		String[] exp = parseSubtractions(additionSplit); //The new expressions after they have been processed by other parsers
 		double result = 0;
-		String[] numbers = split(expression, '+'); // (12) (5-5*2)
 		
 		System.out.print("Addition split results: ");
-		for (int i = 0; i < numbers.length; i++) {
-			System.out.print("{ " + numbers[i] + (i < numbers.length-1 ? " }, " : " }\n"));
+		for (int i = 0; i < additionSplit.length; i++) { //Print the result of the addition split
+			System.out.print("{ " + additionSplit[i] + (i < additionSplit.length-1 ? " }, " : " }\n"));
 		}
-
-		String[] exp = parseSubtraction(numbers);
 		
-		
-		for (int i = 0; i < exp.length; i++) {
+		for (int i = 0; i < exp.length; i++) { //Add all values together
 			result += Double.parseDouble(exp[i]);
 		}
 		
-
 		System.out.print("Addition results: { " + result + " }\n\n" );
 		
 		return String.valueOf(result);
 	}
+	
+	private static String[] parseSub(String[] expressions) {
+		final char splitter = '-';
+		String[] numbs = new String[expressions.length]; //The new expressions or numbers if they had completely been parsed
 
-	private static String[] parseSubtraction(String[] expressions) {// (12) (5-5*2)
+		//Parse for other possible operations in the expressions
+		String[] parsedExpressions = parseMultiplication(expressions); // -3 * 5 - 3 => (-3 * 5) (-3)
 		
-		int totalSize = 0;
-		String[] numbs = new String[expressions.length];
+		//Because there can be multiple new parsed expressions loop through every single one and parse them
+		for (int i = 0; i < parsedExpressions.length; i++) {
+			String[] subtractionSplit = split(parsedExpressions[i], splitter);
+			
+		}
+		
+		//Subtract all values that can be subtracted
+		for (int i = 0; i < parsedExpressions.length; i++) {
+			
+		}
+		
+		return numbs;
+	}
+
+	private static String[] parseSubtractions(String[] expressions) {
+		
+		String[] numbs = new String[expressions.length]; //The new expressions or numbers if they had completely been parsed
 		
 		for (int i = 0; i < expressions.length; i++) {
 			String[] substractionSplit = split(expressions[i], '-'); // (12) | (5) (5*2)
@@ -381,7 +466,6 @@ public class Window extends Window_Design{
 				firstValue -= Double.parseDouble(parsedMultiplication[j]);
 			}
 			numbs[i] = (String.valueOf(firstValue));
-			totalSize++;
 		}
 		System.out.print("Subtraction results: ");
 		for (int j = 0; j < numbs.length; j++) {
@@ -400,8 +484,7 @@ public class Window extends Window_Design{
 			for (int j = 0; j < multiplicationSplit.length; j++) {
 				System.out.print("{ " + multiplicationSplit[j] + (j < multiplicationSplit.length-1 ? " }, " : " }\n"));
 			}
-			
-			//3*(2-1) => (3) ((2-1))
+						
 			double firstVal = 1;
 			for (int j = 0; j < multiplicationSplit.length; j++) {
 				
@@ -437,7 +520,7 @@ public class Window extends Window_Design{
 		return numbs;
 	}
 	
-private static String[] parseDivisonSplit(String[] expressions) {
+	private static String[] parseDivisonSplit(String[] expressions) {
 	
 		String[] numbs = new String[expressions.length];
 		

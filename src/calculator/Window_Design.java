@@ -175,7 +175,6 @@ public class Window_Design {
 		btnPanelC.ipadx = 30;
 		btnPanelC.ipady = 30;
 		
-		btnPanelC.insets = new Insets(1,1,1,1);
 		
 		//numbBtnPanel Numeric Buttons
 		btnPanelC.gridwidth = 1;
@@ -309,8 +308,7 @@ public class Window_Design {
 		});
 		
 		//topFuncPanel content
-		topFuncPanelC.insets = new Insets(0,1,0,1);
-		topFuncPanelC.ipadx = 30;
+		topFuncPanelC.ipadx = btnPanelC.ipadx;
 		//clearBtn
 		clearBtn.setText("AC");
 		clearBtn.setBackground(funcBtnColor);
@@ -483,7 +481,8 @@ public class Window_Design {
 		topPanel.add(textResultScrollPane, topPanelC);
 		
 		//topBorderBtnPanel content:
-		
+		topBorderBtnPanelC.ipadx = 50;
+		topBorderBtnPanelC.ipady = 15;
 		//closeBtn
 		closeBtn.setText("×");
 		closeBtn.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -493,8 +492,6 @@ public class Window_Design {
 		closeBtn.setFocusable(false);
 		topBorderBtnPanelC.gridx = 2;
 		topBorderBtnPanelC.gridy = 0;
-		topBorderBtnPanelC.ipadx = 15;
-		topBorderBtnPanelC.ipady = 15;
 
 		topBorderBtnPanel.add(closeBtn, topBorderBtnPanelC);
 		closeBtn.addActionListener(new ActionListener() {
@@ -504,7 +501,7 @@ public class Window_Design {
 				closeBtnClick();
 			}
 		});
-		
+				
 		//maximizeBtn
 		maximizeBtn.setText(String.copyValueOf(new char[] {150}));
 		maximizeBtn.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -513,7 +510,6 @@ public class Window_Design {
 		maximizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		maximizeBtn.setFocusable(false);
 		topBorderBtnPanelC.gridx = 1;
-		topBorderBtnPanelC.gridy = 0;
 		topBorderBtnPanel.add(maximizeBtn, topBorderBtnPanelC);
 		maximizeBtn.addActionListener(new ActionListener() {
 			
@@ -531,7 +527,6 @@ public class Window_Design {
 		minimizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		minimizeBtn.setFocusable(false);
 		topBorderBtnPanelC.gridx = 0;
-		topBorderBtnPanelC.gridy = 0;
 		topBorderBtnPanel.add(minimizeBtn, topBorderBtnPanelC);
 		minimizeBtn.addActionListener(new ActionListener() {
 			
@@ -546,28 +541,29 @@ public class Window_Design {
 		//windowTitleLabel
 		windowTitleLabel.setForeground(foregroundColor);
 		windowTitleLabel.setBackground(borderColor);
-		windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.pink));
+		//windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.pink));
 		windowTitleLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-		
+		//windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.green));
+
 		topBorderLabelPanelC.anchor = GridBagConstraints.LINE_START;
 		topBorderLabelPanelC.fill = GridBagConstraints.VERTICAL;
-		topBorderLabelPanelC.weightx = 0;
+		topBorderLabelPanelC.weightx = 1;
 		topBorderLabelPanelC.weighty = 1;
 		topBorderLabelPanelC.gridx = 0;
-		topBorderLabelPanel.setBorder(BorderFactory.createLineBorder(Color.red));
+		//topBorderLabelPanel.setBorder(BorderFactory.createLineBorder(Color.red));
 		topBorderLabelPanel.add(windowTitleLabel, topBorderLabelPanelC);
 
 		
 		//topBorderLabelPanel
-		topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
-		topBorderPanelC.fill = GridBagConstraints.VERTICAL;
+		//topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
+		topBorderPanelC.fill = GridBagConstraints.BOTH;
 		topBorderPanelC.anchor = GridBagConstraints.LINE_START;
 		topBorderPanelC.weightx = 1;
 		topBorderPanelC.weighty = 0;
 		topBorderPanel.add(topBorderLabelPanel, topBorderPanelC);
 		
 		//topBorderBtnPanel
-		topBorderBtnPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
+		//topBorderBtnPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
 		topBorderBtnPanel.setBackground(borderColor);
 		
 		topBorderPanelC.fill = GridBagConstraints.NONE;
@@ -611,7 +607,7 @@ public class Window_Design {
 		
 		//topBorderPanel
 		
-		topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
+		//topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
 		mainPanelC.gridx = 0;
 		mainPanelC.gridy = 0;
 		mainPanelC.gridwidth = 1;
