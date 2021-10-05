@@ -23,7 +23,7 @@ public class WindowHandler extends JFrame{
 		 * vilket �r en funktion som jag inte vill l�gga till
 		 */
 		//�ndrar storleken p� f�nstret s� att allting inuti f�nstret f�r plats och syns
-		pack();
+		//pack();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

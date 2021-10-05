@@ -15,7 +15,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class Window_Design {
 
-	private static final int WIDTH = 400;
+	public static final int WIDTH = 400;
 	private static final int HEIGHT = 500;
 	
 	private static float alpha = 0.9f;
@@ -653,11 +653,10 @@ public class Window_Design {
 		topBorderLabelPanel.addMouseMotionListener(mouseMotionListener);
 		
 		//mainPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
-		//showAdvanced(false);
 		window.add(mainPanel, BorderLayout.CENTER);
 		window.getContentPane().addMouseListener(mouseListener);
 		window.getContentPane().addMouseMotionListener(mouseMotionListener);
-		//window.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
+		window.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, backgroundColor));
 		
 		window.getRootPane().addMouseListener(mouseListener);
 		

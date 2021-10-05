@@ -2,6 +2,7 @@ package calculator;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,8 @@ public class Window extends Window_Design{
 	private static double result = 0;
 	private int mouseX;
 	private int mouseY;
+	private int width;
+	private int height;
 	
 	public void Init() {
 		InitializeComponents();
@@ -28,10 +31,18 @@ public class Window extends Window_Design{
 	@Override
 	public void MouseDragged(MouseEvent e) {
 		Component component = e.getComponent();
+		int x=e.getXOnScreen();
+		int y=e.getYOnScreen();
 		if (component == topBorderLabelPanel) {
-			int x=e.getXOnScreen();
-			int y=e.getYOnScreen();
+			
 			window.setLocation(x-mouseX, y-mouseY);
+			
+		}else if (component == window.getRootPane()) {
+			int diffx = x - (int) (window.getLocation().getX() + width);
+			int diffy = y - (int) (window.getLocation().getY() + height);
+			int w = width + diffx;
+			int h = height + diffy;
+			window.setSize(new Dimension(w, h));
 		}
 	}
 	
@@ -45,25 +56,28 @@ public class Window extends Window_Design{
 			Point pos = window.getMousePosition();
 			if (pos != null) {
 				//System.out.println(pos);
-				if(pos.getX() < 4 && pos.getY() < 4) {
-					component.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));
-					
-				}else if(pos.getX() < 4 && pos.getY() > window.getHeight() - 4) {
-					component.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
-					
-				}else if(pos.getX() > window.getWidth() - 4 && pos.getY() > window.getHeight() - 4) {
+//				if(pos.getX() < 4 && pos.getY() < 4) { //NW
+//					component.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));
+//					
+//				}else if(pos.getX() < 4 && pos.getY() > window.getHeight() - 4) { //SW
+//					component.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
+//					
+//				}
+				if(pos.getX() > window.getWidth() - 4 && pos.getY() > window.getHeight() - 4) { //SE
 					component.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));	
 					
-				}else if(pos.getX() > window.getWidth() - 4 && pos.getY() < 4) {
-					component.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
-					
-				} else if(pos.getX() < 4 || pos.getX() > window.getWidth()-4) {
-					component.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));	
-					
-				}else if(pos.getY() < 4 || pos.getY() > window.getHeight()-4) {
-					component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));	
-					
-				}else {
+				}
+//				else if(pos.getX() > window.getWidth() - 4 && pos.getY() < 4) { //NE
+//					component.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
+//					
+//				} else if(pos.getX() < 4 || pos.getX() > window.getWidth()-4) { //E
+//					component.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));	
+//					
+//				}else if(pos.getY() < 4 || pos.getY() > window.getHeight()-4) { //N
+//					component.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));	
+//					
+//				}
+				else {
 					component.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 			}
@@ -75,6 +89,8 @@ public class Window extends Window_Design{
 	@Override
 	public void MousePressed(MouseEvent e) {
         
+		width = (int) window.getBounds().getWidth();
+		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
 		mouseY=e.getY();  
 
