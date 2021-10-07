@@ -26,12 +26,13 @@ public class Window extends Window_Design{
 	private int height;
 	
 	public void Init() {
-		//System.out.println(Parser.parseExpression("27+5"));
-		String[] tokens = Parser.tokenize("a27+5-2");
-		for (int i = 0; i < tokens.length; i++) {
-			System.out.println(tokens[i]);
-		}
-		//InitializeComponents();
+//		ArrayList<Token> tokens = Token.tokenize("sin(30)");
+//		for (Token token : tokens) {
+//			System.out.println("Token: " + token.type.toString() + "(" + token.value + ")");
+//		}
+//		
+		//System.out.println("Result: " + Parser.parseExpression(tokens));
+		InitializeComponents();
 	}
 	
 	public void set(int ints) {
@@ -241,7 +242,7 @@ public class Window extends Window_Design{
 	public void clearBtnClicked() {
 		textArea.setText("");
 		textResult.setText(null);
-		System.out.println("Parsed: " + Parser.parseExpression("27+5"));
+		//System.out.println("Parsed: " + Parser.parseExpression("27+5"));
 	
 	}
 		
@@ -252,7 +253,7 @@ public class Window extends Window_Design{
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/');
+			inputText = inputText.replace("\\--", "+").replace("(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
 			
 			System.out.println("new text: " + inputText);
 			String resultStr = "";
@@ -269,7 +270,8 @@ public class Window extends Window_Design{
 					if (amount % 2 == 1) {
 						throw new Exception("Term not properly closed");
 					}
-					resultStr = String.valueOf(Parser.calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
+					//resultStr = String.valueOf(Parser.calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
+					resultStr = String.valueOf(Parser.parse(inputText)); // = 17 - 10 = 7 "12+5-5*2"
 					textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {

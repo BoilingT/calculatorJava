@@ -26,122 +26,157 @@ public class Parser {
 //	Token: Number(12.0000)
 //	Token: Identifier(abc34)
 //	Token: Stop
-
-	public static Double parseExpression(String expression) {
-		char[] expressionArr = "7+53+3".toCharArray();
-		//Integer index = new Integer(0);
-		String term1 = parseTerm(0, expressionArr);
-		double result = Double.parseDouble(term1);
-		
-//		for (int i = 0; i < token.length(); i++) {
-//			char t = token.charAt(i);
-//			double term2 = parseTerm(token.substring(i));
-//			if (t == '+') {
-//				result += term2;
-//			}else {
-//				result -= term2;
+	
+	
+	
+//	public static String[] tokenize(String expression) {
+//		ArrayList<String> tokens = new ArrayList<>();
+//		char[] symbols = {'+', '-', '*', '/', '('};
+//		
+//		System.out.println("Expression: \"" + expression + "\" Length: " + expression.length());
+//		for (int i = 0; i < expression.length(); i++) {
+//			char Char = expression.charAt(i);
+//			if (Char != ' ') {
+//				if (isNumb(Char)) {
+//					String numb = "";
+//					for (int j = i; j < expression.length(); j++) {
+//						char tempChar = expression.charAt(j);
+//						if (!isNumb(tempChar) && tempChar != '.') {break;}
+//						numb += tempChar;
+//					}
+//					i += numb.length() > 0 ? numb.length()-1 : 0;
+//					tokens.add("Number(" + numb + ")");
+//					
+//				}else if (isSymbol(Char, symbols)) {
+//					tokens.add("Symbol(" + Char + ")");
+//					
+//				}else { //Identifier
+//					String identifier = "";
+//					for (int j = i; j < expression.length(); j++) {
+//						char tempChar = expression.charAt(j);
+//						if(isSymbol(tempChar, symbols)) {break;}
+//						identifier += tempChar;
+//					}
+//					i += identifier.length() > 0 ? identifier.length()-1 : 0;
+//					tokens.add("Identifier(" + identifier + ")");
+//				}
 //			}
 //		}
-//		return result;
-		int index = term1.length();
-		System.out.println(index);
-		char t = expressionArr[index];
-		while (t == '+' || t == '-') {
-			index++;
-			//expressionArr = expressionArr.toString().substring(index).toCharArray();
-			double term2 = Double.parseDouble(parseTerm(index, expressionArr));
-			if (t == '+') {
-				result += term2;
-			}else {
-				result -= term2;
+//		tokens.add("Stop");
+//		
+//		String[] tokenList = new String[tokens.size()];
+//		
+//		for (int i = 0; i < tokenList.length; i++) {
+//			tokenList[i] = tokens.get(i);
+//		}
+//		
+//		return tokenList;
+//	}
+
+	public static Double parseExpression(ArrayList<Token> tokens) {
+		//Integer index = new Integer(0);
+		for (Token token : tokens) {
+			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
+		}
+		System.out.println();
+		double result = parseTerm(tokens);
+
+		Token token = tokens.get(0);
+		System.out.println("Token value: " + token.value);
+		while (token.isSymbol("+") || token.isSymbol("-")) {
+			tokens.remove(0);
+			double term = parseTerm(tokens);
+			if (token.isSymbol("+")) {
+				result += term;
+			} else {
+				result -= term;
 			}
-			t = expressionArr[index];
+			token = tokens.get(0);
+			System.out.println("Token value: " + token.value);
 		}
 		
 		return result;
 	}
 	
-	private static boolean isNumb(char Char) {
-		try {
-			Double.parseDouble(String.valueOf(Char));
-			return true;
-		} catch (Exception e) {
-			return false;
+	public static Double parseTerm(ArrayList<Token> tokens) {
+		double result = parseFactor(tokens);
+		System.out.println("Term: " + tokens.get(0).value);
+		
+		Token token = tokens.get(0);
+		
+		if (token.type == Token.Type.Number) {
+			return Double.parseDouble(token.value.toString());
 		}
-	}
-	
-	private static boolean isSymbol(char symbol, char[] symbols) {
-		for (int i = 0; i < symbols.length; i++) {
-			if (symbols[i] == symbol) {
-				return true;
+		while (token.isSymbol("*") || token.isSymbol("/")) {
+			tokens.remove(0);
+			double term = parseFactor(tokens);
+			if (token.isSymbol("*")) {
+				result *= term;
+			} else {
+				result /= term;
 			}
+			token = tokens.get(0);
 		}
-		return false;
+		
+		return result;
 	}
 	
-	public static String[] tokenize(String expression) {
-		ArrayList<String> tokens = new ArrayList<>();
-		char[] symbols = {'+', '-', '*', '/'};
-		
-		System.out.println("Length: " + expression.length());
-		for (int i = 0; i < expression.length(); i++) {
-			char Char = expression.charAt(i);
-			
-			if (isNumb(Char)) {
-				String numb = "";
-				for (int j = i; j < expression.length(); j++) {
-					char tempChar = expression.charAt(j);
-					if (!isNumb(tempChar)) {break;}
-					numb += tempChar;
-				}
-				i += numb.length()-1;
-				tokens.add("Number(" + numb + ")");
-				
-			}else if (isSymbol(Char, symbols)) {
-				tokens.add("Symbol(" + Char + ")");
-				
-			}else { //Identifier
-				String identifier = "";
-				for (int j = i; j < expression.length(); j++) {
-					char tempChar = expression.charAt(j);
-					if(isNumb(tempChar) || isSymbol(tempChar, symbols)) {break;}
-					identifier += tempChar;
-				}
-				i += identifier.length()-1;
-				tokens.add("Identifier(" + identifier + ")");
-			}
+	public static Double parseFactor(ArrayList<Token> tokens) {
+		Token token = tokens.get(0);
+		double sign = token.isSymbol("-") ? -1 : 1;
+		if (token.isSymbol("+") || sign < 0) {
+			tokens.remove(0);
 		}
-		tokens.add("Stop");
-		
-		String[] tokenList = new String[tokens.size()];
-		
-		for (int i = 0; i < tokenList.length; i++) {
-			tokenList[i] = tokens.get(i);
+		double result = parseItem(tokens);
+		System.out.println("res: " + result);
+		while (tokens.get(0).isSymbol("^")) {
+			tokens.remove(0);
+			double factor = parseFactor(tokens);
+			System.out.println("Factor: " + factor);
+			result = Math.pow(result, factor);
 		}
-		
-		return tokenList;
+		return result * sign;
 	}
 	
-	public static String parseTerm(int startIndex, char[] token) {
-		String str = "";
-		String factor1 = parseFactor(0, token);
-		for (; startIndex < token.length; startIndex++) {
-			char Char = token[startIndex];
-			try {
-				str += String.valueOf(Integer.parseInt(String.valueOf(Char)));
-			} catch (Exception e) {
-				break;
+	public static Double parseItem(ArrayList<Token> tokens) {
+		Token token = tokens.get(0);
+		tokens.remove(0);
+		
+		if (token.isNumb()) {
+			return Double.parseDouble(token.value.toString());
+		}
+		if (token.isIdentifier()) {
+			System.err.println("Error, identifier not avaliable");
+		}
+		if (token.isFunc()) {
+			tokens.remove(0);
+			System.out.println("func token: " + token.value);
+			double expression = Math.toRadians(parseExpression(tokens));
+			System.out.println("func expression: " + expression);
+			if (token.isFunc("sin")) {
+				return Math.sin(expression);
+			}else if(token.isFunc("cos")){
+				return Math.cos(expression);
+			}else if(token.isFunc("tan")){
+				return Math.tan(expression);
+			}else if(token.isFunc("sqrt")){
+				return Math.sqrt(expression);
 			}
 		}
 		
-		System.out.println("Split: " + str);
-		return str;
+		if (!token.isSymbol("(")) {
+			System.err.println("Error, '(' not found");
+		}
+		double expression = parseExpression(tokens);
+		if (!tokens.get(0).isSymbol(")")) {
+			System.err.println("Error, ')' not found");
+		}
+		tokens.remove(0);
+		return expression;
 	}
 	
-	public static String parseFactor(int startIndex, char[] token) {
-		String str = "";
-		
-		return str;
+	public static Double parse(String expression) {
+		return parseExpression(Token.tokenize(expression));
 	}
 	
 	public static String[] split(String expression, char regex) {
