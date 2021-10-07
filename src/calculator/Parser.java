@@ -151,16 +151,27 @@ public class Parser {
 		if (token.isFunc()) {
 			tokens.remove(0);
 			System.out.println("func token: " + token.value);
-			double expression = Math.toRadians(parseExpression(tokens));
+			for (Token token1 : tokens) {
+				System.out.print("1[" + token1.value + ", " + token1.type.toString() + "]");
+			}
+			System.out.println();
+			double expression = parseExpression(tokens);
+			tokens.remove(0);
+			for (Token token1 : tokens) {
+				System.out.print("2[" + token1.value + ", " + token1.type.toString() + "]");
+			}
+			System.out.println();
 			System.out.println("func expression: " + expression);
 			if (token.isFunc("sin")) {
-				return Math.sin(expression);
+				return Math.sin(Math.toRadians(expression));
 			}else if(token.isFunc("cos")){
-				return Math.cos(expression);
+				return Math.cos(Math.toRadians(expression));
 			}else if(token.isFunc("tan")){
-				return Math.tan(expression);
+				return Math.tan(Math.toRadians(expression));
 			}else if(token.isFunc("sqrt")){
 				return Math.sqrt(expression);
+			}else if(token.isFunc("abs")){
+				return Math.abs(expression);
 			}
 		}
 		

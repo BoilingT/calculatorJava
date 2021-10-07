@@ -253,7 +253,7 @@ public class Window extends Window_Design{
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("(-", "(0-").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
+			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
 			
 			System.out.println("new text: " + inputText);
 			String resultStr = "";
