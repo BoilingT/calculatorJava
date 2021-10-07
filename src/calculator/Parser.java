@@ -146,20 +146,18 @@ public class Parser {
 			return Double.parseDouble(token.value.toString());
 		}
 		if (token.isIdentifier()) {
-			System.err.println("Error, identifier not avaliable");
+			if (token.value.toString().toLowerCase().equals("e")) {
+				return Math.E;
+			}else if (token.value.toString().toLowerCase().equals("pi")) {
+				return Math.PI;
+			}
 		}
 		if (token.isFunc()) {
 			tokens.remove(0);
 			System.out.println("func token: " + token.value);
-			for (Token token1 : tokens) {
-				System.out.print("1[" + token1.value + ", " + token1.type.toString() + "]");
-			}
 			System.out.println();
 			double expression = parseExpression(tokens);
 			tokens.remove(0);
-			for (Token token1 : tokens) {
-				System.out.print("2[" + token1.value + ", " + token1.type.toString() + "]");
-			}
 			System.out.println();
 			System.out.println("func expression: " + expression);
 			if (token.isFunc("sin")) {
@@ -169,7 +167,11 @@ public class Parser {
 			}else if(token.isFunc("tan")){
 				return Math.tan(Math.toRadians(expression));
 			}else if(token.isFunc("sqrt")){
-				return Math.sqrt(expression);
+				if (expression > 0) {
+					return Math.sqrt(expression);					
+				}else {
+					System.err.println("---------------");
+				}
 			}else if(token.isFunc("abs")){
 				return Math.abs(expression);
 			}

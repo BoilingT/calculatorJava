@@ -415,7 +415,8 @@ public class Window_Design {
 		textArea.setForeground(foregroundColor);
 		textArea.setCaretColor(foregroundColor);
 		textArea.setLineWrap(true);
-		
+//		textArea.setRows(1000000);
+//		textArea.setColumns(1000000);
 		textArea.setBackground(fieldColor);
 		topPanelC.gridx = 0;
 		topPanelC.gridy = 0;
@@ -467,7 +468,7 @@ public class Window_Design {
 		topPanelC.gridwidth = 1;
 		topPanelC.gridheight = 1;
 		topPanelC.weightx = 1;
-		topPanelC.weighty = 1;
+		topPanelC.weighty = 0.5;
 
 		topPanelC.fill = GridBagConstraints.BOTH;
 		//headPanelC.weightx = 1;
@@ -624,7 +625,7 @@ public class Window_Design {
 		mainPanelC.gridwidth = 1;
 		mainPanelC.gridheight = 1;
 		mainPanelC.weightx = 1.0;
-		mainPanelC.weighty = 0;
+		mainPanelC.weighty = 0.5;
 		mainPanelC.fill = GridBagConstraints.BOTH;
 		//topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
 		mainPanel.add(topPanel, mainPanelC);
