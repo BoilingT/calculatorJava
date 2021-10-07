@@ -184,6 +184,9 @@ public class Window extends Window_Design{
 	@Override
 	public void numbBtnClicked(Object obj) {
 		JButton btn = (JButton) obj;
+//		if (textArea.getText().equals("0") && !btn.getText().equals(".")) {
+//			textArea.setText(null);
+//		}
 		textArea.insert(btn.getText(), textArea.getCaretPosition());
 		calcBtnClicked();
 	}
@@ -240,7 +243,7 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void clearBtnClicked() {
-		textArea.setText("");
+		textArea.setText("0");
 		textResult.setText(null);
 		//System.out.println("Parsed: " + Parser.parseExpression("27+5"));
 	
@@ -249,7 +252,7 @@ public class Window extends Window_Design{
 	@Override
 	public void calcBtnClicked() {
 		
-		String inputText = textArea.getText().trim();
+		String inputText = textArea.getText().trim().toLowerCase();
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);

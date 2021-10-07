@@ -625,7 +625,7 @@ public class Window_Design {
 		mainPanelC.gridwidth = 1;
 		mainPanelC.gridheight = 1;
 		mainPanelC.weightx = 1.0;
-		mainPanelC.weighty = 0.5;
+		mainPanelC.weighty = 0.6;
 		mainPanelC.fill = GridBagConstraints.BOTH;
 		//topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
 		mainPanel.add(topPanel, mainPanelC);
@@ -636,7 +636,7 @@ public class Window_Design {
 		mainPanelC.gridwidth = 1;
 		mainPanelC.gridheight = 1;
 		mainPanelC.weightx = 1.0;
-		mainPanelC.weighty = 1.0;
+		mainPanelC.weighty = 0.4;
 		mainPanelC.fill = GridBagConstraints.BOTH;
 		bottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		mainPanel.add(bottomPanel, mainPanelC);
