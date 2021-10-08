@@ -6,8 +6,8 @@ public class Token{
 	
 	public Type type = null;
 	public Object value = null;
-	private static char[] symbols = {'+', '-', '*', '/', '(', ')', '^'};
-	private static String[] Functions = {"sin", "cos","tan","sqrt","abs"};
+	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'};
+	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs"};
 	
 	public static enum Type{
 		Symbol,
@@ -77,51 +77,84 @@ public class Token{
 		return false;
 	}
 	
+//  Example on different tokens taken from an expression
+//	(abc12+27 * 23.0(12abc34
+//	Token: Symbol(()
+//	Token: Identifier(abc12)
+//	Token: Symbol(+)
+//	Token: Number(27.0000)
+//	Token: Symbol(*)
+//	Token: Number(23.0000)
+//	Token: Symbol(()
+//	Token: Number(12.0000)
+//	Token: Identifier(abc34)
+//	Token: Stop
+	
+	/*Parse an expression into useful parts by looking at each character,
+	 * depending on what type they are, and converting a certain number of them 
+	 * into their unique tokens in a "tokenlist".
+	 * */
 	public static ArrayList<Token> tokenize(String expression) {
 		ArrayList<Token> tokens = new ArrayList<>();
 		
 		System.out.println("Expression: \"" + expression + "\" Length: " + expression.length());
-		for (int i = 0; i < expression.length(); i++) {
-			char Char = expression.charAt(i);
-			if (Char != ' ') {
+		for (int i = 0; i < expression.length(); i++) { //Go through each character in the expression.
+			char Char = expression.charAt(i); //Save the current character in a variable for easier use.
+			if (Char != ' ') { //Don't parse empty spaces, they will just be ignored.
 				if (isNumb(Char)) {
+					/*
+					 * If the current char's type is of type "number"
+					 * add it and the next following characters of type "number" it can find.
+					 * Stop when the current character "tempchar" isn't a number anymore and add the token to the tokenlist.
+					 */
 					String numb = "";
 					for (int j = i; j < expression.length(); j++) {
 						char tempChar = expression.charAt(j);
+						//If the character would be a dot I wouldn't want to skip it if the current number contained decimals.
 						if (!isNumb(tempChar) && tempChar != '.') {break;}
 						numb += tempChar;
 					}
+					/*
+					 * Because we don't want to look at the characters it already has seen
+					 * skip ahead by the length of the last number that was added to the tokenlist.
+					 *
+					 * If the string inside the number variable would for some reason be empty we don't want to have a number length of '0'
+					 * and then going back by '1', because then this loop would be endless and would eventually crash the program
+					 * because of not enough system resources
+					 */
 					i += numb.length() > 0 ? numb.length()-1 : 0;
 					tokens.add(new Token(Type.Number, numb));
 					
-				}else if (isSymbol(Char, symbols)) {
+				}else if (isSymbol(Char, SYMBOLS)) {
+					//My definiton of a symbol makes that a symbol will always only be one character long,
+					//therefor I just add the token as it is.
 					tokens.add(new Token(Type.Symbol, String.valueOf(Char)));
 					
 				}else { //Identifier or func
-					String identifier = "";
+					/*
+					 * If the program came this far there could only be two possibilites left:
+					 * * Either the token will be an identifier (a variable).
+					 * * Or it would be a function (sin, cos, tan, sqrt)
+					 */
+					String str = "";
 					for (int j = i; j < expression.length(); j++) {
 						char tempChar = expression.charAt(j);
-						if(isSymbol(tempChar, symbols)) {break;}
-						identifier += tempChar;
+						//Only stop adding the characters if it reaches a symbol.
+						//This is because we want to add the numbers that follows after the characters aswell, 
+						//they are also a part of the name.
+						if(isSymbol(tempChar, SYMBOLS)) {break;}
+						str += tempChar;
 					}
-					i += identifier.length() > 0 ? identifier.length()-1 : 0;
-					if(isFunc(identifier, Functions)) {
-						tokens.add(new Token(Type.Func, identifier));						
+					i += str.length() > 0 ? str.length()-1 : 0; //Same thing here, we don't want to be stuck in an endless loop.
+					if(isFunc(str, FUNCTIONS)) { //If the functions contain a function of the string add it.
+						tokens.add(new Token(Type.Func, str));
 					}else {
-						tokens.add(new Token(Type.Identifier, identifier));						
+						tokens.add(new Token(Type.Identifier, str));						
 					}
 				}
 			}
 		}
-		tokens.add(new Token(Type.Stop, "Stop"));
-		
-//		Token[] tokenList = new Token[tokens.size()];
-//		
-//		for (int i = 0; i < tokenList.length; i++) {
-//			tokenList[i] = tokens.get(i);
-//		}
-		
-//		return tokenList;
+		tokens.add(new Token(Type.Stop, "Stop")); //A way for knowing when the expression ends is by adding a stop token.
 		return tokens;
 	}
 }

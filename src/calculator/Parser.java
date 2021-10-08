@@ -14,64 +14,6 @@ public class Parser {
 		
 		return result;
 	}
-	
-//	(abc12+27 * 23.0(12abc34
-//	Token: Symbol(()
-//	Token: Identifier(abc12)
-//	Token: Symbol(+)
-//	Token: Number(27.0000)
-//	Token: Symbol(*)
-//	Token: Number(23.0000)
-//	Token: Symbol(()
-//	Token: Number(12.0000)
-//	Token: Identifier(abc34)
-//	Token: Stop
-	
-	
-	
-//	public static String[] tokenize(String expression) {
-//		ArrayList<String> tokens = new ArrayList<>();
-//		char[] symbols = {'+', '-', '*', '/', '('};
-//		
-//		System.out.println("Expression: \"" + expression + "\" Length: " + expression.length());
-//		for (int i = 0; i < expression.length(); i++) {
-//			char Char = expression.charAt(i);
-//			if (Char != ' ') {
-//				if (isNumb(Char)) {
-//					String numb = "";
-//					for (int j = i; j < expression.length(); j++) {
-//						char tempChar = expression.charAt(j);
-//						if (!isNumb(tempChar) && tempChar != '.') {break;}
-//						numb += tempChar;
-//					}
-//					i += numb.length() > 0 ? numb.length()-1 : 0;
-//					tokens.add("Number(" + numb + ")");
-//					
-//				}else if (isSymbol(Char, symbols)) {
-//					tokens.add("Symbol(" + Char + ")");
-//					
-//				}else { //Identifier
-//					String identifier = "";
-//					for (int j = i; j < expression.length(); j++) {
-//						char tempChar = expression.charAt(j);
-//						if(isSymbol(tempChar, symbols)) {break;}
-//						identifier += tempChar;
-//					}
-//					i += identifier.length() > 0 ? identifier.length()-1 : 0;
-//					tokens.add("Identifier(" + identifier + ")");
-//				}
-//			}
-//		}
-//		tokens.add("Stop");
-//		
-//		String[] tokenList = new String[tokens.size()];
-//		
-//		for (int i = 0; i < tokenList.length; i++) {
-//			tokenList[i] = tokens.get(i);
-//		}
-//		
-//		return tokenList;
-//	}
 
 	public static Double parseExpression(ArrayList<Token> tokens) {
 		//Integer index = new Integer(0);
@@ -82,7 +24,6 @@ public class Parser {
 		double result = parseTerm(tokens);
 
 		Token token = tokens.get(0);
-		System.out.println("Token value: " + token.value);
 		while (token.isSymbol("+") || token.isSymbol("-")) {
 			tokens.remove(0);
 			double term = parseTerm(tokens);
@@ -100,7 +41,6 @@ public class Parser {
 	
 	public static Double parseTerm(ArrayList<Token> tokens) {
 		double result = parseFactor(tokens);
-		System.out.println("Term: " + tokens.get(0).value);
 		
 		Token token = tokens.get(0);
 		
