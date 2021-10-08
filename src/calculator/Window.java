@@ -24,6 +24,7 @@ public class Window extends Window_Design{
 	private int mouseY;
 	private int width;
 	private int height;
+	private int margin = 10;
 	
 	public void Init() {
 //		ArrayList<Token> tokens = Token.tokenize("sin(30)");
@@ -74,9 +75,8 @@ public class Window extends Window_Design{
 //					component.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
 //					
 //				}
-				if(pos.getX() > window.getWidth() - 4 && pos.getY() > window.getHeight() - 4) { //SE
+				if(pos.getX() > window.getWidth() - margin && pos.getY() > window.getHeight() - margin) { //SE
 					component.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));	
-					
 				}
 //				else if(pos.getX() > window.getWidth() - 4 && pos.getY() < 4) { //NE
 //					component.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
@@ -140,40 +140,6 @@ public class Window extends Window_Design{
 		else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) latestOperation = "\\-";
 		else if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) latestOperation = "\\*";
 		else if (e.getKeyCode() == KeyEvent.VK_DIVIDE) latestOperation = "\\/";
-		
-		
-		/*
-		if (e.getKeyCode() >= KeyEvent.VK_1 && e.getKeyCode() <= KeyEvent.VK_3) { //49 <= x <= 51
-			int difference = KeyEvent.VK_3 - e.getKeyCode();
-			int x = 2-difference;
-			int y = 2;
-			numbBtns[y][x].doClick();
-		}
-		
-		if (e.getKeyCode() >= KeyEvent.VK_4 && e.getKeyCode() <= KeyEvent.VK_6) { //52 <= x <= 54
-			int difference = KeyEvent.VK_6 - e.getKeyCode();
-			int x = 2-difference ;
-			int y = 1;
-			numbBtns[y][x].doClick();
-		}
-		
-		if (e.getKeyCode() >= KeyEvent.VK_7 && e.getKeyCode() <= KeyEvent.VK_9) { //55 <= x <= 57
-			int difference = KeyEvent.VK_9 - e.getKeyCode();
-			int x = 2-difference ;
-			int y = 0;
-			numbBtns[y][x].doClick();
-		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_0) { //x = 48
-			numbBtns[3][0].doClick();
-		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			String text = textArea.getText();
-			if(text.length() > 0) {
-				textArea.setText(text.substring(0, text.length()-1));				
-			}
-		}*/
 	}
 	
 	@Override
@@ -263,22 +229,13 @@ public class Window extends Window_Design{
 			
 			if (checkBox.isSelected()) {
 				try {
-					int amount = 0;
-					char[] inputTextArray = inputText.toCharArray();
-					for (int i = 0; i < inputText.length(); i++) {
-						if (inputTextArray[i] == '(' || inputTextArray[i] == ')') {
-							amount++;
-						}
-					}
-					if (amount % 2 == 1) {
-						throw new Exception("Term not properly closed");
-					}
 					//resultStr = String.valueOf(Parser.calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
 					resultStr = String.valueOf(Parser.parse(inputText)); // = 17 - 10 = 7 "12+5-5*2"
 					textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {
-					textResult.setText("= ???");
+					//if(e.getMessage().toString().toLowerCase().contains("out of bounds")) return;
+					textResult.setText(e.getMessage());
 				}
 			}else {
 				String[] inputs = inputText.split(String.valueOf(latestOperation));

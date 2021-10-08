@@ -7,7 +7,7 @@ public class Token{
 	public Type type = null;
 	public Object value = null;
 	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'};
-	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs"};
+	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs", "log10", "log", "lg", "ln"};
 	
 	public static enum Type{
 		Symbol,
@@ -21,7 +21,7 @@ public class Token{
 		type = _type;
 		if (type == Type.Number) {
 			value = _value;
-		}else {
+		}else { //The value is allowed to have text.
 			value = String.valueOf(_value);
 		}
 	}
@@ -146,7 +146,7 @@ public class Token{
 						str += tempChar;
 					}
 					i += str.length() > 0 ? str.length()-1 : 0; //Same thing here, we don't want to be stuck in an endless loop.
-					if(isFunc(str, FUNCTIONS)) { //If the functions contain a function of the string add it.
+					if(isFunc(str, FUNCTIONS)) { //If the functions contain a function that matches the string then add it.
 						tokens.add(new Token(Type.Func, str));
 					}else {
 						tokens.add(new Token(Type.Identifier, str));						
@@ -154,7 +154,7 @@ public class Token{
 				}
 			}
 		}
-		tokens.add(new Token(Type.Stop, "Stop")); //A way for knowing when the expression ends is by adding a stop token.
+		tokens.add(new Token(Type.Stop, "Stop")); //A way for knowing when the expression ends is by adding a stop token to the list.
 		return tokens;
 	}
 }

@@ -15,14 +15,14 @@ public class Parser {
 		return result;
 	}
 
-	public static Double parseExpression(ArrayList<Token> tokens) {
+	public static Double parseExpression(ArrayList<Token> tokens) throws Exception{
 		//Integer index = new Integer(0);
 		for (Token token : tokens) {
 			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
 		}
 		System.out.println();
 		double result = parseTerm(tokens);
-
+		
 		Token token = tokens.get(0);
 		while (token.isSymbol("+") || token.isSymbol("-")) {
 			tokens.remove(0);
@@ -39,7 +39,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static Double parseTerm(ArrayList<Token> tokens) {
+	public static Double parseTerm(ArrayList<Token> tokens) throws Exception{
 		double result = parseFactor(tokens);
 		
 		Token token = tokens.get(0);
@@ -61,7 +61,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static Double parseFactor(ArrayList<Token> tokens) {
+	public static Double parseFactor(ArrayList<Token> tokens) throws Exception{
 		Token token = tokens.get(0);
 		double sign = token.isSymbol("-") ? -1 : 1;
 		if (token.isSymbol("+") || sign < 0) {
@@ -73,12 +73,15 @@ public class Parser {
 			tokens.remove(0);
 			double factor = parseFactor(tokens);
 			System.out.println("Factor: " + factor);
+			if((factor < 1 && factor > -1 && factor != 0) && result < 0) {
+				throw new Exception("Imaginary");
+			}
 			result = Math.pow(result, factor);
 		}
 		return result * sign;
 	}
 	
-	public static Double parseItem(ArrayList<Token> tokens) {
+	public static Double parseItem(ArrayList<Token> tokens) throws Exception {
 		Token token = tokens.get(0);
 		tokens.remove(0);
 		
@@ -97,6 +100,9 @@ public class Parser {
 			System.out.println("func token: " + token.value);
 			System.out.println();
 			double expression = parseExpression(tokens);
+			if (!tokens.get(0).isSymbol(")")) {
+				throw new Exception("Expected: ')'");
+			}
 			tokens.remove(0);
 			System.out.println();
 			System.out.println("func expression: " + expression);
@@ -110,25 +116,29 @@ public class Parser {
 				if (expression > 0) {
 					return Math.sqrt(expression);					
 				}else {
-					System.err.println("---------------");
+					throw new Exception("Imaginary");
 				}
 			}else if(token.isFunc("abs")){
 				return Math.abs(expression);
+			}else if(token.isFunc("log10") || token.isFunc("lg")){
+				return Math.log10(expression);
+			}else if(token.isFunc("log") || token.isFunc("ln")){
+				return Math.log(expression);
 			}
 		}
 		
 		if (!token.isSymbol("(")) {
-			System.err.println("Error, '(' not found");
+			throw new Exception("...");
 		}
 		double expression = parseExpression(tokens);
 		if (!tokens.get(0).isSymbol(")")) {
-			System.err.println("Error, ')' not found");
+			throw new Exception("Expected: ')'");
 		}
 		tokens.remove(0);
 		return expression;
 	}
 	
-	public static Double parse(String expression) {
+	public static Double parse(String expression) throws Exception{
 		return parseExpression(Token.tokenize(expression));
 	}
 	
@@ -197,27 +207,6 @@ public class Parser {
 		System.out.print("Addition results: { " + result + " }\n\n" );
 		
 		return String.valueOf(result);
-	}
-	
-	public static String[] parseSub(String[] expressions) {
-		final char splitter = '-';
-		String[] numbs = new String[expressions.length]; //The new expressions or numbers if they had completely been parsed
-
-		//Parse for other possible operations in the expressions
-		String[] parsedExpressions = parseMultiplication(expressions); // -3 * 5 - 3 => (-3 * 5) (-3)
-		
-		//Because there can be multiple new parsed expressions loop through every single one and parse them
-		for (int i = 0; i < parsedExpressions.length; i++) {
-			String[] subtractionSplit = split(parsedExpressions[i], splitter);
-			
-		}
-		
-		//Subtract all values that can be subtracted
-		for (int i = 0; i < parsedExpressions.length; i++) {
-			
-		}
-		
-		return numbs;
 	}
 
 	public static String[] parseSubtractions(String[] expressions) {

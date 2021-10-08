@@ -390,7 +390,7 @@ public class Window_Design {
 		
 		//checkBox
 		checkBox.setText("Advanced mode");
-		checkBox.setBackground(funcBtnColor);
+		checkBox.setBackground(backgroundColor);
 		checkBox.setForeground(foregroundColor);
 		checkBox.setFocusable(false);
 		mainPanelC.gridx = 0;
@@ -638,7 +638,7 @@ public class Window_Design {
 		mainPanelC.weightx = 1.0;
 		mainPanelC.weighty = 0.4;
 		mainPanelC.fill = GridBagConstraints.BOTH;
-		bottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		//bottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		mainPanel.add(bottomPanel, mainPanelC);
 
 		//windowC.fill = GridBagConstraints.BOTH;
@@ -653,7 +653,8 @@ public class Window_Design {
 		window.add(mainPanel, BorderLayout.CENTER);
 		window.getContentPane().addMouseListener(mouseListener);
 		window.getContentPane().addMouseMotionListener(mouseMotionListener);
-		window.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, backgroundColor));
+		int borderWidth = 1;
+		window.getRootPane().setBorder(BorderFactory.createMatteBorder(borderWidth, borderWidth, borderWidth, borderWidth, backgroundColor));
 		
 		window.getRootPane().addMouseListener(mouseListener);
 		
