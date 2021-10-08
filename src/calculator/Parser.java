@@ -3,8 +3,8 @@ package calculator;
 import java.util.ArrayList;
 
 public class Parser {
-	public static Double calculateExpression(String exp) {
-		Double result = (double) 0;
+	public static double calculateExpression(String exp) {
+		double result =  0;
 		
 		String addition = parseAddition(exp);
 		//String[] subtraction = parseSubtraction(addition);
@@ -15,7 +15,7 @@ public class Parser {
 		return result;
 	}
 
-	public static Double parseExpression(ArrayList<Token> tokens) throws Exception{
+	public static double parseExpression(ArrayList<Token> tokens) throws Exception{
 		//Integer index = new Integer(0);
 		for (Token token : tokens) {
 			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
@@ -39,7 +39,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static Double parseTerm(ArrayList<Token> tokens) throws Exception{
+	public static double parseTerm(ArrayList<Token> tokens) throws Exception{
 		double result = parseFactor(tokens);
 		
 		Token token = tokens.get(0);
@@ -61,7 +61,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static Double parseFactor(ArrayList<Token> tokens) throws Exception{
+	public static double parseFactor(ArrayList<Token> tokens) throws Exception{
 		Token token = tokens.get(0);
 		double sign = token.isSymbol("-") ? -1 : 1;
 		if (token.isSymbol("+") || sign < 0) {
@@ -69,7 +69,7 @@ public class Parser {
 		}
 		double result = parseItem(tokens);
 		System.out.println("res: " + result);
-		while (tokens.get(0).isSymbol("^")) {
+		if (tokens.get(0).isSymbol("^")) {
 			tokens.remove(0);
 			double factor = parseFactor(tokens);
 			System.out.println("Factor: " + factor);
@@ -81,7 +81,7 @@ public class Parser {
 		return result * sign;
 	}
 	
-	public static Double parseItem(ArrayList<Token> tokens) throws Exception {
+	public static double parseItem(ArrayList<Token> tokens) throws Exception {
 		Token token = tokens.get(0);
 		tokens.remove(0);
 		

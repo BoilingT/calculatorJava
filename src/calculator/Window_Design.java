@@ -653,7 +653,7 @@ public class Window_Design {
 		window.add(mainPanel, BorderLayout.CENTER);
 		window.getContentPane().addMouseListener(mouseListener);
 		window.getContentPane().addMouseMotionListener(mouseMotionListener);
-		int borderWidth = 1;
+		int borderWidth = 4;
 		window.getRootPane().setBorder(BorderFactory.createMatteBorder(borderWidth, borderWidth, borderWidth, borderWidth, backgroundColor));
 		
 		window.getRootPane().addMouseListener(mouseListener);
