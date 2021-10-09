@@ -53,16 +53,17 @@ public class Parser {
 		
 		Token token = tokens.get(0);
 		
-		if (token.type == Token.Type.Number) {
-			return Double.parseDouble(token.value.toString());
-		}
 		while (token.isSymbol("*") || token.isSymbol("/")) {
 			tokens.remove(0);
 			double term = parseFactor(tokens);
 			if (token.isSymbol("*")) {
+				System.out.print(result + " * " + term);
 				result *= term;
+				System.out.println(" = " + result);
 			} else {
+				System.out.print(result + " / " + term);
 				result /= term;
+				System.out.println(" = " + result);
 			}
 			token = tokens.get(0);
 		}
@@ -98,10 +99,10 @@ public class Parser {
 			return Double.parseDouble(token.value.toString());
 		}
 		if (token.isIdentifier()) {
-			String tokenValue = token.value.toString().toLowerCase();
+			String tokenValue = token.value.toString();
 			if (tokenValue.equals("e")) {
 				return Math.E;
-			}else if (tokenValue.equals("pi") || tokenValue.equals("π")) {
+			}else if (tokenValue.toLowerCase().equals("pi") || tokenValue.equals("π")) {
 				return Math.PI;
 			}
 		}

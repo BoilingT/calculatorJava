@@ -250,7 +250,7 @@ public class Window extends Window_Design{
 					ParsingThread task = new ParsingThread(parser, inputText, textResult, latch);
 					Thread thread = new Thread(task);
 					thread.start();
-					//textResult.setText("Calculating...");
+					textResult.setText("Calculating...");
 					//resultStr = String.valueOf(task.getResult()); // = 17 - 10 = 7 "12+5-5*2"
 					//textResult.setText("= " + resultStr);
 					
