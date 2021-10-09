@@ -1,21 +1,17 @@
 package calculator;
 
-import java.util.concurrent.CountDownLatch;
-
 import javax.swing.JTextArea;
 
 public class ParsingThread implements Runnable{
 
 	private Parser parser;
-	private CountDownLatch latch;
 	private JTextArea textArea;
 	private String expression;
 	
-	public ParsingThread(Parser _parser, String _expression, JTextArea _textArea, CountDownLatch _latch) {
+	public ParsingThread(Parser _parser, String _expression, JTextArea _textArea) {
 		textArea = _textArea;
 		expression = _expression;
 		parser = _parser;
-		latch = _latch;
 	}
 	
 	@Override
@@ -28,7 +24,6 @@ public class ParsingThread implements Runnable{
 			//value = e.getMessage();
 			textArea.setText(e.getMessage());
 		}
-		latch.countDown();
 	}
 	
 }

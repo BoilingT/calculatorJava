@@ -8,8 +8,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.concurrent.CountDownLatch;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -246,8 +244,7 @@ public class Window extends Window_Design{
 			if (checkBox.isSelected()) {
 				
 				try {
-					final CountDownLatch latch = new CountDownLatch(1);
-					ParsingThread task = new ParsingThread(parser, inputText, textResult, latch);
+					ParsingThread task = new ParsingThread(parser, inputText, textResult);
 					Thread thread = new Thread(task);
 					thread.start();
 					textResult.setText("Calculating...");
