@@ -25,7 +25,6 @@ public class Parser {
 	}
 
 	public double parseExpression(ArrayList<Token> tokens) throws Exception{
-		//Integer index = new Integer(0);
 		for (Token token : tokens) {
 			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
 		}
@@ -99,38 +98,10 @@ public class Parser {
 			return Double.parseDouble(token.value.toString());
 		}
 		if (token.isIdentifier()) {
-			String tokenValue = token.value.toString();
-			if (tokenValue.equals("e")) {
-				return Math.E;
-			}else if (tokenValue.toLowerCase().equals("pi") || tokenValue.equals("π")) {
-				return Math.PI;
-			}
+			return parseIdentifier(token);
 		}
 		if (token.isFunc()) {
-			tokens.remove(0);
-			System.out.println("func token: " + token.value);
-			System.out.println();
-			double expression = parseExpression(tokens);
-			if (!tokens.get(0).isSymbol(")")) {
-				throw new Exception("Expected: ')'");
-			}
-			tokens.remove(0);
-			System.out.println();
-			System.out.println("func expression: " + expression);
-			if (token.isFunc("sin") || token.isFunc("cos") || token.isFunc("tan")) {
-				double value = degree ? Math.toRadians(expression) : expression;
-				if (token.isFunc("sin")) {return Math.sin(value);}
-				else if(token.isFunc("cos")){return Math.cos(value);}
-				else if(token.isFunc("tan")){return Math.tan(value);}
-			}else if(token.isFunc("sqrt")){
-				if (expression > 0) {
-					return Math.sqrt(expression);					
-				}else {
-					throw new Exception("Imaginary");
-				}
-			}else if(token.isFunc("abs")){return Math.abs(expression);}
-			else if(token.isFunc("log10") || token.isFunc("lg")){ return Math.log10(expression);}
-			else if(token.isFunc("log") || token.isFunc("ln")){return Math.log(expression);}
+			return parseFunction(token, tokens);
 		}
 		System.out.println("Tok: " + token.value.toString());
 		if (!token.isSymbol("(")) {
@@ -142,6 +113,47 @@ public class Parser {
 		}
 		tokens.remove(0);
 		return expression;
+	}
+	
+	public double parseIdentifier(Token identifier) throws Exception {
+		String tokenValue = identifier.value.toString();
+		if (tokenValue.equals("e")) {
+			return Math.E;
+		}else if (tokenValue.toLowerCase().equals("pi") || tokenValue.equals("π")) {
+			return Math.PI;
+		}else {
+			return 0;
+		}
+	}
+	
+	public double parseFunction(Token funcToken, ArrayList<Token> tokens) throws Exception{
+		System.out.println("Previous token value: " + tokens.get(0).value.toString());
+		if(tokens.get(0).isStop()) {throw new Exception("Expected: '('");}
+		tokens.remove(0);
+		System.out.println("Token value: " + tokens.get(0).value.toString());
+		double value = parseExpression(tokens);
+		if (!tokens.get(0).isSymbol(")")) {
+			throw new Exception("Expected: ')'");
+		}
+		tokens.remove(0);
+		System.out.println();
+		System.out.println("func expression: " + value);
+		
+		if (funcToken.isFunc("sin") || funcToken.isFunc("cos") || funcToken.isFunc("tan")) {
+			double angle = degree ? Math.toRadians(value) : value;
+			if (funcToken.isFunc("sin")) {return Math.sin(angle);}
+			else if(funcToken.isFunc("cos")){return Math.cos(angle);}
+			else if(funcToken.isFunc("tan")){return Math.tan(angle);}
+		}else if(funcToken.isFunc("sqrt")){
+			if (value > 0) {
+				return Math.sqrt(value);					
+			}else {
+				throw new Exception("Imaginary");
+			}
+		}else if(funcToken.isFunc("abs")){return Math.abs(value);}
+		else if(funcToken.isFunc("log10") || funcToken.isFunc("lg")){ return Math.log10(value);}
+		else if(funcToken.isFunc("log") || funcToken.isFunc("ln")){return Math.log(value);}
+		return 0;
 	}
 	
 	public double parse(String expression) throws Exception{

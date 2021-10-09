@@ -167,6 +167,9 @@ public class Token{
 				}
 			}
 		}
+		for (Token token : tokens) {
+			System.out.print("last[" + token.value + ", " + token.type.toString() + "]");
+		}
 		tokens.add(new Token(Type.Stop, "Stop")); //A way for knowing when the expression ends is by adding a stop token to the list.
 		return tokens;
 	}

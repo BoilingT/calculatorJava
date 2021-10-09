@@ -23,6 +23,7 @@ public class ParsingThread implements Runnable{
 		} catch (Exception e) {
 			//value = e.getMessage();
 			textArea.setText(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
