@@ -3,6 +3,7 @@ package calculator;
 import java.util.ArrayList;
 
 public class Parser {
+	private boolean degree = true;
 	public static double calculateExpression(String exp) {
 		double result =  0;
 		
@@ -14,8 +15,16 @@ public class Parser {
 		
 		return result;
 	}
+	
+	public void setDegree(boolean state) {
+		degree = state;
+	}
+	
+	public boolean isDegree() {
+		return degree;
+	}
 
-	public static double parseExpression(ArrayList<Token> tokens) throws Exception{
+	public double parseExpression(ArrayList<Token> tokens) throws Exception{
 		//Integer index = new Integer(0);
 		for (Token token : tokens) {
 			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
@@ -39,7 +48,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static double parseTerm(ArrayList<Token> tokens) throws Exception{
+	public double parseTerm(ArrayList<Token> tokens) throws Exception{
 		double result = parseFactor(tokens);
 		
 		Token token = tokens.get(0);
@@ -61,7 +70,7 @@ public class Parser {
 		return result;
 	}
 	
-	public static double parseFactor(ArrayList<Token> tokens) throws Exception{
+	public double parseFactor(ArrayList<Token> tokens) throws Exception{
 		Token token = tokens.get(0);
 		double sign = token.isSymbol("-") ? -1 : 1;
 		if (token.isSymbol("+") || sign < 0) {
@@ -81,7 +90,7 @@ public class Parser {
 		return result * sign;
 	}
 	
-	public static double parseItem(ArrayList<Token> tokens) throws Exception {
+	public double parseItem(ArrayList<Token> tokens) throws Exception {
 		Token token = tokens.get(0);
 		tokens.remove(0);
 		
@@ -107,10 +116,12 @@ public class Parser {
 			tokens.remove(0);
 			System.out.println();
 			System.out.println("func expression: " + expression);
-			if (token.isFunc("sin")) {return Math.sin(Math.toRadians(expression));}
-			else if(token.isFunc("cos")){return Math.cos(Math.toRadians(expression));}
-			else if(token.isFunc("tan")){return Math.tan(Math.toRadians(expression));}
-			else if(token.isFunc("sqrt")){
+			if (token.isFunc("sin") || token.isFunc("cos") || token.isFunc("tan")) {
+				double value = degree ? Math.toRadians(expression) : expression;
+				if (token.isFunc("sin")) {return Math.sin(value);}
+				else if(token.isFunc("cos")){return Math.cos(value);}
+				else if(token.isFunc("tan")){return Math.tan(value);}
+			}else if(token.isFunc("sqrt")){
 				if (expression > 0) {
 					return Math.sqrt(expression);					
 				}else {
@@ -132,7 +143,7 @@ public class Parser {
 		return expression;
 	}
 	
-	public static Double parse(String expression) throws Exception{
+	public double parse(String expression) throws Exception{
 		return parseExpression(Token.tokenize(expression));
 	}
 	

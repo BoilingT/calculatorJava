@@ -21,6 +21,7 @@ public class Window extends Window_Design{
 	private static double a = 0;
 	private static double b = 0;
 	private static double result = 0;
+	private static Parser parser = new Parser();
 	private int mouseX;
 	private int mouseY;
 	private int width;
@@ -215,10 +216,21 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void clearBtnClicked() {
-		textArea.setText("0");
-		textResult.setText(null);
-		//System.out.println("Parsed: " + Parser.parseExpression("27+5"));
+		textArea.setText("");
+		textResult.setText("Previous answer\n" + textResult.getText());
+	}
 	
+	@Override
+	public void degreeBtnClicked() {
+		if (parser.isDegree()) {
+			degreeBtn.setText("Rad");
+			degreeBtn.setBackground(new Color(156, 91, 0));
+		}else {
+			degreeBtn.setText("Deg");
+			degreeBtn.setBackground(new Color(0, 99, 156));
+		}
+		parser.setDegree(!parser.isDegree());
+		calcBtnClicked();
 	}
 		
 	@Override
@@ -236,7 +248,7 @@ public class Window extends Window_Design{
 			if (checkBox.isSelected()) {
 				try {
 					//resultStr = String.valueOf(Parser.calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
-					resultStr = String.valueOf(Parser.parse(inputText)); // = 17 - 10 = 7 "12+5-5*2"
+					resultStr = String.valueOf(parser.parse(inputText)); // = 17 - 10 = 7 "12+5-5*2"
 					textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {

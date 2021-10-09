@@ -136,18 +136,11 @@ public class Token{
 				}else if (isSymbol(Char, SYMBOLS)) {
 					//My definiton of a symbol makes that a symbol will always only be one character long,
 					//therefor I just add the token as it is.
-					//System.out.println(tokens.get(tokens.size()-2).isSymbol("("));
-					for (Token token : tokens) {
-						System.out.print("id[" + token.value + ", " + token.type.toString() + "]");
-					}
-					System.out.println();
-					if(tokens.size() > 1) {
-						System.out.println("Size > 1");
-						if(tokens.get(tokens.size()-1).isSymbol("(") && tokens.get(tokens.size()-2).isNumb()) {
-							tokens.add(tokens.size()-2, new Token(Token.Type.Symbol, "*"));							
-						}
-					}
 					tokens.add(new Token(Type.Symbol, String.valueOf(Char)));
+
+					if(tokens.size() > 1 && tokens.get(tokens.size()-1).isSymbol("(") && tokens.get(tokens.size()-2).isNumb()) {
+						tokens.add(tokens.size()-1, new Token(Token.Type.Symbol, "*"));							
+					}
 					
 				}else { //Identifier or func
 					/*

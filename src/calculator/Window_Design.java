@@ -56,6 +56,7 @@ public class Window_Design {
 	public static JButton closePBtn = new JButton();
 	public static JButton calcBtn = new JButton();
 	public static JButton clearBtn = new JButton();
+	public static JButton degreeBtn = new JButton();
 	
 	public static JCheckBox checkBox = new JCheckBox();
 	
@@ -308,13 +309,33 @@ public class Window_Design {
 		});
 		
 		//topFuncPanel content
-		topFuncPanelC.ipadx = btnPanelC.ipadx;
+		topFuncPanelC.ipadx = 0;
+		//degreeBtn
+		degreeBtn.setText("Deg");
+		degreeBtn.setBackground(new Color(0, 99, 156));
+		degreeBtn.setForeground(foregroundColor);
+		degreeBtn.setFocusable(false);
+		topFuncPanelC.gridy = 0;
+		topFuncPanelC.gridx = 0;
+		topFuncPanelC.gridwidth = 1;
+		topFuncPanelC.weightx = 1;
+		topFuncPanelC.weighty = 1;
+		topFuncPanelC.fill = GridBagConstraints.BOTH;
+		topFuncPanel.add(degreeBtn, topFuncPanelC);
+		degreeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				degreeBtnClicked();
+			}
+		});
+		
 		//clearBtn
 		clearBtn.setText("AC");
 		clearBtn.setBackground(funcBtnColor);
 		clearBtn.setForeground(foregroundColor);
 		topFuncPanelC.gridy = 0;
-		topFuncPanelC.gridx = 0;
+		topFuncPanelC.gridx = 1;
 		topFuncPanelC.gridwidth = 1;
 		topFuncPanelC.weightx = 1;
 		topFuncPanelC.weighty = 1;
@@ -333,7 +354,7 @@ public class Window_Design {
 		sqrtBtn.setBackground(funcBtnColor);
 		sqrtBtn.setForeground(foregroundColor);
 		topFuncPanelC.gridy = 0;
-		topFuncPanelC.gridx = 1;
+		topFuncPanelC.gridx = 2;
 		topFuncPanel.add(sqrtBtn, topFuncPanelC);
 		sqrtBtn.addActionListener(new ActionListener() {
 			
@@ -348,7 +369,7 @@ public class Window_Design {
 		squareBtn.setBackground(funcBtnColor);
 		squareBtn.setForeground(foregroundColor);
 		topFuncPanelC.gridy = 0;
-		topFuncPanelC.gridx = 2;
+		topFuncPanelC.gridx = 3;
 		topFuncPanel.add(squareBtn, topFuncPanelC);
 		squareBtn.addActionListener(new ActionListener() {
 			
@@ -363,7 +384,7 @@ public class Window_Design {
 		openPBtn.setBackground(funcBtnColor);
 		openPBtn.setForeground(foregroundColor);
 		topFuncPanelC.gridy = 0;
-		topFuncPanelC.gridx = 3;
+		topFuncPanelC.gridx = 4;
 		topFuncPanel.add(openPBtn, topFuncPanelC);
 		openPBtn.addActionListener(new ActionListener() {
 			
@@ -378,7 +399,7 @@ public class Window_Design {
 		closePBtn.setBackground(funcBtnColor);
 		closePBtn.setForeground(foregroundColor);
 		topFuncPanelC.gridy = 0;
-		topFuncPanelC.gridx = 4;
+		topFuncPanelC.gridx = 5;
 		topFuncPanel.add(closePBtn, topFuncPanelC);
 		closePBtn.addActionListener(new ActionListener() {
 			
@@ -683,6 +704,7 @@ public class Window_Design {
 	public void openPBtnClicked() {};
 	public void closePBtnClicked() {};
 	public void clearBtnClicked() {}
+	public void degreeBtnClicked() {}
 	public void calcBtnClicked() {}
 	public void numbBtnClicked(Object obj) {}
 	public void keyType(KeyEvent e) {}
