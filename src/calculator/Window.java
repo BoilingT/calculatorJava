@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.TextArea;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -144,7 +145,12 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void keyRelease(KeyEvent e) {
-		calcBtnClicked();
+		int key = e.getKeyCode();
+		if (key != KeyEvent.VK_RIGHT && key != KeyEvent.VK_LEFT && key != KeyEvent.VK_UP && key != KeyEvent.VK_DOWN && !e.isAltDown() && !e.isControlDown()) {
+			calcBtnClicked();			
+			//int prevCarPos = textArea.getCaretPosition();
+			//textArea.setText(textArea.getText().replace("pi", "π").replace("^2", "²"));
+		}
 	}
 	
 	@Override

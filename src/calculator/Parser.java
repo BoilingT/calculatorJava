@@ -89,9 +89,10 @@ public class Parser {
 			return Double.parseDouble(token.value.toString());
 		}
 		if (token.isIdentifier()) {
-			if (token.value.toString().toLowerCase().equals("e")) {
+			String tokenValue = token.value.toString().toLowerCase();
+			if (tokenValue.equals("e")) {
 				return Math.E;
-			}else if (token.value.toString().toLowerCase().equals("pi")) {
+			}else if (tokenValue.equals("pi") || tokenValue.equals("π")) {
 				return Math.PI;
 			}
 		}
