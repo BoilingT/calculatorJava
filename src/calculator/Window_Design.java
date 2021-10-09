@@ -16,8 +16,9 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 public class Window_Design {
 
 	public static final int WIDTH = 400;
-	private static final int HEIGHT = 500;
-	
+	public static final int HEIGHT = 500;
+	public static final int borderWidth = 4;
+
 	private static float alpha = 0.9f;
 	private static Color borderColor = new Color(41, 41, 41);
 	private static Color backgroundColor = new Color(41, 41, 41);
@@ -309,7 +310,7 @@ public class Window_Design {
 		});
 		
 		//topFuncPanel content
-		topFuncPanelC.ipadx = 0;
+		topFuncPanelC.ipadx = 1;
 		//degreeBtn
 		degreeBtn.setText("Deg");
 		degreeBtn.setBackground(new Color(0, 99, 156));
@@ -674,7 +675,6 @@ public class Window_Design {
 		window.add(mainPanel, BorderLayout.CENTER);
 		window.getContentPane().addMouseListener(mouseListener);
 		window.getContentPane().addMouseMotionListener(mouseMotionListener);
-		int borderWidth = 4;
 		window.getRootPane().setBorder(BorderFactory.createMatteBorder(borderWidth, borderWidth, borderWidth, borderWidth, backgroundColor));
 		
 		window.getRootPane().addMouseListener(mouseListener);

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +27,7 @@ public class Window extends Window_Design{
 	private int mouseY;
 	private int width;
 	private int height;
-	private int margin = 10;
+	private int margin = borderWidth;
 	
 	public void Init() {
 //		ArrayList<Token> tokens = Token.tokenize("sin(30)");
@@ -49,7 +50,7 @@ public class Window extends Window_Design{
 		int y=e.getYOnScreen();
 		if (component == topBorderLabelPanel) {
 			
-			window.setLocation(x-mouseX, y-mouseY);
+			window.setLocation(x-mouseX-margin, y-mouseY-margin);
 			
 		}else if (component == window.getRootPane()) {
 			int diffx = x - (int) (window.getLocation().getX() + width);
@@ -246,14 +247,19 @@ public class Window extends Window_Design{
 			String resultStr = "";
 			
 			if (checkBox.isSelected()) {
+				
 				try {
-					//resultStr = String.valueOf(Parser.calculateExpression(inputText)); // = 17 - 10 = 7 "12+5-5*2"
-					resultStr = String.valueOf(parser.parse(inputText)); // = 17 - 10 = 7 "12+5-5*2"
-					textResult.setText("= " + resultStr);
+					final CountDownLatch latch = new CountDownLatch(1);
+					ParsingThread task = new ParsingThread(parser, inputText, textResult, latch);
+					Thread thread = new Thread(task);
+					thread.start();
+					//textResult.setText("Calculating...");
+					//resultStr = String.valueOf(task.getResult()); // = 17 - 10 = 7 "12+5-5*2"
+					//textResult.setText("= " + resultStr);
 					
 				}catch (Exception e) {
 					//if(e.getMessage().toString().toLowerCase().contains("out of bounds")) return;
-					textResult.setText(e.getMessage());
+					//textResult.setText(e.getMessage());
 				}
 			}else {
 				String[] inputs = inputText.split(String.valueOf(latestOperation));
