@@ -106,29 +106,22 @@ public class Parser {
 			tokens.remove(0);
 			System.out.println();
 			System.out.println("func expression: " + expression);
-			if (token.isFunc("sin")) {
-				return Math.sin(Math.toRadians(expression));
-			}else if(token.isFunc("cos")){
-				return Math.cos(Math.toRadians(expression));
-			}else if(token.isFunc("tan")){
-				return Math.tan(Math.toRadians(expression));
-			}else if(token.isFunc("sqrt")){
+			if (token.isFunc("sin")) {return Math.sin(Math.toRadians(expression));}
+			else if(token.isFunc("cos")){return Math.cos(Math.toRadians(expression));}
+			else if(token.isFunc("tan")){return Math.tan(Math.toRadians(expression));}
+			else if(token.isFunc("sqrt")){
 				if (expression > 0) {
 					return Math.sqrt(expression);					
 				}else {
 					throw new Exception("Imaginary");
 				}
-			}else if(token.isFunc("abs")){
-				return Math.abs(expression);
-			}else if(token.isFunc("log10") || token.isFunc("lg")){
-				return Math.log10(expression);
-			}else if(token.isFunc("log") || token.isFunc("ln")){
-				return Math.log(expression);
-			}
+			}else if(token.isFunc("abs")){return Math.abs(expression);}
+			else if(token.isFunc("log10") || token.isFunc("lg")){ return Math.log10(expression);}
+			else if(token.isFunc("log") || token.isFunc("ln")){return Math.log(expression);}
 		}
-		
+		System.out.println("Tok: " + token.value.toString());
 		if (!token.isSymbol("(")) {
-			throw new Exception("...");
+			throw new Exception("...");				
 		}
 		double expression = parseExpression(tokens);
 		if (!tokens.get(0).isSymbol(")")) {

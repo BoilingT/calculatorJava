@@ -43,8 +43,16 @@ public class Token{
 		return type == Type.Symbol && value.toString().equals(Symbol);
 	}
 	
+	public boolean isSymbol() {
+		return type == Type.Symbol;
+	}
+	
 	public boolean isIdentifier() {
 		return type == Type.Identifier;
+	}
+	
+	private static boolean isIdentifier(char id) {
+		return id >= 'a' && id <= 'z';
 	}
 	
 	public boolean isFunc() {
@@ -128,6 +136,13 @@ public class Token{
 				}else if (isSymbol(Char, SYMBOLS)) {
 					//My definiton of a symbol makes that a symbol will always only be one character long,
 					//therefor I just add the token as it is.
+					//System.out.println(tokens.get(tokens.size()-2).isSymbol("("));
+//					for (Token token : tokens) {
+//						System.out.print("id[" + token.value + ", " + token.type.toString() + "]");
+//					}
+//					System.out.println();
+//					if(tokens.size() > 1 && tokens.get(tokens.size()-2).isSymbol("(")) {tokens.add(tokens.size()-2, new Token(Token.Type.Symbol, "*"));
+//					}
 					tokens.add(new Token(Type.Symbol, String.valueOf(Char)));
 					
 				}else { //Identifier or func
@@ -145,6 +160,7 @@ public class Token{
 						if(isSymbol(tempChar, SYMBOLS)) {break;}
 						str += tempChar;
 					}
+					if(tokens.size() > 0 && tokens.get(tokens.size()-1).isNumb()) {tokens.add(new Token(Token.Type.Symbol, "*"));}
 					i += str.length() > 0 ? str.length()-1 : 0; //Same thing here, we don't want to be stuck in an endless loop.
 					if(isFunc(str, FUNCTIONS)) { //If the functions contain a function that matches the string then add it.
 						tokens.add(new Token(Type.Func, str));
