@@ -23,7 +23,7 @@ public class ParsingThread implements Runnable{
 		try {
 			//value = parser.parse(expression);
 			double value = parser.parse(expression);
-			textArea.setText(String.valueOf(value));
+			textArea.setText("= " + String.valueOf(value));
 		} catch (Exception e) {
 			//value = e.getMessage();
 			textArea.setText(e.getMessage());

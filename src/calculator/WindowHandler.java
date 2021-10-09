@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class WindowHandler extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
+
 	public WindowHandler(int width, int height, String title) {
 		this.setTitle(title);
 		//G�r en panel s� att ramen anpassar sin storlek efter panelens storlek.

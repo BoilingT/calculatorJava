@@ -9,9 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class Window_Design {
 
@@ -747,23 +744,5 @@ public class Window_Design {
 			}
 			numbBtnC.gridy = yOffset + i+1;
 		}
-		
-		
-		String result = "";
-		for (int i = 0; i < numbBtns.length; i++) {
-			for (int j = 0; j < numbBtns[i].length; j++) {
-				int y = i;
-				int x = j;
-				if(numbBtns[y][x] == null) {
-					result += "-1, ";
-				}else {
-					result += " " + numbBtns[y][x].getText() + ", ";					
-				}
-			}
-			result += "\n";
-		}
-		//System.out.println(numbBtns[2][0].getText());
-		//System.out.println(result);
-}
-	
+	}
 }

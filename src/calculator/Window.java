@@ -5,11 +5,9 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.TextArea;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JButton;
@@ -244,7 +242,6 @@ public class Window extends Window_Design{
 			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
 			
 			System.out.println("new text: " + inputText);
-			String resultStr = "";
 			
 			if (checkBox.isSelected()) {
 				

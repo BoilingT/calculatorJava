@@ -51,9 +51,9 @@ public class Token{
 		return type == Type.Identifier;
 	}
 	
-	private static boolean isIdentifier(char id) {
-		return id >= 'a' && id <= 'z';
-	}
+//	private static boolean isIdentifier(char id) {
+//		return id >= 'a' && id <= 'z';
+//	}
 	
 	public boolean isFunc() {
 		return type == Type.Func;
