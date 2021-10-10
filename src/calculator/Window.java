@@ -220,11 +220,11 @@ public class Window extends Window_Design{
 	@Override
 	public void degreeBtnClicked() {
 		if (parser.isDegree()) {
-			degreeBtn.setText("Rad");
-			degreeBtn.setBackground(new Color(156, 91, 0));
+			angleBtn.setText("Rad");
+			angleBtn.setBackground(new Color(156, 91, 0));
 		}else {
-			degreeBtn.setText("Deg");
-			degreeBtn.setBackground(new Color(0, 99, 156));
+			angleBtn.setText("Deg");
+			angleBtn.setBackground(new Color(0, 99, 156));
 		}
 		parser.setDegree(!parser.isDegree());
 		calcBtnClicked();
