@@ -12,10 +12,13 @@ import javax.swing.*;
 
 public class Window_Design {
 
+	//Window default properties
 	public static final int WIDTH = 400;
 	public static final int HEIGHT = 500;
 	public static final int borderWidth = 4;
+	public static WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
 
+	//Colors
 	private static float alpha = 0.9f;
 	private static Color borderColor = new Color(41, 41, 41);
 	private static Color backgroundColor = new Color(41, 41, 41);
@@ -25,9 +28,8 @@ public class Window_Design {
 	private static Color calcBtnColor = new Color(0, 99, 5);
 	private static Color fieldColor = new Color(41, 41, 41);
 	private static Color foregroundColor = Color.white;
-
-	public static WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
 	
+	//Panels
 	public static JPanel topBorderPanel = new JPanel();
 	public static JPanel topBorderBtnPanel = new JPanel();
 	public static JPanel topBorderLabelPanel = new JPanel();
@@ -37,37 +39,44 @@ public class Window_Design {
 	public static JPanel topFuncPanel = new JPanel();
 	public static JPanel bottomFuncPanel = new JPanel();
 	public static JPanel btnPanel = new JPanel();
+	
+	//Buttons
 	public static JButton[][] numbBtns = new JButton[4][3];
 	
+	//Window
 	public static JButton minimizeBtn = new JButton();
 	public static JButton maximizeBtn = new JButton();
 	public static JButton closeBtn = new JButton();
 
-	
+	//Operations
 	public static JButton addBtn = new JButton();
 	public static JButton subtractBtn = new JButton();
 	public static JButton divideBtn = new JButton();
 	public static JButton multBtn = new JButton();
+	
+	//Functions
 	public static JButton sqrtBtn = new JButton();
 	public static JButton squareBtn = new JButton();
-	public static JButton openPBtn = new JButton();
-	public static JButton closePBtn = new JButton();
+	public static JButton openPBtn = new JButton(); //parentheses: (
+	public static JButton closePBtn = new JButton(); //parenthese: )
 	public static JButton calcBtn = new JButton();
-	public static JButton clearBtn = new JButton();
-	public static JButton degreeBtn = new JButton();
+	public static JButton clearBtn = new JButton(); //AC
+	public static JButton angleBtn = new JButton();
 	
 	public static JCheckBox checkBox = new JCheckBox();
 	
+	//Outputs
 	public static JLabel windowTitleLabel = new JLabel(window.getTitle());
 	public static JTextArea textArea = new JTextArea();
 	public static JScrollPane textAreaScrollPane = new JScrollPane();
 	public static JTextArea textResult = new JTextArea();
 	public static JScrollPane textResultScrollPane = new JScrollPane();
 
-	
+	//Listeners
 	private static MouseListener mouseListener = null;
 	private static MouseMotionListener mouseMotionListener = null;
 	
+	//Get all the components ready for use and then show them.
 	public void InitializeComponents() {
 			
 		mouseListener = new MouseListener() {
@@ -308,19 +317,20 @@ public class Window_Design {
 		
 		//topFuncPanel content
 		topFuncPanelC.ipadx = 1;
-		//degreeBtn
-		degreeBtn.setText("Deg");
-		degreeBtn.setBackground(new Color(0, 99, 156));
-		degreeBtn.setForeground(foregroundColor);
-		degreeBtn.setFocusable(false);
 		topFuncPanelC.gridy = 0;
+
+		//degreeBtn
+		angleBtn.setText("Deg");
+		angleBtn.setBackground(new Color(0, 99, 156));
+		angleBtn.setForeground(foregroundColor);
+		angleBtn.setFocusable(false);
 		topFuncPanelC.gridx = 0;
 		topFuncPanelC.gridwidth = 1;
-		topFuncPanelC.weightx = 1;
+		topFuncPanelC.weightx = 0.5;
 		topFuncPanelC.weighty = 1;
 		topFuncPanelC.fill = GridBagConstraints.BOTH;
-		topFuncPanel.add(degreeBtn, topFuncPanelC);
-		degreeBtn.addActionListener(new ActionListener() {
+		topFuncPanel.add(angleBtn, topFuncPanelC);
+		angleBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -332,12 +342,7 @@ public class Window_Design {
 		clearBtn.setText("AC");
 		clearBtn.setBackground(funcBtnColor);
 		clearBtn.setForeground(foregroundColor);
-		topFuncPanelC.gridy = 0;
 		topFuncPanelC.gridx = 1;
-		topFuncPanelC.gridwidth = 1;
-		topFuncPanelC.weightx = 1;
-		topFuncPanelC.weighty = 1;
-		topFuncPanelC.fill = GridBagConstraints.BOTH;
 		topFuncPanel.add(clearBtn, topFuncPanelC);
 		clearBtn.addActionListener(new ActionListener() {
 			
@@ -351,7 +356,6 @@ public class Window_Design {
 		sqrtBtn.setText("√");
 		sqrtBtn.setBackground(funcBtnColor);
 		sqrtBtn.setForeground(foregroundColor);
-		topFuncPanelC.gridy = 0;
 		topFuncPanelC.gridx = 2;
 		topFuncPanel.add(sqrtBtn, topFuncPanelC);
 		sqrtBtn.addActionListener(new ActionListener() {
@@ -366,7 +370,6 @@ public class Window_Design {
 		squareBtn.setText("x²");
 		squareBtn.setBackground(funcBtnColor);
 		squareBtn.setForeground(foregroundColor);
-		topFuncPanelC.gridy = 0;
 		topFuncPanelC.gridx = 3;
 		topFuncPanel.add(squareBtn, topFuncPanelC);
 		squareBtn.addActionListener(new ActionListener() {
@@ -381,7 +384,6 @@ public class Window_Design {
 		openPBtn.setText("(");
 		openPBtn.setBackground(funcBtnColor);
 		openPBtn.setForeground(foregroundColor);
-		topFuncPanelC.gridy = 0;
 		topFuncPanelC.gridx = 4;
 		topFuncPanel.add(openPBtn, topFuncPanelC);
 		openPBtn.addActionListener(new ActionListener() {
@@ -396,7 +398,6 @@ public class Window_Design {
 		closePBtn.setText(")");
 		closePBtn.setBackground(funcBtnColor);
 		closePBtn.setForeground(foregroundColor);
-		topFuncPanelC.gridy = 0;
 		topFuncPanelC.gridx = 5;
 		topFuncPanel.add(closePBtn, topFuncPanelC);
 		closePBtn.addActionListener(new ActionListener() {
@@ -412,11 +413,8 @@ public class Window_Design {
 		checkBox.setBackground(backgroundColor);
 		checkBox.setForeground(foregroundColor);
 		checkBox.setFocusable(false);
-		mainPanelC.gridx = 0;
 		mainPanelC.gridy = 7;
-		mainPanelC.gridheight = 1;
-		mainPanelC.gridwidth = 1;
-		mainPanelC.fill = GridBagConstraints.BOTH;
+		mainPanelC.fill = GridBagConstraints.HORIZONTAL;
 		mainPanel.add(checkBox, mainPanelC);
 		checkBox.addActionListener(new ActionListener() {
 			
@@ -434,14 +432,8 @@ public class Window_Design {
 		textArea.setForeground(foregroundColor);
 		textArea.setCaretColor(foregroundColor);
 		textArea.setLineWrap(true);
-//		textArea.setRows(1000000);
-//		textArea.setColumns(1000000);
 		textArea.setBackground(fieldColor);
-		topPanelC.gridx = 0;
 		topPanelC.gridy = 0;
-		topPanelC.gridwidth = 1;
-		topPanelC.gridheight = 1;
-		topPanelC.weightx = 1;
 		topPanelC.weighty = 1;
 
 		topPanelC.fill = GridBagConstraints.BOTH;
@@ -482,15 +474,11 @@ public class Window_Design {
 		textResult.setForeground(foregroundColor);
 		textResult.setBackground(fieldColor);
 		textResult.setEditable(false);
-		topPanelC.gridx = 0;
 		topPanelC.gridy = 1;
-		topPanelC.gridwidth = 1;
-		topPanelC.gridheight = 1;
 		topPanelC.weightx = 1;
 		topPanelC.weighty = 0.5;
-
 		topPanelC.fill = GridBagConstraints.BOTH;
-		//headPanelC.weightx = 1;
+
 		textResultScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		textResultScrollPane.setBackground(fieldColor);
 		textResultScrollPane.setViewportView(textResult);
@@ -662,7 +650,7 @@ public class Window_Design {
 
 		//windowC.fill = GridBagConstraints.BOTH;
 		//windowC.weightx = 1;
-		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		//mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT)); Needed?
 				
 		topBorderLabelPanel.addMouseListener(mouseListener);
 		
@@ -692,6 +680,7 @@ public class Window_Design {
 		}
 	}
 	
+	//All events
 	public void divideBtnClicked() {}
 	public void multBtnClicked() {}
 	public void subtractBtnClicked() {}
@@ -714,6 +703,7 @@ public class Window_Design {
 	public void MouseDragged(MouseEvent e) {}
 	public void MouseMoved(MouseEvent e) {}  
 	
+	//Quick way to add all numeric buttons from 1 to 9
 	private void addNumButtons(int col, int row, GridBagConstraints numbBtnC) {
 		int total = 1;
 		int yOffset = row;
