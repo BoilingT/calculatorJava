@@ -1,32 +1,34 @@
 package calculator;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Graph {
 
 	private String formula;
 	private Parser parser;	
-	private Point[] Points;
-	private int gap;
+	private ArrayList<double[]> Points = new ArrayList<double[]>();
+	private double gap;
 	private int width;
 	
-	public Graph(String formula, Parser parser, int gap, int width) {
+	public Graph(String formula, Parser parser, double gap, int width) {
 		this.formula = formula;
 		this.parser = parser;
 		this.width = width;
-		Points = new Point[width/gap];
-		System.out.println(Points.length);
-		calculatePoints(Points.length);
+		this.gap = gap;
+		calculatePoints(-width/40, width/40);
 	}
 	
-	private void calculatePoints(int n) {
+	public void calculatePoints(int start, int end) {
 		int total = 0;
-		for (int i = -Points.length/2; i < Points.length/2; i+=gap) {
+		System.out.println("start: " + start/gap + " end: " + end/gap);
+
+		for (double i = start; i < end; i+=gap) {
 			double parsedValue;
 			try {
 				parsedValue = parser.parse(getFormula(), "x", i);
-				Points[total++] = new Point(i, (int)parsedValue);
-				//System.out.println("X: " + i + " Y: " + parsedValue);
+				Points.add(new double[] {i, parsedValue});
+				System.out.println("\nX: " + i + "\nY: " + parsedValue);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
@@ -39,10 +41,10 @@ public class Graph {
 	}
 	
 	public int points() {
-		return Points.length;
+		return Points.size();
 	}
 	
-	public Point getPoint(int index) {
-		return Points[index];
+	public double[] getPoint(int index) {
+		return Points.get(index);
 	}
 }

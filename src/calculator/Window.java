@@ -13,16 +13,15 @@ import javax.swing.JFrame;
 
 public class Window extends Window_Design{
 	
-	private static Parser parser = new Parser();
 	private static String latestOperation = "";
+	
 	private static double a = 0;
 	private static double b = 0;
 	private static double result = 0;
+	private static Parser parser = new Parser();
 	private int prevX, prevY;
 	private int mouseX;
 	private int mouseY;
-	private int width;
-	private int height;
 	private int margin = BORDERWIDTH;
 	
 	public void Init() {
@@ -33,12 +32,8 @@ public class Window extends Window_Design{
 //		
 		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
-		graphPanel.addGraph(new Graph("x", parser, 10, graphPanel.getWidth()));
-		graphPanel.drawGraph(0);
-	}
-	
-	public void set(int ints) {
-		ints = 1;
+		graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.5f, graphPanel.getWidth()));
+		graphPanel.addGraph(new Graph("(x)^2", parser, 0.5d, graphPanel.getWidth()));
 	}
 	
 	@Override
@@ -107,19 +102,19 @@ public class Window extends Window_Design{
 	@Override
 	public void MousePressed(MouseEvent e) {
         
-		width = (int) window.getBounds().getWidth();
-		height = (int) window.getBounds().getHeight();
+//		width = (int) window.getBounds().getWidth();
+//		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
 		mouseY=e.getY();  
 		graphPanel.draw();
-		prevX = graphPanel.X - mouseX + graphPanel.getWidth()/2;
-		prevY = graphPanel.Y - mouseY + graphPanel.getHeight()/2;
+		prevX = (int) (graphPanel.getOffset()[0] - mouseX + graphPanel.getWidth()/2);
+		prevY = (int) (graphPanel.getOffset()[1] - mouseY + graphPanel.getHeight()/2);
 	}
 	
 	@Override
 	public void MouseReleased(MouseEvent e) {
 		if (e.getComponent() == graphPanel) {
-			graphPanel.normalize(graphPanel.X, graphPanel.Y);
+			graphPanel.normalize(graphPanel.getOffset()[0], graphPanel.getOffset()[1]);
 		}
 	}
 	
