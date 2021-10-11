@@ -15,11 +15,11 @@ public class Window_Design {
 	//Window default properties
 	public static final int WIDTH = 400;
 	public static final int HEIGHT = 500;
-	public static final int borderWidth = 4;
-	public static WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
+	public static final int BORDERWIDTH = 4;
+	public static final WindowHandler window = new WindowHandler(WIDTH, HEIGHT, "Calculator");
 
 	//Colors
-	private static float alpha = 0.9f;
+	private static float alpha = 0.95f;
 	private static Color borderColor = new Color(41, 41, 41);
 	private static Color backgroundColor = new Color(41, 41, 41);
 	private static Color numbBtnColor = Color.black;
@@ -30,15 +30,15 @@ public class Window_Design {
 	private static Color foregroundColor = Color.white;
 	
 	//Panels
-	public static JPanel topBorderPanel = new JPanel();
-	public static JPanel topBorderBtnPanel = new JPanel();
-	public static JPanel topBorderLabelPanel = new JPanel();
+	public static JPanel windowTitlePanel = new JPanel();
+	public static JPanel windowControlPanel = new JPanel();
 	public static JPanel mainPanel = new JPanel();
-	public static JPanel topPanel = new JPanel();
-	public static JPanel bottomPanel = new JPanel();
+	public static JPanel IOPanel = new JPanel();
+	public static JPanel inputPanel = new JPanel();
 	public static JPanel topFuncPanel = new JPanel();
-	public static JPanel bottomFuncPanel = new JPanel();
 	public static JPanel btnPanel = new JPanel();
+	public static JPanel bottomFuncPanel = new JPanel();
+	public static GraphCanvas graphPanel;
 	
 	//Buttons
 	public static JButton[][] numbBtns = new JButton[4][3];
@@ -75,7 +75,7 @@ public class Window_Design {
 	//Listeners
 	private static MouseListener mouseListener = null;
 	private static MouseMotionListener mouseMotionListener = null;
-	
+		
 	//Get all the components ready for use and then show them.
 	public void InitializeComponents() {
 			
@@ -84,6 +84,7 @@ public class Window_Design {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
+				MouseReleased(e);
 			}
 			
 			@Override
@@ -126,7 +127,8 @@ public class Window_Design {
 		};
 		
 		//window
-		window.setLayout(new BorderLayout());
+		window.setLayout(new GridBagLayout());
+		GridBagConstraints windowC = new GridBagConstraints();
 		window.dispose();
 		window.setUndecorated(true);
 		window.setOpacity(alpha);
@@ -134,36 +136,31 @@ public class Window_Design {
 		window.setBackground(backgroundColor);
 
 		//topBorderPanel
-		topBorderPanel.setLayout(new GridBagLayout());
-		GridBagConstraints topBorderPanelC = new GridBagConstraints();
-		topBorderPanel.setBackground(borderColor);
+		windowTitlePanel.setLayout(new GridBagLayout());
+		GridBagConstraints windowTitlePanelC = new GridBagConstraints();
+		windowTitlePanel.setBackground(borderColor);
 		
 		//topBorderBtnPanel
-		topBorderBtnPanel.setLayout(new GridBagLayout());
+		windowControlPanel.setLayout(new GridBagLayout());
 		GridBagConstraints topBorderBtnPanelC = new GridBagConstraints();
-		topBorderBtnPanel.setBackground(borderColor);
-		
-		//topBorderLabelPanel
-		topBorderLabelPanel.setLayout(new GridBagLayout());
-		GridBagConstraints topBorderLabelPanelC = new GridBagConstraints();
-		topBorderLabelPanel.setBackground(borderColor);
+		windowControlPanel.setBackground(borderColor);
 		
 		//mainPanel
 		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints mainPanelC = new GridBagConstraints();
 		mainPanel.setBackground(backgroundColor);
 
-		//headPanel
-		topPanel.setLayout(new GridBagLayout());
-		GridBagConstraints topPanelC = new GridBagConstraints();
-		topPanel.setBackground(backgroundColor);
+		//IOPanel
+		IOPanel.setLayout(new GridBagLayout());
+		GridBagConstraints IOPanelC = new GridBagConstraints();
+		IOPanel.setBackground(backgroundColor);
 
-		//bottomPanel
-		bottomPanel.setLayout(new GridBagLayout());
-		GridBagConstraints bottomPanelC = new GridBagConstraints();
-		bottomPanel.setBackground(backgroundColor);
+		//inputPanel
+		inputPanel.setLayout(new GridBagLayout());
+		GridBagConstraints inputPanelC = new GridBagConstraints();
+		inputPanel.setBackground(backgroundColor);
 
-		//topPanel
+		//topFuncPanel
 		topFuncPanel.setLayout(new GridBagLayout());
 		GridBagConstraints topFuncPanelC = new GridBagConstraints();
 		topFuncPanel.setBackground(backgroundColor);
@@ -178,6 +175,8 @@ public class Window_Design {
 		GridBagConstraints btnPanelC = new GridBagConstraints();
 		btnPanel.setBackground(backgroundColor);
 
+		
+		
 		btnPanelC.weightx = 1f;
 		btnPanelC.weighty = 1f;
 		btnPanelC.ipadx = 30;
@@ -433,10 +432,10 @@ public class Window_Design {
 		textArea.setCaretColor(foregroundColor);
 		textArea.setLineWrap(true);
 		textArea.setBackground(fieldColor);
-		topPanelC.gridy = 0;
-		topPanelC.weighty = 1;
+		IOPanelC.gridy = 0;
+		IOPanelC.weighty = 1;
 
-		topPanelC.fill = GridBagConstraints.BOTH;
+		IOPanelC.fill = GridBagConstraints.BOTH;
 		//headPanelC.weightx = 1;
 		textAreaScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		textAreaScrollPane.setBackground(fieldColor);
@@ -465,7 +464,7 @@ public class Window_Design {
 			}
 		});
 		
-		topPanel.add(textAreaScrollPane, topPanelC);
+		IOPanel.add(textAreaScrollPane, IOPanelC);
 		
 		//textResult
 		textResult.setText("");
@@ -474,10 +473,10 @@ public class Window_Design {
 		textResult.setForeground(foregroundColor);
 		textResult.setBackground(fieldColor);
 		textResult.setEditable(false);
-		topPanelC.gridy = 1;
-		topPanelC.weightx = 1;
-		topPanelC.weighty = 0.5;
-		topPanelC.fill = GridBagConstraints.BOTH;
+		IOPanelC.gridy = 1;
+		IOPanelC.weightx = 1;
+		IOPanelC.weighty = 0.5;
+		IOPanelC.fill = GridBagConstraints.BOTH;
 
 		textResultScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		textResultScrollPane.setBackground(fieldColor);
@@ -486,7 +485,7 @@ public class Window_Design {
 		textResultScrollPane.setMinimumSize(new Dimension(100, 50));
 		textResultScrollPane.setPreferredSize(new Dimension(WIDTH, 50));
 		textResultScrollPane.setMaximumSize(new Dimension(WIDTH, 50));
-		topPanel.add(textResultScrollPane, topPanelC);
+		IOPanel.add(textResultScrollPane, IOPanelC);
 		
 		//topBorderBtnPanel content:
 		topBorderBtnPanelC.ipadx = 50;
@@ -501,7 +500,7 @@ public class Window_Design {
 		topBorderBtnPanelC.gridx = 2;
 		topBorderBtnPanelC.gridy = 0;
 
-		topBorderBtnPanel.add(closeBtn, topBorderBtnPanelC);
+		windowControlPanel.add(closeBtn, topBorderBtnPanelC);
 		closeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -518,7 +517,7 @@ public class Window_Design {
 		maximizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		maximizeBtn.setFocusable(false);
 		topBorderBtnPanelC.gridx = 1;
-		topBorderBtnPanel.add(maximizeBtn, topBorderBtnPanelC);
+		windowControlPanel.add(maximizeBtn, topBorderBtnPanelC);
 		maximizeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -535,7 +534,7 @@ public class Window_Design {
 		minimizeBtn.setBorder(BorderFactory.createLineBorder(backgroundColor));
 		minimizeBtn.setFocusable(false);
 		topBorderBtnPanelC.gridx = 0;
-		topBorderBtnPanel.add(minimizeBtn, topBorderBtnPanelC);
+		windowControlPanel.add(minimizeBtn, topBorderBtnPanelC);
 		minimizeBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -551,34 +550,25 @@ public class Window_Design {
 		windowTitleLabel.setBackground(borderColor);
 		//windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.pink));
 		windowTitleLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-		//windowTitleLabel.setBorder(BorderFactory.createLineBorder(Color.green));
 
-		topBorderLabelPanelC.anchor = GridBagConstraints.LINE_START;
-		topBorderLabelPanelC.fill = GridBagConstraints.VERTICAL;
-		topBorderLabelPanelC.weightx = 1;
-		topBorderLabelPanelC.weighty = 1;
-		topBorderLabelPanelC.gridx = 0;
-		//topBorderLabelPanel.setBorder(BorderFactory.createLineBorder(Color.red));
-		topBorderLabelPanel.add(windowTitleLabel, topBorderLabelPanelC);
-
-		
-		//topBorderLabelPanel
 		//topBorderPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
-		topBorderPanelC.fill = GridBagConstraints.BOTH;
-		topBorderPanelC.anchor = GridBagConstraints.LINE_START;
-		topBorderPanelC.weightx = 1;
-		topBorderPanelC.weighty = 0;
-		topBorderPanel.add(topBorderLabelPanel, topBorderPanelC);
+		windowTitlePanelC.fill = GridBagConstraints.BOTH;
+		windowTitlePanelC.anchor = GridBagConstraints.LINE_START;
+		windowTitlePanelC.weightx = 1;
+		windowTitlePanelC.weighty = 0;
+		windowTitlePanel.add(windowTitleLabel, windowTitlePanelC);
+		windowTitleLabel.addMouseListener(mouseListener);
+		windowTitleLabel.addMouseMotionListener(mouseMotionListener);
 		
 		//topBorderBtnPanel
 		//topBorderBtnPanel.setBorder(BorderFactory.createLineBorder(Color.pink));
-		topBorderBtnPanel.setBackground(borderColor);
+		windowControlPanel.setBackground(borderColor);
 		
-		topBorderPanelC.fill = GridBagConstraints.NONE;
-		topBorderPanelC.anchor = GridBagConstraints.LINE_END;
-		topBorderPanelC.weightx = 0;
-		topBorderPanelC.gridx = 1;
-		topBorderPanel.add(topBorderBtnPanel, topBorderPanelC);
+		windowTitlePanelC.fill = GridBagConstraints.NONE;
+		windowTitlePanelC.anchor = GridBagConstraints.LINE_END;
+		windowTitlePanelC.weightx = 0;
+		windowTitlePanelC.gridx = 1;
+		windowTitlePanel.add(windowControlPanel, windowTitlePanelC);
 		
 		//topFuncPanel
 		//topFuncPanel.setBorder(BorderFactory.createLineBorder(Color.red));
@@ -604,14 +594,14 @@ public class Window_Design {
 		//numbBtnPanel
 		//btnPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
 		//numbBtnPanel.setPreferredSize(new Dimension(WIDTH, 400));
-		bottomPanelC.gridx = 0;
-		bottomPanelC.gridy = 3;
-		bottomPanelC.gridwidth = 1;
-		bottomPanelC.gridheight = 4;
-		bottomPanelC.weightx = 1.0;
-		bottomPanelC.weighty = 1.0;
-		bottomPanelC.fill = GridBagConstraints.BOTH;
-		bottomPanel.add(btnPanel, bottomPanelC);
+		inputPanelC.gridx = 0;
+		inputPanelC.gridy = 3;
+		inputPanelC.gridwidth = 1;
+		inputPanelC.gridheight = 4;
+		inputPanelC.weightx = 1.0;
+		inputPanelC.weighty = 1.0;
+		inputPanelC.fill = GridBagConstraints.BOTH;
+		inputPanel.add(btnPanel, inputPanelC);
 		
 		//topBorderPanel
 		
@@ -624,9 +614,9 @@ public class Window_Design {
 		mainPanelC.weighty = 0;
 		mainPanelC.fill = GridBagConstraints.HORIZONTAL;
 		mainPanelC.anchor = GridBagConstraints.CENTER;
-		mainPanel.add(topBorderPanel, mainPanelC);
+		mainPanel.add(windowTitlePanel, mainPanelC);
 
-		//topPanel
+		//IOPanel
 		mainPanelC.gridx = 0;
 		mainPanelC.gridy = 1;
 		mainPanelC.gridwidth = 1;
@@ -634,10 +624,10 @@ public class Window_Design {
 		mainPanelC.weightx = 1.0;
 		mainPanelC.weighty = 0.6;
 		mainPanelC.fill = GridBagConstraints.BOTH;
-		//topPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
-		mainPanel.add(topPanel, mainPanelC);
+		//IOPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
+		mainPanel.add(IOPanel, mainPanelC);
 		
-		//bottomPanel
+		//inputPanel
 		mainPanelC.gridx = 0;
 		mainPanelC.gridy = 2;
 		mainPanelC.gridwidth = 1;
@@ -645,37 +635,67 @@ public class Window_Design {
 		mainPanelC.weightx = 1.0;
 		mainPanelC.weighty = 0.4;
 		mainPanelC.fill = GridBagConstraints.BOTH;
-		//bottomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		mainPanel.add(bottomPanel, mainPanelC);
+		//inputPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		mainPanel.add(inputPanel, mainPanelC);
+		
+		
+		//window
+		windowC.gridx = 0;
+		windowC.weightx = 0.1;
+		windowC.weighty = 1;
+		windowC.fill = GridBagConstraints.BOTH;
+		//mainPanel
+		mainPanel.setSize(new Dimension(WIDTH, HEIGHT));
+		window.add(mainPanel, windowC);
+		
+		//graphPanel
+		//graphPanel
+		graphPanel = new GraphCanvas(WIDTH+300, HEIGHT);
+		graphPanel.setLayout(new BorderLayout());
+		graphPanel.setBackground(Color.white);
+		windowC.gridx = 1;
+		windowC.weightx = 0.9;
+		windowC.weighty = 1;
+		window.add(graphPanel, windowC);
+		graphPanel.addMouseListener(mouseListener);
+		graphPanel.addMouseMotionListener(mouseMotionListener);
+		//graphPanel.draw(graphPanel.getGraphics());
+
 
 		//windowC.fill = GridBagConstraints.BOTH;
 		//windowC.weightx = 1;
 		//mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT)); Needed?
-				
-		topBorderLabelPanel.addMouseListener(mouseListener);
-		
-		topBorderLabelPanel.addMouseMotionListener(mouseMotionListener);
 		
 		//mainPanel.setBorder(BorderFactory.createLineBorder(Color.orange));
-		window.add(mainPanel, BorderLayout.CENTER);
 		window.getContentPane().addMouseListener(mouseListener);
+
 		window.getContentPane().addMouseMotionListener(mouseMotionListener);
-		window.getRootPane().setBorder(BorderFactory.createMatteBorder(borderWidth, borderWidth, borderWidth, borderWidth, backgroundColor));
+		window.getRootPane().setBorder(BorderFactory.createEmptyBorder(BORDERWIDTH, BORDERWIDTH, BORDERWIDTH, BORDERWIDTH));
 		
 		window.getRootPane().addMouseListener(mouseListener);
 		
 		window.getRootPane().addMouseMotionListener(mouseMotionListener);
 		//window.pack();
-		showAdvanced(false);
+		//showAdvanced(false);
+		checkBox.doClick();
 		window.Show();
 	}
 	
 	private void showAdvanced(boolean isChecked) {
 		openPBtn.setVisible(isChecked);
 		closePBtn.setVisible(isChecked);
+		
 		if (isChecked) {
+			graphPanel.setVisible(true);
+			//mainPanel.setPreferredSize(new Dimension(mainPanel.getWidth() + graphPanel.getWidth(), mainPanel.getHeight()));
+			window.setSize(new Dimension(window.getWidth() + graphPanel.getWidth(), window.getHeight()));
+
 			textArea.setCaretColor(Color.orange);
 		}else {
+			graphPanel.setVisible(false);
+			//mainPanel.setPreferredSize(new Dimension(mainPanel.getWidth() - graphPanel.getWidth(), mainPanel.getHeight()));
+			window.setSize(new Dimension(window.getWidth() - graphPanel.getWidth(), window.getHeight()));
+
 			textArea.setCaretColor(foregroundColor);
 		}
 	}
@@ -700,6 +720,7 @@ public class Window_Design {
 	public void minimizeBtnClick() {}
 	public void maximizeBtnClick() {}
 	public void MousePressed(MouseEvent e) {}                              
+	public void MouseReleased(MouseEvent e) {}                              
 	public void MouseDragged(MouseEvent e) {}
 	public void MouseMoved(MouseEvent e) {}  
 	

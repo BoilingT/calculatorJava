@@ -11,6 +11,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import com.sun.management.VMOption.Origin;
+
 public class Window extends Window_Design{
 	
 	private static String latestOperation = "";
@@ -19,11 +21,12 @@ public class Window extends Window_Design{
 	private static double b = 0;
 	private static double result = 0;
 	private static Parser parser = new Parser();
+	private int prevX, prevY;
 	private int mouseX;
 	private int mouseY;
 	private int width;
 	private int height;
-	private int margin = borderWidth;
+	private int margin = BORDERWIDTH;
 	
 	public void Init() {
 //		ArrayList<Token> tokens = Token.tokenize("sin(30)");
@@ -42,25 +45,31 @@ public class Window extends Window_Design{
 	@Override
 	public void MouseDragged(MouseEvent e) {
 		Component component = e.getComponent();
-		int x=e.getXOnScreen();
-		int y=e.getYOnScreen();
-		if (component == topBorderLabelPanel) {
+		final int x=e.getXOnScreen();
+		final int y=e.getYOnScreen();
+		if (component == windowTitleLabel) {
 			
 			window.setLocation(x-mouseX-margin, y-mouseY-margin);
 			
 		}else if (component == window.getRootPane()) {
-			int diffx = x - (int) (window.getLocation().getX() + width);
-			int diffy = y - (int) (window.getLocation().getY() + height);
-			int w = width + diffx;
-			int h = height + diffy;
+			int diffx = x - (int) (window.getLocation().getX());
+			int diffy = y - (int) (window.getLocation().getY());
+			int w =  diffx;
+			int h = diffy;
+			graphPanel.draw();
 			window.setSize(new Dimension(w, h));
+		}else if (component == graphPanel){
+			int X = prevX + (e.getX() - graphPanel.getWidth()/2);
+			int Y = prevY + (e.getY() - graphPanel.getHeight()/2);
+			//System.out.println("x: " + X + "\n y: " + Y);
+			graphPanel.draw(X, Y);
 		}
 	}
 	
 	@Override
 	public void MouseMoved(MouseEvent e) {
 		Component component = e.getComponent();
-		if (component == topBorderLabelPanel) {
+		if (component == windowTitleLabel) {
 			//component.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 
 		}else if (component == window.getRootPane()) {
@@ -103,7 +112,16 @@ public class Window extends Window_Design{
 		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
 		mouseY=e.getY();  
-
+		graphPanel.draw();
+		prevX = graphPanel.X - mouseX + graphPanel.getWidth()/2;
+		prevY = graphPanel.Y - mouseY + graphPanel.getHeight()/2;
+	}
+	
+	@Override
+	public void MouseReleased(MouseEvent e) {
+		if (e.getComponent() == graphPanel) {
+			graphPanel.normalize(graphPanel.X, graphPanel.Y);
+		}
 	}
 	
 	@Override
@@ -229,7 +247,8 @@ public class Window extends Window_Design{
 		parser.setDegree(!parser.isDegree());
 		calcBtnClicked();
 	}
-		
+	
+	@SuppressWarnings("unused")
 	@Override
 	public void calcBtnClicked() {
 		
@@ -241,7 +260,7 @@ public class Window extends Window_Design{
 			
 			System.out.println("new text: " + inputText);
 			
-			if (checkBox.isSelected()) {
+			if (false) {
 				
 				try {
 					ParsingThread task = new ParsingThread(parser, inputText, textResult);
