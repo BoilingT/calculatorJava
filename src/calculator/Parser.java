@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Parser {
 	private boolean degree = true;
+	private double value;
 	public static double calculateExpression(String exp) {
 		double result =  0;
 		
@@ -25,10 +26,10 @@ public class Parser {
 	}
 
 	public double parseExpression(ArrayList<Token> tokens) throws Exception{
-		for (Token token : tokens) {
-			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
-		}
-		System.out.println();
+//		for (Token token : tokens) {
+//			System.out.print("[" + token.value + ", " + token.type.toString() + "]");
+//		}
+//		System.out.println();
 		double result = parseTerm(tokens);
 		
 		Token token = tokens.get(0);
@@ -41,7 +42,7 @@ public class Parser {
 				result -= term;
 			}
 			token = tokens.get(0);
-			System.out.println("Token value: " + token.value);
+//			System.out.println("Token value: " + token.value);
 		}
 		
 		return result;
@@ -58,11 +59,11 @@ public class Parser {
 			if (token.isSymbol("*")) {
 				System.out.print(result + " * " + term);
 				result *= term;
-				System.out.println(" = " + result);
+//				System.out.println(" = " + result);
 			} else {
 				System.out.print(result + " / " + term);
 				result /= term;
-				System.out.println(" = " + result);
+//				System.out.println(" = " + result);
 			}
 			token = tokens.get(0);
 		}
@@ -77,11 +78,11 @@ public class Parser {
 			tokens.remove(0);
 		}
 		double result = parseItem(tokens);
-		System.out.println("res: " + result);
+//		System.out.println("res: " + result);
 		if (tokens.get(0).isSymbol("^")) {
 			tokens.remove(0);
 			double factor = parseFactor(tokens);
-			System.out.println("Factor: " + factor);
+//			System.out.println("Factor: " + factor);
 			if((factor < 1 && factor > -1 && factor != 0) && result < 0) {
 				throw new Exception("Imaginary");
 			}
@@ -103,7 +104,7 @@ public class Parser {
 		if (token.isFunc()) {
 			return parseFunction(token, tokens);
 		}
-		System.out.println("Tok: " + token.value.toString());
+//		System.out.println("Tok: " + token.value.toString());
 		if (!token.isSymbol("(")) {
 			throw new Exception("...");				
 		}
@@ -127,17 +128,17 @@ public class Parser {
 	}
 	
 	public double parseFunction(Token funcToken, ArrayList<Token> tokens) throws Exception{
-		System.out.println("Previous token value: " + tokens.get(0).value.toString());
+//		System.out.println("Previous token value: " + tokens.get(0).value.toString());
 		if(tokens.get(0).isStop()) {throw new Exception("Expected: '('");}
 		tokens.remove(0);
-		System.out.println("Token value: " + tokens.get(0).value.toString());
+//		System.out.println("Token value: " + tokens.get(0).value.toString());
 		double value = parseExpression(tokens);
 		if (!tokens.get(0).isSymbol(")")) {
 			throw new Exception("Expected: ')'");
 		}
 		tokens.remove(0);
-		System.out.println();
-		System.out.println("func expression: " + value);
+//		System.out.println();
+//		System.out.println("func expression: " + value);
 		
 		if (funcToken.isFunc("sin") || funcToken.isFunc("cos") || funcToken.isFunc("tan")) {
 			double angle = degree ? Math.toRadians(value) : value;
@@ -158,6 +159,11 @@ public class Parser {
 	
 	public double parse(String expression) throws Exception{
 		return parseExpression(Token.tokenize(expression));
+	}
+	
+	public double parse(String expression, String var, double value) throws Exception{
+		this.value = value;
+		return parseExpression(Token.tokenize(expression.replace(var, String.valueOf(value))));
 	}
 	
 	public static String[] split(String expression, char regex) {

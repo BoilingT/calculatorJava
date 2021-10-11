@@ -11,16 +11,13 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import com.sun.management.VMOption.Origin;
-
 public class Window extends Window_Design{
 	
+	private static Parser parser = new Parser();
 	private static String latestOperation = "";
-	
 	private static double a = 0;
 	private static double b = 0;
 	private static double result = 0;
-	private static Parser parser = new Parser();
 	private int prevX, prevY;
 	private int mouseX;
 	private int mouseY;
@@ -36,6 +33,8 @@ public class Window extends Window_Design{
 //		
 		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
+		graphPanel.addGraph(new Graph("x", parser, 10, graphPanel.getWidth()));
+		graphPanel.drawGraph(0);
 	}
 	
 	public void set(int ints) {
@@ -260,7 +259,7 @@ public class Window extends Window_Design{
 			
 			System.out.println("new text: " + inputText);
 			
-			if (false) {
+			if (true) {
 				
 				try {
 					ParsingThread task = new ParsingThread(parser, inputText, textResult);

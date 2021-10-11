@@ -75,7 +75,7 @@ public class Window_Design {
 	//Listeners
 	private static MouseListener mouseListener = null;
 	private static MouseMotionListener mouseMotionListener = null;
-		
+			
 	//Get all the components ready for use and then show them.
 	public void InitializeComponents() {
 			
