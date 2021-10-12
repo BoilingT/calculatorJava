@@ -33,7 +33,8 @@ public class Window extends Window_Design{
 		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
 		graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.5f, graphPanel.getWidth()));
-		graphPanel.addGraph(new Graph("(x)^2", parser, 0.5d, graphPanel.getWidth()));
+		graphPanel.addGraph(new Graph("(x)^2", parser, 0.2d, graphPanel.getWidth()));
+		graphPanel.draw();
 	}
 	
 	@Override
@@ -114,7 +115,7 @@ public class Window extends Window_Design{
 	@Override
 	public void MouseReleased(MouseEvent e) {
 		if (e.getComponent() == graphPanel) {
-			graphPanel.normalize(graphPanel.getOffset()[0], graphPanel.getOffset()[1]);
+			//graphPanel.normalize(graphPanel.getOffset()[0], graphPanel.getOffset()[1]);
 		}
 	}
 	
