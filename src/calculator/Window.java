@@ -32,8 +32,9 @@ public class Window extends Window_Design{
 //		
 		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
-		graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.5f, graphPanel.getWidth()));
-		graphPanel.addGraph(new Graph("(x)^2", parser, 0.2d, graphPanel.getWidth()));
+		graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth()));
+		graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth()));
+		//graphPanel.addGraph(new Graph("(x)^e", parser, 0.1f, graphPanel.getWidth()));
 		graphPanel.draw();
 	}
 	

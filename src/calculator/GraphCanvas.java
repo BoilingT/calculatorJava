@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.*;
 import java.awt.geom.Arc2D.Double;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -36,11 +37,11 @@ public class GraphCanvas extends JPanel{
 	}
 		
 	public int getColumns() {
-		return (int) (width/spacingX)*5;
+		return (int) (width/spacingX)*1;
 	}
 	
 	public int getRows() {
-		return (int) (height/spacingY)*5;
+		return (int) (height/spacingY)*1;
 	}
 	
 	public double[] getOffset() {
@@ -48,31 +49,44 @@ public class GraphCanvas extends JPanel{
 	}
 	
 	public void draw(int x, int y) {
-		this.height = this.getHeight();
-		this.width = this.getWidth();
-		gridOffsetX = x; gridOffsetY = y;
-		originX = width/2+x;
-		originY = height/2+y;
-		repaint();
+		if (this.isVisible()) {
+			this.height = this.getHeight();
+			this.width = this.getWidth();
+			gridOffsetX = x; gridOffsetY = y;
+			originX = width/2+x;
+			originY = height/2+y;
+			repaint();			
+		}
 	}
 	
 	public void draw() {
-		this.height = this.getHeight();
-		this.width = this.getWidth();
-		originX = width/2+gridOffsetX;
-		originY = height/2+gridOffsetY;
-		repaint();
+		if (this.isVisible()) {
+			this.height = this.getHeight();
+			this.width = this.getWidth();
+			originX = width/2+gridOffsetX;
+			originY = height/2+gridOffsetY;
+			repaint();
+		}
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(
+			    RenderingHints.KEY_ANTIALIASING,
+			    RenderingHints.VALUE_ANTIALIAS_ON);
 		this.height = this.getHeight();
 		this.width = this.getWidth();
 		//origin = new Point(width/2, height/2);
 		g2.clearRect(0, 0, width, height);
 		g2.drawLine(0, 0, width, height);
 		g2.drawLine(width, 0, 0, height);
-		createGrid(g2, this.width, this.height);
+//		for (int i = -1; i <= 1; i++) {
+//			for (int j = -1; j <= 1; j++) {
+//				createGrid(g2, originX + this.width * i, originY + (this.height+spacingY) * j, this.width, this.height);
+//			}
+//		}
+		createGrid(g2, originX, originY, this.width*3, this.height*3, 3, 3);
+		//createGrid(g2, originX + this.width, originY, this.width, this.height);
 		g2.setColor(Color.BLUE);
 		Arc2D.Double arc = new Arc2D.Double(Arc2D.PIE);
 		arc.setFrame(originX-5, originY-5, 10, 10);
@@ -98,21 +112,21 @@ public class GraphCanvas extends JPanel{
 		}
 	}
 	
-	private void createGrid(Graphics2D g, int width, int height) {
-		int rows = getRows();
-		int cols = getColumns();
+	private void createGrid(Graphics2D g, double originX, double originY, int width, int height, int scaleX, int scaleY) {
+		int rows = getRows() * scaleY;
+		int cols = getColumns() * scaleX;
 		//System.out.println("X: " + X);
 		//System.out.println("Y: " + Y);
 		g.setColor(Color.BLACK);
 		g.setColor(new Color(0, 0, 0, 0.3f));
 		
-		for (int x = -cols; x <= cols; x++) {
-			int tempx = x*spacingX;
+		for (double x = -cols/2; x <= cols/2; x++) {
+			double tempx = x*spacingX;
 			g.draw(new Line2D.Double(originX + tempx, 0, originX + tempx, height));
 		}
 		
-		for (int y = -rows/2; y <= rows/2; y++) { //Rows
-			int tempy = y*spacingY;
+		for (double y = -rows/2; y <= rows/2; y++) { //Rows
+			double tempy = y*spacingY;
 			g.draw(new Line2D.Double(0, originY + tempy, width, originY + tempy));
 		}
 		

@@ -78,6 +78,8 @@ public class Parser {
 			tokens.remove(0);
 		}
 		double result = parseItem(tokens);
+		//System.out.println("f: " + result);
+
 //		System.out.println("res: " + result);
 		if (tokens.get(0).isSymbol("^")) {
 			tokens.remove(0);
