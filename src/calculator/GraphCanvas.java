@@ -25,6 +25,7 @@ public class GraphCanvas extends JPanel{
 	private double originY = 0;
 	private double graphOffsetX = 0;
 	private double graphOffsetY = 0;
+	private double limit = width/2;
 	private ArrayList<Graph> Graphs = new ArrayList<Graph>();
 	
 	public GraphCanvas(int width, int height) {
@@ -48,13 +49,20 @@ public class GraphCanvas extends JPanel{
 		return new double[]{gridOffsetX, gridOffsetY};
 	}
 	
-	public void draw(int x, int y) {
+	public void draw(double x, double y) {
 		if (this.isVisible()) {
 			this.height = this.getHeight();
 			this.width = this.getWidth();
 			gridOffsetX = x; gridOffsetY = y;
 			originX = width/2+x;
 			originY = height/2+y;
+//			if (originX < -limit) {
+//				limit ++;
+//			}else if(originX > limit)limit--;
+//			for (Graph graph : Graphs) {
+//				graph.calculatePoints((-width-limit)/2/spacingX, (width-limit)/2/spacingX, 0);
+//			}
+//			System.out.println("limit: " + -limit);
 			repaint();			
 		}
 	}
@@ -123,21 +131,43 @@ public class GraphCanvas extends JPanel{
 		for (double x = -cols/2; x <= cols/2; x++) {
 			double tempx = x*spacingX;
 			g.draw(new Line2D.Double(originX + tempx, 0, originX + tempx, height));
+			g.drawString(String.format("%.0f" ,x - graphOffsetX/spacingX), (float) (originX + tempx), (float) (originY + graphOffsetY + g.getFontMetrics().getHeight()));
+
 		}
 		
 		for (double y = -rows/2; y <= rows/2; y++) { //Rows
 			double tempy = y*spacingY;
 			g.draw(new Line2D.Double(0, originY + tempy, width, originY + tempy));
+			String yNumb = String.format("%.0f" ,-y + graphOffsetY/spacingY);
+			if(!yNumb.equals("0")) g.drawString(yNumb, (float) (originX + graphOffsetX - 5 - g.getFontMetrics().charsWidth(yNumb.toCharArray(), 0, yNumb.length())), (float) (originY + tempy));
 		}
+		
+		g.setStroke(new BasicStroke(1));
+		g.setColor(Color.black);
+		g.draw(new Line2D.Double(0, originY + graphOffsetY, width, originY + graphOffsetY)); //Horizontal
+		System.out.println("Graphoffsety: " + graphOffsetY);
+		g.draw(new Line2D.Double(originX + graphOffsetX, 0, originX + graphOffsetX, height)); //Vertical
+		
+		
 		
 		//g.setColor(Color.BLUE);
 		//g.fillArc(origin.x-5, origin.y-5, 10, 10, 0, 360);
 	}
 	
 	public void normalize(double x, double y) {
-		double  nX = (x/(float)spacingX) - Math.round(x/spacingX);
-		double nY = (y/(float)spacingY) - Math.round(y/spacingY);
-		draw((int)(nX*spacingX), (int)(nY*spacingY));
+//		double  nX = (x/(float)spacingX) - Math.round(x/spacingX);
+//		double nY = (y/(float)spacingY) - Math.round(y/spacingY);
+		graphOffsetX += gridOffsetX;
+		graphOffsetY += gridOffsetY;
+		//draw((nX*spacingX), (nY*spacingY));
+		double[] centerCoord = getCenterCoord();
+		draw();
+		//draw(centerCoord[0], centerCoord[1]);
+	}
+	
+	public double[] getCenterCoord() {
+		
+		return new double[] {(width/2 - originX)/spacingX, (height/2 - originY)/spacingY};
 	}
 
 	private Point moveGraphs(int offsetX, int offsetY) {
