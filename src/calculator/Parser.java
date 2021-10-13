@@ -165,7 +165,7 @@ public class Parser {
 	
 	public double parse(String expression, String var, double value) throws Exception{
 		this.value = value;
-		return parseExpression(Token.tokenize(expression.replace(var, String.valueOf(value))));
+		return parseExpression(Token.tokenize(expression.replace(var, "(" + String.valueOf(value) + ")")));
 	}
 	
 	public static String[] split(String expression, char regex) {

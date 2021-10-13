@@ -128,7 +128,7 @@ public class GraphCanvas extends JPanel{
 		g.setColor(Color.BLACK);
 		g.setColor(new Color(0, 0, 0, 0.3f));
 		
-		for (double x = -cols/2; x <= cols/2; x++) {
+		for (double x = -cols/2; x <= cols/2; x++) { //Cols
 			double tempx = x*spacingX;
 			g.draw(new Line2D.Double(originX + tempx, 0, originX + tempx, height));
 			g.drawString(String.format("%.0f" ,x - graphOffsetX/spacingX), (float) (originX + tempx), (float) (originY + graphOffsetY + g.getFontMetrics().getHeight()));
@@ -145,7 +145,7 @@ public class GraphCanvas extends JPanel{
 		g.setStroke(new BasicStroke(1));
 		g.setColor(Color.black);
 		g.draw(new Line2D.Double(0, originY + graphOffsetY, width, originY + graphOffsetY)); //Horizontal
-		System.out.println("Graphoffsety: " + graphOffsetY);
+		//System.out.println("Graphoffsety: " + graphOffsetY);
 		g.draw(new Line2D.Double(originX + graphOffsetX, 0, originX + graphOffsetX, height)); //Vertical
 		
 		
@@ -157,11 +157,15 @@ public class GraphCanvas extends JPanel{
 	public void normalize(double x, double y) {
 //		double  nX = (x/(float)spacingX) - Math.round(x/spacingX);
 //		double nY = (y/(float)spacingY) - Math.round(y/spacingY);
-		graphOffsetX += gridOffsetX;
-		graphOffsetY += gridOffsetY;
+		graphOffsetX = gridOffsetX;
+		//graphOffsetY = gridOffsetY;
+		//draw(0, 0);
 		//draw((nX*spacingX), (nY*spacingY));
 		double[] centerCoord = getCenterCoord();
-		draw();
+		double  nX = (gridOffsetX/(float)spacingX) - Math.round(gridOffsetX/spacingX);
+		double nY = (gridOffsetY/(float)spacingY) - Math.round(gridOffsetY/spacingY);
+		draw(gridOffsetX, gridOffsetY);
+		//draw(nX, nY);
 		//draw(centerCoord[0], centerCoord[1]);
 	}
 	

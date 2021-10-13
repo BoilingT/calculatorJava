@@ -32,8 +32,9 @@ public class Window extends Window_Design{
 //		
 		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
-		graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
-		graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
+		//graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
+		//graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
+		graphPanel.addGraph(new Graph("x^3-4.5x^2+11", parser, 0.1f, graphPanel.getWidth(), 0));
 		//graphPanel.addGraph(new Graph("(x)^e", parser, 0.1f, graphPanel.getWidth()));
 		graphPanel.draw();
 	}
@@ -107,8 +108,8 @@ public class Window extends Window_Design{
 //		width = (int) window.getBounds().getWidth();
 //		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
-		mouseY=e.getY();  
-		graphPanel.draw();
+		mouseY=e.getY(); 
+		//graphPanel.draw();
 		prevX = (int) (graphPanel.getOffset()[0] - mouseX + graphPanel.getWidth()/2);
 		prevY = (int) (graphPanel.getOffset()[1] - mouseY + graphPanel.getHeight()/2);
 	}
