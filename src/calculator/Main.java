@@ -6,5 +6,4 @@ public class Main extends Window_Design{
 		Window Application = new Window();
 		Application.Init();
 	}
-
 }

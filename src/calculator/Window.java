@@ -23,9 +23,9 @@ public class Window extends Window_Design{
 		InitializeComponents();
 		//graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
 		//graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
-		graphPanel.addGraph(new Graph("x^3-4.5x^2+11", parser, 0.1f, graphPanel.getWidth(), 0));
-		graphPanel.addGraph(new Graph("x^e", parser, 0.1f, graphPanel.getWidth(), 0));
-		graphPanel.draw();
+		graphPanel.addGraph(new Graph("x^2", parser, 0.1f, graphPanel.getWidth(), 0));
+		//graphPanel.addGraph(new Graph("x^e", parser, 0.1f, graphPanel.getWidth(), 0));
+		graphPanel.draw(0, 0);
 	}
 	
 	@Override
@@ -42,11 +42,10 @@ public class Window extends Window_Design{
 			int diffy = y - (int) (window.getLocation().getY());
 			int w =  diffx;
 			int h = diffy;
-			graphPanel.draw();
 			window.setSize(new Dimension(w, h));
 		}else if (component == graphPanel){
-			int X = prevX + (e.getX() - graphPanel.getWidth()/2);
-			int Y = prevY + (e.getY() - graphPanel.getHeight()/2);
+			int X = prevX + (e.getX() - graphPanel.getWidth());
+			int Y = prevY + (e.getY() - graphPanel.getHeight());
 			//System.out.println("x: " + X + "\n y: " + Y);
 			graphPanel.draw(X, Y);
 		}
@@ -97,8 +96,7 @@ public class Window extends Window_Design{
 //		width = (int) window.getBounds().getWidth();
 //		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
-		mouseY=e.getY(); 
-		//graphPanel.draw();
+		mouseY=e.getY();
 		prevX = (int) (graphPanel.getOffset()[0] - mouseX + graphPanel.getWidth()/2);
 		prevY = (int) (graphPanel.getOffset()[1] - mouseY + graphPanel.getHeight()/2);
 	}
@@ -106,7 +104,7 @@ public class Window extends Window_Design{
 	@Override
 	public void MouseReleased(MouseEvent e) {
 		if (e.getComponent() == graphPanel) {
-			graphPanel.normalize(graphPanel.getOffset()[0], graphPanel.getOffset()[1]);
+			graphPanel.normalize();
 		}
 	}
 	
@@ -221,20 +219,25 @@ public class Window extends Window_Design{
 	public void calcBtnClicked() {
 		
 		String inputText = textArea.getText().trim();
-		if (inputText.length() > 0) {
+		if(!inputText.contains("x")) {
+			if(!calcBtn.getText().equals("=")) calcBtn.setText("=");
 			
-			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^(2)");
+			if (inputText.length() > 0) {
+				System.out.println("text: " + inputText);
+				inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^(2)");
+				
+				System.out.println("new text: " + inputText);
 			
-			System.out.println("new text: " + inputText);
-			
-			try {
-				ParsingThread task = new ParsingThread(parser, inputText, textResult);
-				Thread thread = new Thread(task);
-				thread.start();					
-			}catch (Exception e) {
-				return;
+				try {
+					ParsingThread task = new ParsingThread(parser, inputText, textResult);
+					Thread thread = new Thread(task);
+					thread.start();					
+				}catch (Exception e) {
+					return;
+				}				
 			}
+		}else {
+			calcBtn.setText("Add func");
 		}
 	}
 }

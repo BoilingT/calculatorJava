@@ -105,7 +105,6 @@ public class Token{
 	public static ArrayList<Token> tokenize(String expression) {
 		ArrayList<Token> tokens = new ArrayList<>();
 		
-		System.out.println("Expression: \"" + expression + "\" Length: " + expression.length());
 		for (int i = 0; i < expression.length(); i++) { //Go through each character in the expression.
 			char Char = expression.charAt(i); //Save the current character in a variable for easier use.
 			if (Char != ' ') { //Don't parse empty spaces, they will just be ignored.

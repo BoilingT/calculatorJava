@@ -19,7 +19,7 @@ public class Graph {
 	}
 	
 	public void calculatePoints(double start, double end, double offsetX) {
-		System.out.println("start: " + start/gap + " end: " + end/gap);
+		//System.out.println("start: " + start/gap + " end: " + end/gap);
 		if (Points.size() > 0) {
 			Points.clear();			
 		}
@@ -29,7 +29,7 @@ public class Graph {
 				i = Math.floor(i * 1000)/1000;
 				parsedValue = parser.parse(getFormula(), "x", i+offsetX);
 				Points.add(new double[] {i, parsedValue});
-				System.out.println("\nX: " + i+offsetX + "\nY: " + parsedValue);
+				//System.out.println("\nX: " + i+offsetX + "\nY: " + parsedValue);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
