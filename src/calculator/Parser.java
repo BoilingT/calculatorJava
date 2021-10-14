@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Parser {
 	private boolean degree = true;
 	
+	//Set wether angles should be calculated in degrees or radians
 	public void setDegree(boolean state) {
 		degree = state;
 	}
@@ -13,6 +14,7 @@ public class Parser {
 		return degree;
 	}
 
+	//This does it all, it tries to add or subtract the given tokens but to make sure there are just terms it parses them.
 	public double parseExpression(ArrayList<Token> tokens) throws Exception{
 		double result = parseTerm(tokens);
 		
@@ -31,6 +33,7 @@ public class Parser {
 		return result;
 	}
 	
+	//Returns a term from dividing or multiplying two values from the given token list.
 	public double parseTerm(ArrayList<Token> tokens) throws Exception{
 		double result = parseFactor(tokens);
 		
@@ -52,6 +55,7 @@ public class Parser {
 		return result;
 	}
 	
+	//Returns as a result a factor from converting the given list into numbers, trig functions, powers, etc.
 	public double parseFactor(ArrayList<Token> tokens) throws Exception{
 		Token token = tokens.get(0);
 		double sign = token.isSymbol("-") ? -1 : 1;
@@ -71,6 +75,7 @@ public class Parser {
 		return result * sign;
 	}
 	
+	//Returns a number that has been processed by functions.
 	public double parseItem(ArrayList<Token> tokens) throws Exception {
 		Token token = tokens.get(0);
 		tokens.remove(0);
@@ -95,6 +100,7 @@ public class Parser {
 		return expression;
 	}
 	
+	//Returns variable constants.
 	public double parseIdentifier(Token identifier) throws Exception {
 		String tokenValue = identifier.value.toString();
 		if (tokenValue.equals("e")) {
@@ -106,6 +112,7 @@ public class Parser {
 		}
 	}
 	
+	//Returns the value from processing certain values with functions.
 	public double parseFunction(Token funcToken, ArrayList<Token> tokens) throws Exception{
 		if(tokens.get(0).isStop()) {throw new Exception("Expected: '('");}
 		tokens.remove(0);
@@ -132,11 +139,15 @@ public class Parser {
 		return 0;
 	}
 	
+	//Start the parsing process
 	public double parse(String expression) throws Exception{
 		return parseExpression(Token.tokenize(expression));
 	}
 	
+	//Start the parsing process but with a variable
 	public double parse(String expression, String var, double value) throws Exception{
+		//If there is a variable inside the expression, replace it with the given value.
+		//eg: x^2, x=1 <=> x^2=1^2=1
 		return parseExpression(Token.tokenize(expression.replace(var, "(" + String.valueOf(value) + ")")));
 	}
 }

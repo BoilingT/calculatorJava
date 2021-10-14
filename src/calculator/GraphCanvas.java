@@ -94,8 +94,8 @@ public class GraphCanvas extends JPanel{
 				double y1 = prevPoint[1] * spacingY - graphOffsetY - gridOffsetY;
 				double x2 = point[0] * spacingX + graphOffsetX + gridOffsetX;
 				double y2 = point[1] * spacingY - graphOffsetY - gridOffsetY;
-				//if(prevPoint[1]*spacingY > this.getHeight()/2) continue;
-				//if(point[1]*spacingY > this.getHeight()/2) continue;
+				if(prevPoint[1]*spacingY - gridOffsetY > this.getHeight()/2) continue;
+				if(point[1]*spacingY - gridOffsetY > this.getHeight()/2) continue;
 
 				g2.setStroke(new BasicStroke(2));
 				g2.draw(new Line2D.Double(originOffsetX + x1, originOffsetY - y1, originOffsetX + x2, originOffsetY - y2));

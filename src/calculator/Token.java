@@ -6,10 +6,10 @@ public class Token{
 	
 	public Type type = null;
 	public Object value = null;
-	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'};
-	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs", "log10", "log", "lg", "ln"};
+	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'}; //Symbols that can be used.
+	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs", "log10", "log", "lg", "ln"}; //Functions that can be used.
 	
-	public static enum Type{
+	public static enum Type{ //An easy way of defining your own types, makes it easier to define certain Token types.
 		Symbol,
 		Identifier,
 		Number,

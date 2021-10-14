@@ -30,7 +30,7 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void MouseDragged(MouseEvent e) {
-		Component component = e.getComponent();
+		Component component = e.getComponent(); //The component that raised this event.
 		final int x=e.getXOnScreen();
 		final int y=e.getYOnScreen();
 		if (component == windowTitleLabel) {
@@ -38,11 +38,9 @@ public class Window extends Window_Design{
 			window.setLocation(x-mouseX-margin, y-mouseY-margin);
 			
 		}else if (component == window.getRootPane()) {
-			int diffx = x - (int) (window.getLocation().getX());
-			int diffy = y - (int) (window.getLocation().getY());
-			int w =  diffx;
-			int h = diffy;
-			window.setSize(new Dimension(w, h));
+			int diffx = x - (int) (window.getLocation().getX()); //The mouse distance travelled in x
+			int diffy = y - (int) (window.getLocation().getY()); //The mouse distance travelled in y
+			window.setSize(new Dimension(diffx, diffy));
 		}else if (component == graphPanel){
 			int X = prevX + (e.getX() - graphPanel.getWidth());
 			int Y = prevY + (e.getY() - graphPanel.getHeight());
@@ -217,21 +215,21 @@ public class Window extends Window_Design{
 	
 	@Override
 	public void calcBtnClicked() {
-		
+		//Get rid of all white spaces so that they won't have to be handled by the parsing which would take a longer time.
 		String inputText = textArea.getText().trim();
-		if(!inputText.contains("x")) {
+		if(!inputText.contains("x")) { //If the input text has an 'x' in it, it can only mean that it is a function.
 			if(!calcBtn.getText().equals("=")) calcBtn.setText("=");
 			
 			if (inputText.length() > 0) {
 				System.out.println("text: " + inputText);
+				//Replace some characters if the user for an example pasted some expression and pasted it in the textarea.
 				inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^(2)");
 				
 				System.out.println("new text: " + inputText);
 			
 				try {
-					ParsingThread task = new ParsingThread(parser, inputText, textResult);
-					Thread thread = new Thread(task);
-					thread.start();					
+					//Do the parsing on another thread so that it won't slow down the GUI and make it "laggy".
+					new Thread(new ParsingThread(parser, inputText, textResult)).start();
 				}catch (Exception e) {
 					return;
 				}				
