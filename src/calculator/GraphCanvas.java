@@ -173,13 +173,6 @@ public class GraphCanvas extends JPanel{
 		
 		return new double[] {(width/2 - originX)/spacingX, (height/2 - originY)/spacingY};
 	}
-
-	private Point moveGraphs(int offsetX, int offsetY) {
-		
-		
-		
-		return null;
-	}
 	
 	public void addGraph(Graph graph) {
 		Graphs.add(graph);

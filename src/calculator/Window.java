@@ -245,11 +245,10 @@ public class Window extends Window_Design{
 		calcBtnClicked();
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public void calcBtnClicked() {
 		
-		String inputText = textArea.getText().trim().toLowerCase();
+		String inputText = textArea.getText().trim();
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);
@@ -257,48 +256,13 @@ public class Window extends Window_Design{
 			
 			System.out.println("new text: " + inputText);
 			
-			if (true) {
-				
-				try {
-					ParsingThread task = new ParsingThread(parser, inputText, textResult);
-					Thread thread = new Thread(task);
-					thread.start();
-					//textResult.setText("Calculating...");
-					//resultStr = String.valueOf(task.getResult()); // = 17 - 10 = 7 "12+5-5*2"
-					//textResult.setText("= " + resultStr);
-					
-				}catch (Exception e) {
-					//if(e.getMessage().toString().toLowerCase().contains("out of bounds")) return;
-					//textResult.setText(e.getMessage());
-				}
-			}else {
-				String[] inputs = inputText.split(String.valueOf(latestOperation));
-				if (inputs.length >= 2) {
-					try{
-						
-						for (int i = 0; i < inputs.length; i++) {
-							System.out.println(inputs[i]);
-						}
-						
-						a = Double.parseDouble(inputs[0]);
-						b = Double.parseDouble(inputs[1]);
-						
-					}catch (Exception e) {
-						System.out.println(e);
-						return;
-					}
-				}else {
-					a = result;
-				}
-				
-				if (latestOperation.contains("+")) result = a + b;
-				else if(latestOperation.contains("-")) result = a - b;
-				else if(latestOperation.contains("*")) result = a * b;
-				else if(latestOperation.contains("/")) result = a / b;
-				textResult.setText("= " + String.valueOf(result));
+			try {
+				ParsingThread task = new ParsingThread(parser, inputText, textResult);
+				Thread thread = new Thread(task);
+				thread.start();					
+			}catch (Exception e) {
+				return;
 			}
 		}
 	}
-	
-	
 }
