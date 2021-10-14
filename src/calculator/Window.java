@@ -13,11 +13,6 @@ import javax.swing.JFrame;
 
 public class Window extends Window_Design{
 	
-	private static String latestOperation = "";
-	
-	private static double a = 0;
-	private static double b = 0;
-	private static double result = 0;
 	private static Parser parser = new Parser();
 	private int prevX, prevY;
 	private int mouseX;
@@ -25,17 +20,11 @@ public class Window extends Window_Design{
 	private int margin = BORDERWIDTH;
 	
 	public void Init() {
-//		ArrayList<Token> tokens = Token.tokenize("sin(30)");
-//		for (Token token : tokens) {
-//			System.out.println("Token: " + token.type.toString() + "(" + token.value + ")");
-//		}
-//		
-		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
 		//graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
 		//graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
 		graphPanel.addGraph(new Graph("x^3-4.5x^2+11", parser, 0.1f, graphPanel.getWidth(), 0));
-		//graphPanel.addGraph(new Graph("(x)^e", parser, 0.1f, graphPanel.getWidth()));
+		graphPanel.addGraph(new Graph("x^e", parser, 0.1f, graphPanel.getWidth(), 0));
 		graphPanel.draw();
 	}
 	
@@ -131,7 +120,7 @@ public class Window extends Window_Design{
 		if (window.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
 			window.setExtendedState(JFrame.NORMAL);
 		}else {
-			window.setExtendedState(JFrame.MAXIMIZED_BOTH);			
+			window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
 	}
 	
@@ -146,14 +135,6 @@ public class Window extends Window_Design{
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			calcBtn.doClick();
 		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			latestOperation = "";
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_PLUS) latestOperation = "\\+";
-		else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) latestOperation = "\\-";
-		else if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) latestOperation = "\\*";
-		else if (e.getKeyCode() == KeyEvent.VK_DIVIDE) latestOperation = "\\/";
 	}
 	
 	@Override
@@ -161,17 +142,14 @@ public class Window extends Window_Design{
 		int key = e.getKeyCode();
 		if (key != KeyEvent.VK_RIGHT && key != KeyEvent.VK_LEFT && key != KeyEvent.VK_UP && key != KeyEvent.VK_DOWN && !e.isAltDown() && !e.isControlDown()) {
 			calcBtnClicked();			
-			//int prevCarPos = textArea.getCaretPosition();
-			//textArea.setText(textArea.getText().replace("pi", "π").replace("^2", "²"));
+//			//int prevCarPos = textArea.getCaretPosition();
+//			textArea.setText(textArea.getText().replace("pi", "π").replace("^2", "²"));
 		}
 	}
 	
 	@Override
 	public void numbBtnClicked(Object obj) {
 		JButton btn = (JButton) obj;
-//		if (textArea.getText().equals("0") && !btn.getText().equals(".")) {
-//			textArea.setText(null);
-//		}
 		textArea.insert(btn.getText(), textArea.getCaretPosition());
 		calcBtnClicked();
 	}
@@ -180,37 +158,31 @@ public class Window extends Window_Design{
 	public void divideBtnClicked() {
 		
 		textArea.insert("/", textArea.getCaretPosition());
-		latestOperation = "\\/";
 	}
 	
 	@Override
 	public void multBtnClicked() {
 		textArea.insert("*", textArea.getCaretPosition());
-		latestOperation = "\\*";
 	}
 	
 	@Override
 	public void subtractBtnClicked() {
 		textArea.insert("-", textArea.getCaretPosition());
-		latestOperation = "\\-";
 	}
 	
 	@Override
 	public void addBtnClicked() {
 		textArea.insert("+", textArea.getCaretPosition());
-		latestOperation = "\\+";
 	}
 	
 	@Override
 	public void sqrtBtnClicked() {
 		textArea.insert("sqrt(", textArea.getCaretPosition());
-		latestOperation = "sqrt";
 	}
 	
 	@Override
 	public void squareBtnClicked() {
 		textArea.insert("²", textArea.getCaretPosition());
-		latestOperation = "square";
 		calcBtnClicked();
 	}
 	
@@ -252,7 +224,7 @@ public class Window extends Window_Design{
 		if (inputText.length() > 0) {
 			
 			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
+			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^(2)");
 			
 			System.out.println("new text: " + inputText);
 			

@@ -93,7 +93,7 @@ public class GraphCanvas extends JPanel{
 //				createGrid(g2, originX + this.width * i, originY + (this.height+spacingY) * j, this.width, this.height);
 //			}
 //		}
-		createGrid(g2, originX, originY, this.width*3, this.height*3, 3, 3);
+		createGrid(g2, originX, originY, this.width*3, this.height*3, 1, 1);
 		//createGrid(g2, originX + this.width, originY, this.width, this.height);
 		g2.setColor(Color.BLUE);
 		Arc2D.Double arc = new Arc2D.Double(Arc2D.PIE);
@@ -157,6 +157,7 @@ public class GraphCanvas extends JPanel{
 	public void normalize(double x, double y) {
 //		double  nX = (x/(float)spacingX) - Math.round(x/spacingX);
 //		double nY = (y/(float)spacingY) - Math.round(y/spacingY);
+		System.out.println("X: " + x/spacingX + "\nY:" + y/spacingY);
 		graphOffsetX = gridOffsetX;
 		//graphOffsetY = gridOffsetY;
 		//draw(0, 0);
@@ -164,7 +165,7 @@ public class GraphCanvas extends JPanel{
 		double[] centerCoord = getCenterCoord();
 		double  nX = (gridOffsetX/(float)spacingX) - Math.round(gridOffsetX/spacingX);
 		double nY = (gridOffsetY/(float)spacingY) - Math.round(gridOffsetY/spacingY);
-		draw(gridOffsetX, gridOffsetY);
+		draw(gridOffsetX -= x, gridOffsetY - y);
 		//draw(nX, nY);
 		//draw(centerCoord[0], centerCoord[1]);
 	}

@@ -82,48 +82,28 @@ public class Window_Design {
 		mouseListener = new MouseListener() {
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MouseReleased(e);
-			}
+			public void mouseReleased(MouseEvent e) {MouseReleased(e);}
 			
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MousePressed(e);
-			}
+			public void mousePressed(MouseEvent e) { MousePressed(e);}
 			
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseExited(MouseEvent e) {}
 			
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseEntered(MouseEvent e) {}
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseClicked(MouseEvent e) {}
 		};
 		
 		mouseMotionListener = new MouseMotionListener() {
 			
 			@Override
-			public void mouseMoved(MouseEvent e) {
-				MouseMoved(e);
-			}
+			public void mouseMoved(MouseEvent e) {MouseMoved(e);}
 			
 			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MouseDragged(e);
-			}
+			public void mouseDragged(MouseEvent e) {MouseDragged(e);}
 		};
 		
 		//window
@@ -175,13 +155,10 @@ public class Window_Design {
 		GridBagConstraints btnPanelC = new GridBagConstraints();
 		btnPanel.setBackground(backgroundColor);
 
-		
-		
 		btnPanelC.weightx = 1f;
 		btnPanelC.weighty = 1f;
 		btnPanelC.ipadx = 30;
 		btnPanelC.ipady = 30;
-		
 		
 		//numbBtnPanel Numeric Buttons
 		btnPanelC.gridwidth = 1;
@@ -203,7 +180,6 @@ public class Window_Design {
 		bottomFuncPanelC.fill = GridBagConstraints.BOTH;
 		bottomFuncPanel.add(numbBtns[3][0], bottomFuncPanelC);
 		numbBtns[3][0].addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				numbBtnClicked(numbBtns[3][0]);
@@ -296,7 +272,6 @@ public class Window_Design {
 				subtractBtnClicked();
 			}
 		});
-		
 		
 		//Add
 		addBtn.setText("+");
