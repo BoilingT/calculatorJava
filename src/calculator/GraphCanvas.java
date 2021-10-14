@@ -104,7 +104,7 @@ public class GraphCanvas extends JPanel{
 		}
 	}
 	
-	private void createGrid(Graphics2D g, double width, double height, int rows, int cols) {
+	private void createGrid2(Graphics2D g, double width, double height, int rows, int cols) {
 		
 		g.setColor(Color.BLACK);
 		g.setColor(new Color(0, 0, 0, 0.3f));
@@ -131,7 +131,7 @@ public class GraphCanvas extends JPanel{
 		
 	}
 	
-		private void createGrid2(Graphics2D g, double width, double height, int rows, int cols) {
+		private void createGrid(Graphics2D g, double width, double height, int rows, int cols) {
 		
 		g.setColor(Color.BLACK);
 		g.setColor(new Color(0, 0, 0, 0.3f));

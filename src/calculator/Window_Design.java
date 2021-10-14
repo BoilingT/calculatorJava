@@ -651,7 +651,7 @@ public class Window_Design {
 		
 		window.getRootPane().addMouseMotionListener(mouseMotionListener);
 		//window.pack();
-		//showAdvanced(false);
+		showAdvanced(false);
 		//checkBox.doClick();
 		window.Show();
 	}
