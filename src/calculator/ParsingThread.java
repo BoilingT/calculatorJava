@@ -15,15 +15,14 @@ public class ParsingThread implements Runnable{
 	}
 	
 	@Override
-	public void run() {
+	public void run() { // This is called by default by the thread, I only manipulate it to run my code.
 		try {
-			//value = parser.parse(expression);
 			double value = parser.parse(expression);
-			textArea.setText("= " + String.valueOf(value));
+			textArea.setText("= " + String.valueOf(value)); // Instead of making the entire program wait for the result, set it when it is done.
 		} catch (Exception e) {
 			//value = e.getMessage();
-			textArea.setText(e.getMessage());
-			e.printStackTrace();
+			textArea.setText(e.getMessage()); // Set the error message in the textarea.
+			e.printStackTrace(); // For debugging.
 		}
 	}
 	

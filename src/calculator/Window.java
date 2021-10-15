@@ -13,54 +13,46 @@ import javax.swing.JFrame;
 
 public class Window extends Window_Design{
 	
-	private static String latestOperation = "";
-	
-	private static double a = 0;
-	private static double b = 0;
-	private static double result = 0;
 	private static Parser parser = new Parser();
+	private int prevX, prevY;
 	private int mouseX;
 	private int mouseY;
-	private int width;
-	private int height;
-	private int margin = borderWidth;
+	private int margin = BORDERWIDTH;
 	
 	public void Init() {
-//		ArrayList<Token> tokens = Token.tokenize("sin(30)");
-//		for (Token token : tokens) {
-//			System.out.println("Token: " + token.type.toString() + "(" + token.value + ")");
-//		}
-//		
-		//System.out.println("Result: " + Parser.parseExpression(tokens));
 		InitializeComponents();
-	}
-	
-	public void set(int ints) {
-		ints = 1;
+		//graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
+		//graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
+		graphPanel.addGraph(new Graph("x^2", parser, 0.1f, graphPanel.getWidth(), 0));
+		//graphPanel.addGraph(new Graph("x^e", parser, 0.1f, graphPanel.getWidth(), 0));
+		graphPanel.draw(0, 0);
 	}
 	
 	@Override
 	public void MouseDragged(MouseEvent e) {
-		Component component = e.getComponent();
-		int x=e.getXOnScreen();
-		int y=e.getYOnScreen();
-		if (component == topBorderLabelPanel) {
+		Component component = e.getComponent(); //The component that raised this event.
+		final int x=e.getXOnScreen();
+		final int y=e.getYOnScreen();
+		if (component == windowTitleLabel) {
 			
 			window.setLocation(x-mouseX-margin, y-mouseY-margin);
 			
 		}else if (component == window.getRootPane()) {
-			int diffx = x - (int) (window.getLocation().getX() + width);
-			int diffy = y - (int) (window.getLocation().getY() + height);
-			int w = width + diffx;
-			int h = height + diffy;
-			window.setSize(new Dimension(w, h));
+			int diffx = x - (int) (window.getLocation().getX()); //The mouse distance travelled in x
+			int diffy = y - (int) (window.getLocation().getY()); //The mouse distance travelled in y
+			window.setSize(new Dimension(diffx, diffy));
+		}else if (component == graphPanel){
+			int X = prevX + (e.getX() - graphPanel.getWidth());
+			int Y = prevY + (e.getY() - graphPanel.getHeight());
+			//System.out.println("x: " + X + "\n y: " + Y);
+			graphPanel.draw(X, Y);
 		}
 	}
 	
 	@Override
 	public void MouseMoved(MouseEvent e) {
 		Component component = e.getComponent();
-		if (component == topBorderLabelPanel) {
+		if (component == windowTitleLabel) {
 			//component.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 
 		}else if (component == window.getRootPane()) {
@@ -99,11 +91,19 @@ public class Window extends Window_Design{
 	@Override
 	public void MousePressed(MouseEvent e) {
         
-		width = (int) window.getBounds().getWidth();
-		height = (int) window.getBounds().getHeight();
+//		width = (int) window.getBounds().getWidth();
+//		height = (int) window.getBounds().getHeight();
 		mouseX=e.getX();
-		mouseY=e.getY();  
-
+		mouseY=e.getY();
+		prevX = (int) (graphPanel.getOffset()[0] - mouseX + graphPanel.getWidth()/2);
+		prevY = (int) (graphPanel.getOffset()[1] - mouseY + graphPanel.getHeight()/2);
+	}
+	
+	@Override
+	public void MouseReleased(MouseEvent e) {
+		if (e.getComponent() == graphPanel) {
+			graphPanel.normalize();
+		}
 	}
 	
 	@Override
@@ -116,7 +116,7 @@ public class Window extends Window_Design{
 		if (window.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
 			window.setExtendedState(JFrame.NORMAL);
 		}else {
-			window.setExtendedState(JFrame.MAXIMIZED_BOTH);			
+			window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		}
 	}
 	
@@ -131,14 +131,6 @@ public class Window extends Window_Design{
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			calcBtn.doClick();
 		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			latestOperation = "";
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_PLUS) latestOperation = "\\+";
-		else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) latestOperation = "\\-";
-		else if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) latestOperation = "\\*";
-		else if (e.getKeyCode() == KeyEvent.VK_DIVIDE) latestOperation = "\\/";
 	}
 	
 	@Override
@@ -146,17 +138,14 @@ public class Window extends Window_Design{
 		int key = e.getKeyCode();
 		if (key != KeyEvent.VK_RIGHT && key != KeyEvent.VK_LEFT && key != KeyEvent.VK_UP && key != KeyEvent.VK_DOWN && !e.isAltDown() && !e.isControlDown()) {
 			calcBtnClicked();			
-			//int prevCarPos = textArea.getCaretPosition();
-			//textArea.setText(textArea.getText().replace("pi", "π").replace("^2", "²"));
+//			//int prevCarPos = textArea.getCaretPosition();
+//			textArea.setText(textArea.getText().replace("pi", "π").replace("^2", "²"));
 		}
 	}
 	
 	@Override
 	public void numbBtnClicked(Object obj) {
 		JButton btn = (JButton) obj;
-//		if (textArea.getText().equals("0") && !btn.getText().equals(".")) {
-//			textArea.setText(null);
-//		}
 		textArea.insert(btn.getText(), textArea.getCaretPosition());
 		calcBtnClicked();
 	}
@@ -165,37 +154,31 @@ public class Window extends Window_Design{
 	public void divideBtnClicked() {
 		
 		textArea.insert("/", textArea.getCaretPosition());
-		latestOperation = "\\/";
 	}
 	
 	@Override
 	public void multBtnClicked() {
 		textArea.insert("*", textArea.getCaretPosition());
-		latestOperation = "\\*";
 	}
 	
 	@Override
 	public void subtractBtnClicked() {
 		textArea.insert("-", textArea.getCaretPosition());
-		latestOperation = "\\-";
 	}
 	
 	@Override
 	public void addBtnClicked() {
 		textArea.insert("+", textArea.getCaretPosition());
-		latestOperation = "\\+";
 	}
 	
 	@Override
 	public void sqrtBtnClicked() {
 		textArea.insert("sqrt(", textArea.getCaretPosition());
-		latestOperation = "sqrt";
 	}
 	
 	@Override
 	public void squareBtnClicked() {
 		textArea.insert("²", textArea.getCaretPosition());
-		latestOperation = "square";
 		calcBtnClicked();
 	}
 	
@@ -220,69 +203,39 @@ public class Window extends Window_Design{
 	@Override
 	public void degreeBtnClicked() {
 		if (parser.isDegree()) {
-			degreeBtn.setText("Rad");
-			degreeBtn.setBackground(new Color(156, 91, 0));
+			angleBtn.setText("Rad");
+			angleBtn.setBackground(new Color(156, 91, 0));
 		}else {
-			degreeBtn.setText("Deg");
-			degreeBtn.setBackground(new Color(0, 99, 156));
+			angleBtn.setText("Deg");
+			angleBtn.setBackground(new Color(0, 99, 156));
 		}
 		parser.setDegree(!parser.isDegree());
 		calcBtnClicked();
 	}
-		
+	
 	@Override
 	public void calcBtnClicked() {
-		
-		String inputText = textArea.getText().trim().toLowerCase();
-		if (inputText.length() > 0) {
+		//Get rid of all white spaces so that they won't have to be handled by the parsing which would take a longer time.
+		String inputText = textArea.getText().trim();
+		if(!inputText.contains("x")) { //If the input text has an 'x' in it, it can only mean that it is a function.
+			if(!calcBtn.getText().equals("=")) calcBtn.setText("=");
 			
-			System.out.println("text: " + inputText);
-			inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^2");
-			
-			System.out.println("new text: " + inputText);
-			
-			if (checkBox.isSelected()) {
+			if (inputText.length() > 0) {
+				System.out.println("text: " + inputText);
+				//Replace some characters if the user for an example pasted some expression and pasted it in the textarea.
+				inputText = inputText.replace("\\--", "+").replace("\\+-", "-").replace(',', '.').replace('×', '*').replace('−', '-').replace('÷', '/').replace("²", "^(2)");
 				
+				System.out.println("new text: " + inputText);
+			
 				try {
-					ParsingThread task = new ParsingThread(parser, inputText, textResult);
-					Thread thread = new Thread(task);
-					thread.start();
-					//textResult.setText("Calculating...");
-					//resultStr = String.valueOf(task.getResult()); // = 17 - 10 = 7 "12+5-5*2"
-					//textResult.setText("= " + resultStr);
-					
+					//Do the parsing on another thread so that it won't slow down the GUI and make it "laggy".
+					new Thread(new ParsingThread(parser, inputText, textResult)).start();
 				}catch (Exception e) {
-					//if(e.getMessage().toString().toLowerCase().contains("out of bounds")) return;
-					//textResult.setText(e.getMessage());
-				}
-			}else {
-				String[] inputs = inputText.split(String.valueOf(latestOperation));
-				if (inputs.length >= 2) {
-					try{
-						
-						for (int i = 0; i < inputs.length; i++) {
-							System.out.println(inputs[i]);
-						}
-						
-						a = Double.parseDouble(inputs[0]);
-						b = Double.parseDouble(inputs[1]);
-						
-					}catch (Exception e) {
-						System.out.println(e);
-						return;
-					}
-				}else {
-					a = result;
-				}
-				
-				if (latestOperation.contains("+")) result = a + b;
-				else if(latestOperation.contains("-")) result = a - b;
-				else if(latestOperation.contains("*")) result = a * b;
-				else if(latestOperation.contains("/")) result = a / b;
-				textResult.setText("= " + String.valueOf(result));
+					return;
+				}				
 			}
+		}else {
+			calcBtn.setText("Add func");
 		}
 	}
-	
-	
 }

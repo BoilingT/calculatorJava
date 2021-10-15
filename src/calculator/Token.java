@@ -6,10 +6,10 @@ public class Token{
 	
 	public Type type = null;
 	public Object value = null;
-	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'};
-	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs", "log10", "log", "lg", "ln"};
+	private static final char[] SYMBOLS = {'+', '-', '*', '/', '(', ')', '^'}; //Symbols that can be used.
+	private static final String[] FUNCTIONS = {"sin", "cos","tan","sqrt","abs", "log10", "log", "lg", "ln"}; //Functions that can be used.
 	
-	public static enum Type{
+	public static enum Type{ //An easy way of defining your own types, makes it easier to define certain Token types.
 		Symbol,
 		Identifier,
 		Number,
@@ -105,7 +105,6 @@ public class Token{
 	public static ArrayList<Token> tokenize(String expression) {
 		ArrayList<Token> tokens = new ArrayList<>();
 		
-		System.out.println("Expression: \"" + expression + "\" Length: " + expression.length());
 		for (int i = 0; i < expression.length(); i++) { //Go through each character in the expression.
 			char Char = expression.charAt(i); //Save the current character in a variable for easier use.
 			if (Char != ' ') { //Don't parse empty spaces, they will just be ignored.
@@ -167,9 +166,9 @@ public class Token{
 				}
 			}
 		}
-		for (Token token : tokens) {
-			System.out.print("last[" + token.value + ", " + token.type.toString() + "]");
-		}
+//		for (Token token : tokens) {
+//			System.out.print("last[" + token.value + ", " + token.type.toString() + "]");
+//		}
 		tokens.add(new Token(Type.Stop, "Stop")); //A way for knowing when the expression ends is by adding a stop token to the list.
 		return tokens;
 	}
