@@ -4,7 +4,7 @@
 
 package calculator;
 
-public class Main extends Window_Design{	
+public class Main {
 	
 	public static void main(String[] args) {
 		Window Application = new Window(); //Make a new program
