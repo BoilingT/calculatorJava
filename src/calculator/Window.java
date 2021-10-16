@@ -23,7 +23,7 @@ public class Window extends Window_Design{
 		InitializeComponents();
 		//graphPanel.addGraph(new Graph("sin(x*180/pi)", parser, 0.1f, graphPanel.getWidth(), 0));
 		//graphPanel.addGraph(new Graph("(x)^2", parser, 0.1f, graphPanel.getWidth(), 0));
-		graphPanel.addGraph(new Graph("x^2", parser, 1f, graphPanel.getWidth(), 0));
+		graphPanel.addGraph(new Graph("x^2", parser, 0.1f, graphPanel.getWidth(), 0));
 		//graphPanel.addGraph(new Graph("x^e", parser, 0.1f, graphPanel.getWidth(), 0));
 		graphPanel.draw(0, 0);
 	}
